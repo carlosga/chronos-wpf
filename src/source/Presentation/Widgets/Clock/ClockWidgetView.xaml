@@ -1,0 +1,101 @@
+﻿<chronos:WidgetElement x:Class="Chronos.Presentation.Widgets.ClockWidgetView"
+                       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                       xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"    
+                       xmlns:chronos="http://chronos/schemas/2010/xaml"
+                       Style="{StaticResource DefaultGadgetStyle}" 
+                       Title="Digital clock">
+
+    <chronos:WidgetElement.Resources>        
+        <SolidColorBrush x:Key="MainColor" Color="{StaticResource AccentColorBlue}" PresentationOptions:Freeze="True" />
+        <SolidColorBrush x:Key="MainColor2" Color="{StaticResource AccentColorLightBlue}" PresentationOptions:Freeze="True" />
+        <SolidColorBrush x:Key="ShadowColor" Color="#BB000000" PresentationOptions:Freeze="True" />
+        
+        <Style x:Key="TimeStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="{StaticResource MainColor}" />
+            <Setter Property="FontFamily" Value="Trebuchet MS" />
+            <Setter Property="FontSize" Value="90" />
+        </Style>
+        <Style x:Key="DateStyle" BasedOn="{StaticResource TimeStyle}" TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+    </chronos:WidgetElement.Resources>
+    
+    <Grid x:Name="MainGrid">
+        <Grid x:Name="ClockGrid" Panel.ZIndex="100">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <TextBlock
+                    Style="{StaticResource ResourceKey=TimeStyle}"
+                    Text="{Binding Path=Hours}"></TextBlock>
+                <TextBlock
+                    Style="{StaticResource ResourceKey=TimeStyle}"
+                    Margin="0,-15,0,0"
+                    Text=":"></TextBlock>
+                <TextBlock
+                    Style="{StaticResource ResourceKey=TimeStyle}"
+                    Margin="0,0,15,0"
+                    Text="{Binding Path=Minutes}"></TextBlock>
+                <TextBlock
+                    Style="{StaticResource ResourceKey=DateStyle}"
+                    Margin="0,0,15,20"
+                    VerticalAlignment="Bottom"
+                    Text="{Binding Path=PmAm}"></TextBlock>
+                <Viewbox Grid.Column="1" Height="100" Width="100">
+                    <Grid>
+                        <Ellipse Width="220" Height="220" StrokeThickness="20" Stroke="{StaticResource MainColor2}" />
+                        <Path Width="220" Height="220" StrokeThickness="20" Stroke="{StaticResource MainColor}">
+                            <Path.Data>
+                                <PathGeometry>
+                                    <PathFigure StartPoint="{Binding Path=DegreeStartPoint}" x:Name="pathF">
+                                        <ArcSegment 
+                                            x:Name="arc"
+                                            Size="100 100"
+                                            SweepDirection="Clockwise"
+                                            Point="{Binding Path=DegreeCurrentPoint}" 
+                                            IsLargeArc="{Binding Path=IsLargeArc}"  />
+                                    </PathFigure>
+                                </PathGeometry>
+                            </Path.Data>
+                        </Path>
+                        <TextBlock 
+                            Style="{StaticResource ResourceKey=TimeStyle}"
+                            FontSize="120"
+                            Text="{Binding Path=Seconds}"></TextBlock>
+                    </Grid>
+                </Viewbox>
+            </StackPanel>
+            <Grid
+                Grid.Row="1"
+                Margin="0,-15,90,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <TextBlock 
+                    Grid.Row="0"
+                    Style="{StaticResource ResourceKey=DateStyle}"
+                    Text="{Binding Path=Date}">
+                </TextBlock>
+                <TextBlock
+                    Grid.Row="1"
+                    Margin="0,0,-27,0"
+                    Style="{StaticResource ResourceKey=DateStyle}"
+                    Text="{Binding Path=DayOfWeek}">
+                </TextBlock>
+            </Grid>
+        </Grid>
+        <Grid.LayoutTransform>
+            <RotateTransform Angle="{Binding Path=Angle}"></RotateTransform>
+        </Grid.LayoutTransform>
+    </Grid>
+</chronos:WidgetElement>

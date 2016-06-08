@@ -1,0 +1,228 @@
+﻿<Window x:Class="Chronos.Shell"
+        x:Name="ShellWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:chronos="http://chronos/schemas/2010/xaml"
+        WindowState="{Binding WindowState}" ResizeMode="NoResize" ShowActivated="True" WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        FocusVisualStyle="{x:Null}"
+        Title="chronos"
+        Icon="/Chronos;component/Chronos.ico" 
+        mc:Ignorable="d">
+
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo Description="Chronos">
+        </TaskbarItemInfo>
+    </Window.TaskbarItemInfo>
+
+    <Grid x:Name="LayoutRoot" Background="{StaticResource WindowBackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="ShellHeader" Background="{StaticResource HighlightBrush}">
+            <Grid.Style>
+                <Style>
+                    <Style.Triggers>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                            <Setter Property="Panel.ZIndex" Value="1" />
+                        </Trigger>
+                    </Style.Triggers>                    
+                </Style>
+            </Grid.Style>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid x:Name="WindowHeader" Height="Auto" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50*" />
+                    <ColumnDefinition Width="50*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0"
+                            Margin="5,0,0,0"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Stretch">
+
+                    <TextBlock x:Name="WindowTitle"
+                               FontFamily="{StaticResource ApplicationNameFontFamily}" FontSize="{StaticResource ApplicationNameFontSize}" Foreground="{StaticResource ApplicationNameBrush}" FontWeight="Bold"
+                               IsHitTestVisible="False"
+                               HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,2,0,0"
+                               Opacity="0.5"
+                               Text="CHRONOS 2.0 BETA">
+                    </TextBlock>
+
+                    <TextBlock Margin="5,0,5,0"
+                               FontFamily="{StaticResource ApplicationNameFontFamily}" FontSize="{StaticResource ApplicationNameFontSize}" Foreground="{StaticResource ApplicationNameBrush}" FontWeight="Bold"
+                               IsHitTestVisible="False"
+                               HorizontalAlignment="Left" VerticalAlignment="Center" 
+                               Opacity="0.5"
+                               Text="|">
+                    </TextBlock>
+
+                    <TextBlock x:Name="UserName"
+                               FontSize="10" FontWeight="Bold" Foreground="{StaticResource WhiteColorBrush}" 
+                               Text="{Binding UserName}"
+                               HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,2,0,0"
+                               ToolTip="Active user"/>
+               
+                    <chronos:SplitButton x:Name="ShutdownOptionsButton"
+                                         FontSize="10" FontWeight="Bold" Foreground="{StaticResource WhiteColorBrush}" 
+                                         Content="EXIT"
+                                         VerticalAlignment="Center"
+                                         Margin="15,2,0,0" Padding="5,5,5,5"
+                                         Width="Auto" Height="30"
+                                         Placement="Bottom"
+                                         ToolTip="Options to close session or exit Chronos">
+
+                        <MenuItem x:Name="ShutdownMenuItem"
+                                  Header="Exit"
+                                  Command="{Binding ShutdownCommand}"/>
+
+                        <MenuItem x:Name="LogoffMenuItem"
+                                  Header="Close session"
+                                  Command="{Binding CloseSessionCommand}"/>
+
+                    </chronos:SplitButton>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1"
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,5,0">
+
+                    <Button x:Name="ShowDesktopButton"
+                            Command="{Binding ShowDesktopCommand}"
+                            VerticalAlignment="Center"
+                            Margin="3.5"
+                            Style="{StaticResource MetroButtonStyle}"
+                            ToolTip="Show desktop">
+                        <TextBlock TextWrapping="Wrap" Text="1" FontFamily="Webdings" Foreground="{StaticResource WhiteBrush}" FontSize="13.333"/>
+                    </Button>
+                
+                    <chronos:SplitButton x:Name="ShowSplitButton"
+                                         FontSize="10" FontWeight="Bold" Foreground="{StaticResource WhiteColorBrush}" 
+                                         Content="SHOW"
+                                         VerticalAlignment="Center"
+                                         Width="Auto" Margin="15,2,0,0"
+                                         Height="30"
+                                         Placement="Bottom">
+
+                        <MenuItem x:Name="ShowWidgetLibraryMenuItem"
+                                  Header="Widget library ..."
+                                  Command="{Binding ShowWidgetLibraryCommand}"/>
+
+                        <MenuItem x:Name="DesktopMenuItem"
+                                  Header="Desktop">
+                        
+                            <MenuItem x:Name="SwitchDesktopMenuItem"
+                                      Header="Switch desktop"
+                                      Command="{Binding SwitchDesktopCommand}"/>
+
+                            <Separator Style="{StaticResource DefaultSeparatorStyle}" />
+                        
+                            <MenuItem x:Name="SaveCurrentDesktopMenuItem"
+                                      Header="Save current ..."
+                                      Command="{Binding SaveCurrentDesktopCommand}"/>
+
+                            <MenuItem x:Name="SaveAllDesktopMenuItem"
+                                      Header="Save all ..."
+                                      Command="{Binding SaveAllDesktopsCommand}"/>
+                        </MenuItem>
+
+                        <Separator Style="{StaticResource DefaultSeparatorStyle}" />
+
+                        <MenuItem x:Name="AboutBoxMenuItem"
+                                  Header="About Chronos WPF..."
+                                  Command="{Binding ShowAboutBoxCommand}" />
+                    </chronos:SplitButton>
+
+                    <TextBlock Margin="5,0,5,0"
+                               FontFamily="{StaticResource ApplicationNameFontFamily}" FontSize="{StaticResource ApplicationNameFontSize}" Foreground="{StaticResource ApplicationNameBrush}" FontWeight="Bold"
+                               IsHitTestVisible="False"
+                               HorizontalAlignment="Left" VerticalAlignment="Center" 
+                               Opacity="0.5"
+                               Text="|">
+                    </TextBlock>
+                                
+                    <Button Style="{StaticResource MetroButtonStyle}"
+                            VerticalAlignment="Center"
+                            ToolTip="Help">
+                        <TextBlock FontFamily="Segoe WP" FontSize="10" Foreground="{StaticResource WhiteColorBrush}" FontWeight="Bold"
+                                   Text="HELP" />
+                    </Button>
+
+                    <Button x:Name="MinimizeButton"
+                            Command="{Binding MinimizeCommand}"
+                            VerticalAlignment="Center"
+                            Margin="100,1.5,1.5,1.5"
+                            Style="{StaticResource MetroButtonStyle}"
+                            ToolTip="Minimize">
+                        <TextBlock TextWrapping="Wrap" Text="0" FontFamily="Webdings" FontSize="13.333" Foreground="{StaticResource WhiteColorBrush}" />
+                    </Button>
+                                                                        
+                    <Button x:Name="CloseButton"
+                            Command="{Binding ShutdownCommand}"
+                            VerticalAlignment="Center"
+                            Margin="1.5"
+                            Style="{StaticResource MetroButtonStyle}"
+                            ToolTip="Close">
+                        <TextBlock TextWrapping="Wrap" Text="r" FontFamily="Webdings" FontSize="13.333" Foreground="{StaticResource WhiteColorBrush}" />
+                    </Button>                
+                </StackPanel>
+            </Grid>
+
+            <Grid x:Name="TaskBar" Grid.Row="2" Height="40">
+                <ScrollViewer Style="{StaticResource TaskBarScrollViewerStyle}"
+                              HorizontalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Disabled">
+                    <ItemsControl x:Name="TaskBarItems"
+                              FocusVisualStyle="{x:Null}"
+                              AllowDrop="False"
+                              BorderThickness="0"
+                              Background="Transparent"
+                              ItemsSource="{Binding ActiveWindows}"
+                              ItemsPanel="{StaticResource TaskBarPanelTemplate}"
+                              ItemTemplate="{StaticResource TaskBarItemTemplate}"
+                              VerticalContentAlignment="Center"/>
+                </ScrollViewer>
+            </Grid>
+        </Grid>            
+
+        <chronos:Desktop x:Name="VirtualDesktop01"
+                         Grid.Row="3"
+                         FocusVisualStyle="{x:Null}"
+                         Visibility="Collapsed"
+                         Background="Transparent"
+                         AllowDrop="True"
+                         Id="94fa801f-bef7-437a-ba75-352f1ede6fb9"
+                         chronos:VirtualDesktopManager.IsDesktop="True"
+                         chronos:DragDropManager.IsDropTarget="True">
+        </chronos:Desktop>
+        
+        <chronos:Desktop x:Name="VirtualDesktop02"
+                         Grid.Row="3"
+                         FocusVisualStyle="{x:Null}"
+                         Visibility="Collapsed"
+                         Background="Transparent"
+                         AllowDrop="True"
+                         Id="2afc760e-9450-448d-9f28-5311c49e4773"
+                         chronos:VirtualDesktopManager.IsDesktop="True"
+                         chronos:DragDropManager.IsDropTarget="True">
+        </chronos:Desktop>
+
+        <chronos:Desktop x:Name="ModalContainer" 
+                         Grid.RowSpan="4" 
+                         FocusVisualStyle="{x:Null}"
+                         AllowDrop="False" 
+                         Visibility="Collapsed"
+                         chronos:VirtualDesktopManager.IsModalContainer="True">
+        </chronos:Desktop>
+    </Grid>
+</Window>

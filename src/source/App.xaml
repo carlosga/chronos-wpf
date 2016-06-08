@@ -1,0 +1,72 @@
+﻿<nRoute:Application x:Class="Chronos.App"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:nRoute="http://nRoute/schemas/2010/xaml" 
+                    xmlns:chronos="http://chronos/schemas/2010/xaml"
+                    StartupUri="Shell.xaml"
+                    ShutdownMode="OnMainWindowClose">
+    
+    <nRoute:Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- Core Styles -->
+                <ResourceDictionary Source="Themes/Metro/CoreStyles.xaml" />
+                <!-- Control Styles -->
+                <ResourceDictionary Source="Themes/Metro/ControlStyles.xaml" />
+                <!-- Shortcut -->
+                <ResourceDictionary Source="Themes/Metro/ShortcutStyles.xaml"/>
+                <!-- Core Widget styles -->
+                <ResourceDictionary Source="Themes/Metro/WidgetStyles.xaml" />
+                <!-- Window Styles -->
+                <ResourceDictionary Source="Themes/Metro/WindowStyles.xaml"/>
+                <!-- Shell Window -->
+                <ResourceDictionary Source="Themes/Metro/ShellStyles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </nRoute:Application.Resources>
+
+    <nRoute:Application.ApplicationLifetimeObjects>
+        <nRoute:nRouteApplicationService>
+            <nRoute:nRouteApplicationService.SiteMapProvider>
+                <nRoute:XamlSiteMapProvider>
+                    <nRoute:SiteMap>
+                        <nRoute:SiteMap.Areas>
+                            <nRoute:SiteArea Key="Configuracion" RemoteUrl="Chronos.Modules.Sample.dll" InitializeOnLoad="false" />
+                        </nRoute:SiteMap.Areas>
+
+                        <nRoute:SiteMap.RootNode>
+                            
+                            <nRoute:NavigationNode Title="Inicio">
+                                
+                                <nRoute:NodesCollection>                                                                    
+
+                                    <nRoute:NavigationNode Title="Configuración general">
+                                        <nRoute:NodesCollection>
+
+                                            <chronos:CommandSiteMapNode Title="Ficha de la Empresa" SiteArea="Configuracion" Url="Configuracion/Empresas" />
+                                            <chronos:CommandSiteMapNode Title="Régimenes y tipos de I.V.A." SiteArea="Configuracion" Url="Configuracion/RegimenesIva" />
+                                            <chronos:CommandSiteMapNode Title="Formas de Cobro" SiteArea="Configuracion" Url="Configuracion/FormasCobro" />
+                                            <chronos:CommandSiteMapNode Title="Formas de Pago" SiteArea="Configuracion" Url="Configuracion/FormasPago" />
+                                            <chronos:CommandSiteMapNode Title="Divisas" SiteArea="Configuracion" Url="Configuracion/Divisas" />
+                                            <chronos:CommandSiteMapNode Title="Códigos CNAE" SiteArea="Configuracion" Url="Configuracion/CodigosCNAE" />
+                                            <chronos:CommandSiteMapNode Title="Entidades bancarias" SiteArea="Configuracion" Url="Configuracion/EntidadesBancarias" />
+                                            <chronos:CommandSiteMapNode Title="Tipos de documentos" SiteArea="Configuracion" Url="Configuracion/TiposDocumento" />
+                                            <chronos:CommandSiteMapNode Title="Tipos de retenciones" SiteArea="Configuracion" Url="Configuracion/TiposRetencion" />
+                                            <chronos:CommandSiteMapNode Title="Tipos de via" SiteArea="Configuracion" Url="Configuracion/TiposVia" />
+
+                                        </nRoute:NodesCollection>
+
+                                    </nRoute:NavigationNode>
+
+                                </nRoute:NodesCollection>
+
+                            </nRoute:NavigationNode>
+                            
+                        </nRoute:SiteMap.RootNode>
+                    </nRoute:SiteMap>
+                </nRoute:XamlSiteMapProvider>
+            </nRoute:nRouteApplicationService.SiteMapProvider>
+        </nRoute:nRouteApplicationService>
+    </nRoute:Application.ApplicationLifetimeObjects>
+    
+</nRoute:Application>

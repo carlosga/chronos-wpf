@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2CF0AED5-C924-4536-95D4-AA338BFCDA23}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Chronos.Presentation.Widgets</RootNamespace>
+    <AssemblyName>Chronos.Presentation.Widgets</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nRoute.Framework">
+      <HintPath>..\..\..\Lib\nRoute\nRoute.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Calendar\CalendarWidget.cs" />
+    <Compile Include="Calendar\CalendarWidgetViewModel.cs" />
+    <Compile Include="Calendar\CalendarWidgetView.xaml.cs">
+      <DependentUpon>CalendarWidgetView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Clock\ClockWidget.cs" />
+    <Compile Include="Clock\ClockWidgetViewModel.cs" />
+    <Compile Include="Clock\ClockWidgetView.xaml.cs">
+      <DependentUpon>ClockWidgetView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Navigator\NavigatorWidget.cs" />
+    <Compile Include="Navigator\NavigatorWidgetViewModel.cs" />
+    <Compile Include="Navigator\NavigatorWidgetView.xaml.cs">
+      <DependentUpon>NavigatorWidgetView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Extensions\Chronos.Extensions.csproj">
+      <Project>{AA911078-3A2A-41B1-B779-3C8B55E1B8E3}</Project>
+      <Name>Chronos.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DragAndDrop\Chronos.Presentation.DragAndDrop.csproj">
+      <Project>{F3061A2B-7688-4B26-8D5B-E556EAFE1D49}</Project>
+      <Name>Chronos.Presentation.DragAndDrop</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Controls\Chronos.Presentation.Controls.csproj">
+      <Project>{66D734BC-132C-4252-9CBD-78DF2585D52D}</Project>
+      <Name>Chronos.Presentation.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Chronos.Presentation.Core.csproj">
+      <Project>{4C9AD768-6AB8-43B1-833A-C8CC520471B1}</Project>
+      <Name>Chronos.Presentation.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ViewModel\Chronos.Presentation.ViewModel.csproj">
+      <Project>{AAB3929F-049B-469A-AAEB-BBABEE03FE0A}</Project>
+      <Name>Chronos.Presentation.ViewModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Windows\Chronos.Presentation.Windows.csproj">
+      <Project>{1EC718BA-8BD7-4403-B5B4-1CFD2253D2E7}</Project>
+      <Name>Chronos.Presentation.Windows</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Calendar\CalendarWidgetView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Clock\ClockWidgetView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Navigator\NavigatorWidgetView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
