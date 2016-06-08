@@ -51,3 +51,6 @@ ConnectionString.xml
 *.lock.json
 *.repro
 *.out
+
+# Visual Studio Code
+.vscode
