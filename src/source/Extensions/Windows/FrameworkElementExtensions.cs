@@ -21,7 +21,7 @@ namespace Chronos.Extensions.Windows
             //UI thread is initialized by the time focus is set
             ThreadPool.QueueUserWorkItem
             (
-                delegate(object theElement)
+                delegate (object theElement)
                 {
                     FrameworkElement elem = (FrameworkElement)theElement;
 
@@ -43,7 +43,7 @@ namespace Chronos.Extensions.Windows
             //UI thread is initialized by the time focus is set
             ThreadPool.QueueUserWorkItem
             (
-                delegate(object theElement)
+                delegate (object theElement)
                 {
                     FrameworkElement elem = (FrameworkElement)theElement;
 

@@ -25,8 +25,6 @@ namespace Chronos.Presentation.Windows
     /// </summary>
     internal static class DesktopSerializer
     {
-        #region · Save/Load Methods ·
-
         /// <summary>
         /// Loads the contents of the specified filename in the given <see cref="Desktop"/> instance.
         /// </summary>
@@ -58,8 +56,8 @@ namespace Chronos.Presentation.Windows
 
             foreach (XElement shortcutXML in shortcutsXML)
             {
-                Guid id = new Guid(shortcutXML.Element("Id").Value);
-                ShortcutElement item = DeserializeShortcut(shortcutXML, id, 0, 0);
+                Guid id   = new Guid(shortcutXML.Element("Id").Value);
+                var  item = DeserializeShortcut(shortcutXML, id, 0, 0);
 
                 item.TabIndex = ++ti;
 
@@ -74,23 +72,17 @@ namespace Chronos.Presentation.Windows
         /// <param name="filename">The filename.</param>
         public static void Save(Desktop desktop, string filename)
         {
-            IEnumerable<WidgetElement> widgets = desktop.Children.OfType<WidgetElement>();
-            IEnumerable<ShortcutElement> shortcuts = desktop.Children.OfType<ShortcutElement>();
-
-            XElement widgetsItemsXML = SerializeWidgets(widgets);
-            XElement shortcutsItemsXML = SerializeShortcuts(shortcuts);
-
-            XElement root = new XElement("Root");
+            var widgets           = desktop.Children.OfType<WidgetElement>();
+            var shortcuts         = desktop.Children.OfType<ShortcutElement>();
+            var widgetsItemsXML   = SerializeWidgets(widgets);
+            var shortcutsItemsXML = SerializeShortcuts(shortcuts);
+            var root              = new XElement("Root");
 
             root.Add(widgetsItemsXML);
             root.Add(shortcutsItemsXML);
 
             SaveFile(filename, root);
         }
-
-        #endregion
-
-        #region · Serialization Methods ·
 
         private static XElement LoadFromFile(string filename)
         {
@@ -103,7 +95,7 @@ namespace Chronos.Presentation.Windows
             }
             catch (Exception)
             {
-                IShowMessageViewService showMessageService = ViewServiceLocator.GetViewService<IShowMessageViewService>();
+                var showMessageService = ViewServiceLocator.GetViewService<IShowMessageViewService>();
 
                 showMessageService.ButtonSetup = DialogButton.Ok;
                 showMessageService.Caption = "Chronos - Error en la carga del escritorio";
@@ -123,7 +115,7 @@ namespace Chronos.Presentation.Windows
             }
             catch (Exception)
             {
-                IShowMessageViewService showMessageService = ViewServiceLocator.GetViewService<IShowMessageViewService>();
+                var showMessageService = ViewServiceLocator.GetViewService<IShowMessageViewService>();
 
                 showMessageService.ButtonSetup = DialogButton.Ok;
                 showMessageService.Caption = "Chronos - Error al guardar el estado del escritorio";
@@ -157,19 +149,19 @@ namespace Chronos.Presentation.Windows
 
         private static WidgetElement DeserializeWidget(XElement itemXML, Guid id, double offsetX, double offsetY)
         {
-            WidgetElement item = (WidgetElement)Activator.CreateInstance(Type.GetType(itemXML.Element("Type").Value));
+            var item = (WidgetElement)Activator.CreateInstance(Type.GetType(itemXML.Element("Type").Value));
 
             item.ShowMinimizeButton = Boolean.Parse(itemXML.Element("ShowMinimizeButton").Value);
-            item.StartupLocation    = StartupPosition.Manual;
-            
+            item.StartupLocation = StartupPosition.Manual;
+
             item.Move(Double.Parse(itemXML.Element("Left").Value, CultureInfo.InvariantCulture) + offsetX,
                       Double.Parse(itemXML.Element("Top").Value, CultureInfo.InvariantCulture) + offsetY);
             item.SetZIndex(Int32.Parse(itemXML.Element("zIndex").Value));
 
-            WindowState widgetState = (WindowState)Enum.Parse(typeof(WindowState), itemXML.Element("WidgetState").Value as String);
+            var widgetState = (WindowState)Enum.Parse(typeof(WindowState), itemXML.Element("WidgetState").Value as String);
 
-            item.Width      = Double.Parse(itemXML.Element("Width").Value, CultureInfo.InvariantCulture);
-            item.Height     = Double.Parse(itemXML.Element("Height").Value, CultureInfo.InvariantCulture);
+            item.Width = Double.Parse(itemXML.Element("Width").Value, CultureInfo.InvariantCulture);
+            item.Height = Double.Parse(itemXML.Element("Height").Value, CultureInfo.InvariantCulture);
 
             if (widgetState == WindowState.Minimized)
             {
@@ -181,25 +173,22 @@ namespace Chronos.Presentation.Windows
 
         private static XElement SerializeShortcuts(IEnumerable<ShortcutElement> shortcuts)
         {
-            XElement serializedItems = new XElement("ShortcutElements",
-                                       from item in shortcuts
-                                       let contentXaml = XamlWriter.Save(((ShortcutElement)item).DataContext)
-                                       select new XElement("ShortcutElement",
-                                                  new XElement("Left", Canvas.GetLeft(item)),
-                                                  new XElement("Top", Canvas.GetTop(item)),
-                                                  new XElement("Width", item.Width),
-                                                  new XElement("Height", item.Height),
-                                                  new XElement("Id", item.Id),
-                                                  new XElement("zIndex", Canvas.GetZIndex(item)),
-                                                  new XElement("DataContext", contentXaml)
-                                              ));
-
-            return serializedItems;
+            return new XElement("ShortcutElements",
+                                from item in shortcuts
+                                let contentXaml = XamlWriter.Save(((ShortcutElement)item).DataContext)
+                                select new XElement("ShortcutElement",
+                                       new XElement("Left", Canvas.GetLeft(item)),
+                                       new XElement("Top", Canvas.GetTop(item)),
+                                       new XElement("Width", item.Width),
+                                       new XElement("Height", item.Height),
+                                       new XElement("Id", item.Id),
+                                       new XElement("zIndex", Canvas.GetZIndex(item)),
+                                       new XElement("DataContext", contentXaml)));
         }
 
         private static ShortcutElement DeserializeShortcut(XElement itemXML, Guid id, double offsetX, double offsetY)
         {
-            ShortcutElement item = new ShortcutElement
+            var item = new ShortcutElement
             {
                 DataContext = XamlReader.Load(XmlReader.Create(new StringReader(itemXML.Element("DataContext").Value))),
                 Width       = Double.Parse(itemXML.Element("Width").Value, CultureInfo.InvariantCulture),
@@ -213,7 +202,5 @@ namespace Chronos.Presentation.Windows
 
             return item;
         }
-
-        #endregion
     }
 }

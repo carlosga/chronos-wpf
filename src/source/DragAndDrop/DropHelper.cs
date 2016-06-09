@@ -19,65 +19,47 @@ namespace Chronos.Presentation.DragAndDrop
 {
     public sealed class DropHelper
     {
-        #region � Consts �
+        private const string UrlDataFormat = "text/x-moz-url";
 
-        const string UrlDataFormat = "text/x-moz-url";
-
-        #endregion
-
-        #region � Fields �
-
-        private UIElement       dropTarget = null;
-        private string[]        datatypes  = { typeof(UIElement).ToString(), "Text" };        
-        private DragDropEffects allowedEffects;
-
-        #endregion
-
-        #region � Properties �
+        private UIElement _dropTarget = null;
+        private string[] _datatypes = { typeof(UIElement).ToString(), "Text" };
+        private DragDropEffects _allowedEffects;
 
         public string[] AllowedDataTypes
         {
-            get { return this.datatypes; }
+            get { return _datatypes; }
             set
             {
-                this.datatypes = value;
+                _datatypes = value;
 
-                for (int x = 0; x < this.datatypes.Length; x++)
+                for (int x = 0; x < _datatypes.Length; x++)
                 {
-                    this.datatypes[x] = this.datatypes[x].ToLower();
+                    _datatypes[x] = _datatypes[x].ToLower();
                 }
             }
         }
 
         public DragDropEffects AllowedEffects
         {
-            get { return this.allowedEffects; }
-            set { this.allowedEffects = value; }
+            get { return _allowedEffects; }
+            set { _allowedEffects = value; }
         }
-
-        #endregion
-
-        #region � Constructors �
 
         public DropHelper(UIElement wrapper)
         {
-            this.dropTarget = wrapper;
+            _dropTarget = wrapper;
 
-            this.dropTarget.AllowDrop  = true;
-            this.dropTarget.DragOver   += new DragEventHandler(DropTarget_DragOver);
-            this.dropTarget.Drop       += new DragEventHandler(DropTarget_Drop);
+            _dropTarget.AllowDrop = true;
+            _dropTarget.DragOver += new DragEventHandler(DropTarget_DragOver);
+            _dropTarget.Drop += new DragEventHandler(DropTarget_Drop);
         }
-
-        #endregion
-
-        #region � DropTarget Event Handlers �
 
         private void DropTarget_Drop(object sender, DragEventArgs e)
         {
-            IDataObject     data            = e.Data;
-            DragDataWrapper dw              = null;
-            bool            isDataOperation = false;
-           
+            IDataObject data = e.Data;
+            DragDataWrapper dw = null;
+            bool isDataOperation = false;
+
             Debug.Assert(data != null);
 
             if (data.GetDataPresent(typeof(DragDataWrapper).ToString()))
@@ -96,7 +78,7 @@ namespace Chronos.Presentation.DragAndDrop
             // BUT NOT ENDORSING IT!!! 
             if (!isDataOperation)
             {
-                if (this.dropTarget is Canvas)
+                if (_dropTarget is Canvas)
                 {
                     if (e.Data.GetDataPresent(DataFormats.FileDrop))
                     {
@@ -115,11 +97,11 @@ namespace Chronos.Presentation.DragAndDrop
 
                 object rawdata = dw.Data;
 
-                if (this.dropTarget is ItemsControl)
+                if (_dropTarget is ItemsControl)
                 {
                     this.DropItemsControlHandler(e, rawdata);
                 }
-                else if (dropTarget is Canvas)
+                else if (_dropTarget is Canvas)
                 {
                     if (rawdata is IWidget)
                     {
@@ -134,13 +116,13 @@ namespace Chronos.Presentation.DragAndDrop
 
             e.Handled = true;
         }
-      
+
         private void DropTarget_DragOver(object sender, DragEventArgs e)
         {
-            string[]    types = e.Data.GetFormats();
-            bool        match = false;
+            string[] types = e.Data.GetFormats();
+            bool match = false;
 
-            if (datatypes == null || types == null)
+            if (_datatypes == null || types == null)
             {
                 //TODO: ??? Should we set for DragDropEffects.None? 
                 return;
@@ -148,7 +130,7 @@ namespace Chronos.Presentation.DragAndDrop
 
             foreach (string s in types)
             {
-                foreach (string type in datatypes)
+                foreach (string type in _datatypes)
                 {
                     match = (s.ToLower() == type);
 
@@ -157,7 +139,7 @@ namespace Chronos.Presentation.DragAndDrop
                         break;
                     }
                 }
-            
+
                 if (match)
                 {
                     break;
@@ -171,24 +153,20 @@ namespace Chronos.Presentation.DragAndDrop
             }
         }
 
-        #endregion
-
-        #region � Drop Handlers Methods �
-
         private void DropCanvasWidget(DragEventArgs e, IWidget dropObject)
         {
             ServiceLocator.GetService<IVirtualDesktopManager>()
                           .Show
             (
-                dropObject.CreateView() as WidgetElement, 
-                e.GetPosition(this.dropTarget)
+                dropObject.CreateView() as WidgetElement,
+                e.GetPosition(_dropTarget)
             );
         }
 
         private void DropItemsControlHandler(DragEventArgs e, object rawdata)
         {
-            ItemsControl    ic      = this.dropTarget as ItemsControl;
-            IList           list    = ic.ItemsSource as IList;
+            ItemsControl ic = _dropTarget as ItemsControl;
+            IList list = ic.ItemsSource as IList;
 
             if (list == null)
             {
@@ -217,8 +195,8 @@ namespace Chronos.Presentation.DragAndDrop
         private void DropFileLink(DragEventArgs e)
         {
             // External link drop
-            Point       position    = e.GetPosition(this.dropTarget);
-            string[]    filenames   = e.Data.GetData(DataFormats.FileDrop, true) as string[];
+            Point position = e.GetPosition(_dropTarget);
+            string[] filenames = e.Data.GetData(DataFormats.FileDrop, true) as string[];
 
             e.Effects = DragDropEffects.Link;
 
@@ -235,8 +213,8 @@ namespace Chronos.Presentation.DragAndDrop
         private void DropUrl(DragEventArgs e)
         {
             // External link drop
-            Point   position    = e.GetPosition(this.dropTarget);
-            String  data        = null;
+            Point position = e.GetPosition(_dropTarget);
+            string data = null;
 
             using (MemoryStream stream = e.Data.GetData(UrlDataFormat, true) as MemoryStream)
             {
@@ -258,8 +236,8 @@ namespace Chronos.Presentation.DragAndDrop
                     ServiceLocator.GetService<IVirtualDesktopManager>()
                                   .CreateShortcut<ExternalShortcutViewModel>
                     (
-                        elements[1], 
-                        elements[0], 
+                        elements[1],
+                        elements[0],
                         position
                     );
                 }
@@ -268,20 +246,16 @@ namespace Chronos.Presentation.DragAndDrop
 
         private void DropCanvasInternalLink(DragEventArgs e, NavigationNode siteMapNode)
         {
-            Point position = e.GetPosition(this.dropTarget);
+            Point position = e.GetPosition(_dropTarget);
 
             ServiceLocator.GetService<IVirtualDesktopManager>()
                           .CreateShortcut<InternalShortcutViewModel>
             (
-                siteMapNode.Title, 
-                siteMapNode.Url, 
+                siteMapNode.Title,
+                siteMapNode.Url,
                 position
             );
         }
-        
-        #endregion
-
-        #region � Private Methods �
 
         private bool Unparent(DragDataWrapper dw, UIElement uie)
         {
@@ -322,15 +296,13 @@ namespace Chronos.Presentation.DragAndDrop
                     {
                         ContentControl cc = fe.Parent as ContentControl;
 
-                        cc.Content  = null;
-                        success     = true;
+                        cc.Content = null;
+                        success = true;
                     }
                 }
             }
 
             return success;
         }
-
-        #endregion
     }
 }

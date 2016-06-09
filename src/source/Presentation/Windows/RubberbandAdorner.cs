@@ -17,11 +17,11 @@ namespace Chronos.Presentation.Windows
     {
         #region · Fields ·
 
-        private Point?  startPoint;
-        private Point?  endPoint;
-        private Pen     rubberbandPen;
-        private Desktop desktop;
-        private Brush   backgroundBrush;
+        private Point? _startPoint;
+        private Point? _endPoint;
+        private Pen _rubberbandPen;
+        private Desktop _desktop;
+        private Brush _backgroundBrush;
 
         #endregion        
 
@@ -37,12 +37,12 @@ namespace Chronos.Presentation.Windows
         {
             ColorConverter cconverter = new ColorConverter();
 
-            this.desktop                    = canvas;
-            this.startPoint                 = dragStartPoint;
-            this.rubberbandPen              = new Pen(new SolidColorBrush((Color)cconverter.ConvertFrom("#FF7AA3D4")), 1);
-            this.rubberbandPen.DashStyle    = new DashStyle();
-            this.backgroundBrush            = new SolidColorBrush((Color)cconverter.ConvertFrom("#FFC5D5E9"));
-            this.backgroundBrush.Opacity    = 0.40;
+            _desktop = canvas;
+            _startPoint = dragStartPoint;
+            _rubberbandPen = new Pen(new SolidColorBrush((Color)cconverter.ConvertFrom("#FF7AA3D4")), 1);
+            _rubberbandPen.DashStyle = new DashStyle();
+            _backgroundBrush = new SolidColorBrush((Color)cconverter.ConvertFrom("#FFC5D5E9"));
+            _backgroundBrush.Opacity = 0.40;
         }
 
         #endregion
@@ -62,7 +62,7 @@ namespace Chronos.Presentation.Windows
                     this.CaptureMouse();
                 }
 
-                endPoint = e.GetPosition(this);
+                _endPoint = e.GetPosition(this);
 
                 this.UpdateSelection();
                 this.InvalidateVisual();
@@ -94,7 +94,7 @@ namespace Chronos.Presentation.Windows
             }
 
             // remove this adorner from adorner layer
-            AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(this.desktop);
+            AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(_desktop);
             if (adornerLayer != null)
             {
                 adornerLayer.Remove(this);
@@ -115,10 +115,10 @@ namespace Chronos.Presentation.Windows
             // Alternative: implement a Canvas as a child of this adorner, like
             // the ConnectionAdorner does.
             drawingContext.DrawRectangle(Brushes.Transparent, null, new Rect(RenderSize));
-            
-            if (this.startPoint.HasValue && this.endPoint.HasValue)
+
+            if (_startPoint.HasValue && _endPoint.HasValue)
             {
-                drawingContext.DrawRectangle(this.backgroundBrush, rubberbandPen, new Rect(this.startPoint.Value, this.endPoint.Value));
+                drawingContext.DrawRectangle(_backgroundBrush, _rubberbandPen, new Rect(_startPoint.Value, _endPoint.Value));
             }
         }
 
@@ -128,14 +128,14 @@ namespace Chronos.Presentation.Windows
 
         private void UpdateSelection()
         {
-            desktop.SelectionService.ClearSelection();
+            _desktop.SelectionService.ClearSelection();
 
-            Rect rubberBand = new Rect(startPoint.Value, endPoint.Value);
+            Rect rubberBand = new Rect(_startPoint.Value, _endPoint.Value);
 
-            foreach (UIElement item in desktop.Children)
+            foreach (UIElement item in _desktop.Children)
             {
-                Rect itemRect   = VisualTreeHelper.GetDescendantBounds(item);
-                Rect itemBounds = item.TransformToAncestor(desktop).TransformBounds(itemRect);
+                Rect itemRect = VisualTreeHelper.GetDescendantBounds(item);
+                Rect itemBounds = item.TransformToAncestor(_desktop).TransformBounds(itemRect);
 
                 if (rubberBand.Contains(itemBounds))
                 {
@@ -145,7 +145,7 @@ namespace Chronos.Presentation.Windows
 
                         if (di.ParentId == Guid.Empty)
                         {
-                            desktop.SelectionService.AddToSelection(di);
+                            _desktop.SelectionService.AddToSelection(di);
                         }
                     }
                 }

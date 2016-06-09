@@ -23,13 +23,7 @@ namespace Chronos
         Lifetime = InstanceLifetime.Singleton)]
     public sealed class AuthenticationObserver : IObserver<AuthenticationInfo>
     {
-        #region · Logger ·
-
-        private static Logger Logger = LogManager.GetCurrentClassLogger(); 
-
-        #endregion
-
-        #region · IObserver<AuthenticationInfo> Members ·
+        private static Logger s_logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Notifies the observer that the provider has finished sending push-based notifications.
@@ -55,32 +49,32 @@ namespace Chronos
             switch (value.Action)
             {
                 case AuthenticationAction.LogOn:
-                    Logger.Debug("Autenticación del usuario");
+                    s_logger.Debug("Autenticaci\u00F3n del usuario");
                     ServiceLocator.GetService<INavigationService>()
                                   .Navigate(NavigateMode.Modal, NavigationRoutes.Login);
                     break;
 
                 case AuthenticationAction.LoggedIn:
-                    Logger.Debug("Usuario autenticado correctamente");
+                    s_logger.Debug("Usuario autenticado correctamente");
                     ServiceLocator.GetService<IVirtualDesktopManager>()
                                   .ActivateDefaultDesktop();
                     break;
 
                 case AuthenticationAction.LogOut:
-                    Logger.Debug("Cerrando sesión");
+                    s_logger.Debug("Cerrando sesi\u00F3n");
                     Task t = Task.Factory.StartNew
                     (
-                        () => 
+                        () =>
                         {
                             ServiceLocator.GetService<IVirtualDesktopManager>()
                                           .CloseAll();
 
                             Channel<AuthenticationInfo>.Publish
                             (
-                                new AuthenticationInfo 
-                                { 
-                                    Action = AuthenticationAction.LogOn 
-                                }, 
+                                new AuthenticationInfo
+                                {
+                                    Action = AuthenticationAction.LogOn
+                                },
                                 true
                             );
                         }
@@ -88,7 +82,5 @@ namespace Chronos
                     break;
             }
         }
-
-        #endregion
     }
 }

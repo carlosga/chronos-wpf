@@ -13,8 +13,6 @@ namespace Chronos.Presentation.Core.Windows
     public interface IModalVindow
         : IWindow
     {
-        #region · Properties ·
-
         /// <summary>
         /// Gets or sets the <see cref="Chronos.Presentation.Core.Windows.DialogResult"/>
         /// </summary>
@@ -23,16 +21,10 @@ namespace Chronos.Presentation.Core.Windows
             get;
         }
 
-        #endregion
-
-        #region · Methods ·
-
         /// <summary>
         /// Shows the window as a modal dialog
         /// </summary>
         /// <returns></returns>
         DialogResult ShowDialog();
-
-        #endregion
     }
 }

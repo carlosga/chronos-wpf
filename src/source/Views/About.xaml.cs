@@ -12,7 +12,7 @@ namespace Chronos.Views
     /// Interaction logic for About.xaml
     /// </summary>
     [MapNavigationContent(NavigationRoutes.About)]
-    [DefineViewViewModel(typeof(About), typeof(AboutViewModel))] 
+    [DefineViewViewModel(typeof(About), typeof(AboutViewModel))]
     public partial class About : WindowElement
     {
         [ResolveConstructor]

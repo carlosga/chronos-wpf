@@ -9,8 +9,6 @@ namespace Chronos.Extensions
     /// </summary>
     public static class StreamExtensions
     {
-        #region · Extensions ·
-
         /// <summary>
         /// Opens a StreamReader using the default encoding.
         /// </summary>
@@ -152,7 +150,5 @@ namespace Chronos.Extensions
                 return memoryStream.ToArray();
             }
         }
-
-        #endregion
     }
 }

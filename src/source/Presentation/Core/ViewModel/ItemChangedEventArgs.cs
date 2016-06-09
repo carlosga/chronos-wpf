@@ -13,11 +13,9 @@ namespace Chronos.Presentation.Core.ViewModel
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="V"></typeparam>
-    public sealed class ItemChangedEventArgs<T, V> 
+    public sealed class ItemChangedEventArgs<T, V>
         : EventArgs
     {
-        #region · Properties ·
-
         /// <summary>
         /// Gets or sets the current item.
         /// </summary>
@@ -38,10 +36,6 @@ namespace Chronos.Presentation.Core.ViewModel
             private set;
         }
 
-        #endregion
-        
-        #region · Constructors ·
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemChangedArgs&lt;T, V&gt;"/> class.
         /// </summary>
@@ -50,10 +44,8 @@ namespace Chronos.Presentation.Core.ViewModel
         public ItemChangedEventArgs(T item, V itemViewModel)
             : base()
         {
-            this.Item           = item;
-            this.ItemViewModel  = itemViewModel;
+            this.Item = item;
+            this.ItemViewModel = itemViewModel;
         }
-
-        #endregion
     }
 }

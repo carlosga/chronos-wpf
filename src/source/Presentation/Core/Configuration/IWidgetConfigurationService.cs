@@ -9,13 +9,9 @@ namespace Chronos.Presentation.Core.Configuration
 {
     public interface IWidgetConfigurationService
     {
-        #region · Methods ·
-
         IEnumerable<IWidget> GetWidgets();
 
         T GetWidgetConfigurationSection<T>(string sectionName)
-            where T: ConfigurationSection;
-
-        #endregion
+            where T : ConfigurationSection;
     }
 }

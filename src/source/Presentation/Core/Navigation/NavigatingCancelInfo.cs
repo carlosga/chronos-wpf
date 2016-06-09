@@ -7,17 +7,11 @@ namespace Chronos.Presentation.Core.Navigation
 {
     public sealed class NavigatingCancelInfo
     {
-        #region · Fields ·
-
-        private NavigationRequest request;
-
-        #endregion
-
-        #region · Properties ·
+        private NavigationRequest _request;
 
         public NavigationRequest Request
         {
-            get { return this.request; }
+            get { return _request; }
         }
 
         public bool Cancel
@@ -26,15 +20,9 @@ namespace Chronos.Presentation.Core.Navigation
             set;
         }
 
-        #endregion
-
-        #region · Constructors ·
-
         public NavigatingCancelInfo(NavigationRequest request)
         {
-            this.request = request;
+            _request = request;
         }
-
-        #endregion
     }
 }

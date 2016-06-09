@@ -55,7 +55,7 @@ namespace Chronos.ViewModel
                     this.InquiryCommand.RequeryCanExecute();
                 }
             }
-        }        
+        }
 
         #endregion
 
@@ -64,7 +64,7 @@ namespace Chronos.ViewModel
         /// <summary>
         /// Initializes a new instance of the <see cref="LoginViewModel"/> class
         /// </summary>
-        public LoginViewModel() 
+        public LoginViewModel()
             : base()
         {
         }
@@ -96,7 +96,7 @@ namespace Chronos.ViewModel
 
             if (this.PropertyStates.Count > 0)
             {
-                this.PropertyStates[x => x.UserId].IsEditable   = (this.ViewMode != ViewModeType.Busy);
+                this.PropertyStates[x => x.UserId].IsEditable = (this.ViewMode != ViewModeType.Busy);
                 this.PropertyStates[x => x.Password].IsEditable = (this.ViewMode != ViewModeType.Busy);
             }
         }
@@ -108,14 +108,14 @@ namespace Chronos.ViewModel
         protected override bool CanInquiryData()
         {
             return (!String.IsNullOrEmpty(this.UserId) &&
-                    !String.IsNullOrEmpty(this.Password)    && 
+                    !String.IsNullOrEmpty(this.Password) &&
                     this.ViewMode != ViewModeType.Busy);
         }
 
         protected override void OnInquiryAction(InquiryActionResult<UserLogin> result)
         {
-            result.Data     = this.Entity;
-            result.Result   = InquiryActionResultType.DataFetched;
+            result.Data = this.Entity;
+            result.Result = InquiryActionResultType.DataFetched;
         }
 
         protected override void OnInquiryActionComplete(InquiryActionResult<UserLogin> result)

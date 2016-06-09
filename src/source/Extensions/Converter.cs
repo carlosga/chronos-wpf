@@ -6,11 +6,9 @@ namespace Chronos.Extensions
     /// An internal implementation of the IConverter&lt;T&gt; interface
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    internal class Converter<T> 
+    internal class Converter<T>
         : IConverter<T>
     {
-        #region · Properties ·
-
         /// <summary>
         /// Gets the internal value to be converted.
         /// </summary>
@@ -21,10 +19,6 @@ namespace Chronos.Extensions
             protected set;
         }
 
-        #endregion
-
-        #region · Methods ·
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Converter&lt;T&gt;"/> class.
         /// </summary>
@@ -33,7 +27,5 @@ namespace Chronos.Extensions
         {
             this.Value = value;
         }
-
-        #endregion
     }
 }

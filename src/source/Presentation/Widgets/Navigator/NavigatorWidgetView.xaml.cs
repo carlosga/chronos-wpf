@@ -5,7 +5,7 @@ namespace Chronos.Presentation.Widgets
     /// <summary>
     /// Navigator Widget View
     /// </summary>
-    public partial class NavigatorWidgetView 
+    public partial class NavigatorWidgetView
         : WidgetElement
     {
         /// <summary>

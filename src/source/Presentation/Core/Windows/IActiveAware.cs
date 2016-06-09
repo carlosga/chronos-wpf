@@ -8,8 +8,6 @@ namespace Chronos.Presentation.Core.Windows
     /// </summary>
     public interface IActiveAware
     {
-        #region · Properties ·
-
         /// <summary>
         /// Gets or sets a value indicating whether the element is active.
         /// </summary>
@@ -21,10 +19,6 @@ namespace Chronos.Presentation.Core.Windows
             get;
         }
 
-        #endregion
-
-        #region · Methods ·
-
         /// <summary>
         /// Activates the element
         /// </summary>
@@ -34,7 +28,5 @@ namespace Chronos.Presentation.Core.Windows
         /// Deactivates the element
         /// </summary>
         void Deactivate();
-
-        #endregion
     }
 }

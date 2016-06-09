@@ -11,13 +11,11 @@ namespace Chronos.Configuration
     public sealed class WidgetConfigurationElement
         : ConfigurationElement
     {
-        #region · Properties ·
-
         /// <summary>
         /// Gets or sets the widget id.
         /// </summary>
         /// <value>The widget id.</value>
-        [ConfigurationProperty("id", IsRequired = true, IsKey=true)]
+        [ConfigurationProperty("id", IsRequired = true, IsKey = true)]
         public string Id
         {
             get { return (string)this["id"]; }
@@ -35,17 +33,11 @@ namespace Chronos.Configuration
             set { this["type"] = value; }
         }
 
-        #endregion
-
-        #region · Constructors ·
-
         /// <summary>
         /// Initializes a new instance of the <see cref="WidgetConfigurationElement"/> class.
         /// </summary>
         public WidgetConfigurationElement()
         {
         }
-
-        #endregion	
     }
 }

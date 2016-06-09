@@ -12,12 +12,12 @@ namespace Chronos.Presentation.Windows.SiteMaps
     /// <summary>
     /// Command based sitemap node
     /// </summary>
-    public sealed class CommandSiteMapNode 
+    public sealed class CommandSiteMapNode
         : NavigationNode
     {
         #region · Fields ·
 
-        private ICommand executeCommand;
+        private ICommand _executeCommand;
 
         #endregion
 
@@ -34,10 +34,10 @@ namespace Chronos.Presentation.Windows.SiteMaps
             {
                 if (!this.HasChildNodes && !String.IsNullOrWhiteSpace(this.Url))
                 {
-                    this.executeCommand = new ActionCommand(() => Execute());
+                    _executeCommand = new ActionCommand(() => Execute());
                 }
 
-                return this.executeCommand;
+                return _executeCommand;
             }
         }
 

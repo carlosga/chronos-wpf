@@ -18,8 +18,8 @@ namespace Chronos.WidgetLibrary
     {
         #region · Fields ·
 
-        private IWidget     widgetDefinition;
-        private ICommand    createWidgetCommand;
+        private IWidget _widgetDefinition;
+        private ICommand _createWidgetCommand;
 
         #endregion
 
@@ -33,12 +33,12 @@ namespace Chronos.WidgetLibrary
         {
             get
             {
-                if (this.createWidgetCommand == null)
+                if (_createWidgetCommand == null)
                 {
-                    this.createWidgetCommand = new ActionCommand(() => OnCreateWidget());
+                    _createWidgetCommand = new ActionCommand(() => OnCreateWidget());
                 }
 
-                return this.createWidgetCommand;
+                return _createWidgetCommand;
             }
         }
 
@@ -52,7 +52,7 @@ namespace Chronos.WidgetLibrary
         /// <value></value>
         public string Title
         {
-            get { return this.widgetDefinition.Title; }
+            get { return _widgetDefinition.Title; }
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Chronos.WidgetLibrary
         /// <value></value>
         public string Description
         {
-            get { return this.widgetDefinition.Description; }
+            get { return _widgetDefinition.Description; }
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Chronos.WidgetLibrary
         /// <value></value>
         public string Group
         {
-            get { return this.widgetDefinition.Group; }
+            get { return _widgetDefinition.Group; }
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace Chronos.WidgetLibrary
         /// <value></value>
         public string IconStyle
         {
-            get { return this.widgetDefinition.IconStyle; }
+            get { return _widgetDefinition.IconStyle; }
         }
 
         #endregion
@@ -93,7 +93,7 @@ namespace Chronos.WidgetLibrary
         public WidgetItemViewModel(IWidget widgetDefinition)
             : base()
         {
-            this.widgetDefinition = widgetDefinition;
+            _widgetDefinition = widgetDefinition;
         }
 
         #endregion
@@ -106,7 +106,7 @@ namespace Chronos.WidgetLibrary
         /// <returns></returns>
         System.Windows.FrameworkElement IWidget.CreateView()
         {
-            return this.widgetDefinition.CreateView();
+            return _widgetDefinition.CreateView();
         }
 
         #endregion
@@ -119,7 +119,7 @@ namespace Chronos.WidgetLibrary
         private void OnCreateWidget()
         {
             this.GetService<IVirtualDesktopManager>()
-                .Show(this.widgetDefinition.CreateView() as IDesktopElement);
+                .Show(_widgetDefinition.CreateView() as IDesktopElement);
         }
 
         #endregion

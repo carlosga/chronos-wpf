@@ -8,8 +8,6 @@ namespace Chronos.Extensions
     /// </summary>
     public static class DateTimeExtensions
     {
-        #region · Extensions ·
-
         /// <summary>
         /// Calculates the age based on today.
         /// </summary>
@@ -30,13 +28,13 @@ namespace Chronos.Extensions
         {
             int years = referenceDate.Year - dateOfBirth.Year;
 
-            if (referenceDate.Month < dateOfBirth.Month 
-                || (referenceDate.Month == dateOfBirth.Month 
+            if (referenceDate.Month < dateOfBirth.Month
+                || (referenceDate.Month == dateOfBirth.Month
                 && referenceDate.Day < dateOfBirth.Day))
             {
                 --years;
             }
-            
+
             return years;
         }
 
@@ -293,7 +291,5 @@ namespace Chronos.Extensions
 
             return date;
         }
-
-        #endregion
     }
 }

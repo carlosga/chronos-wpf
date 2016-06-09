@@ -6,9 +6,7 @@ namespace Chronos.Presentation.Controls.Adorner
 {
     public static class AdornerExtensions
     {
-        #region · Extension Methods ·
-        
-        public static void TryRemoveAdorners<T>(this UIElement elem) 
+        public static void TryRemoveAdorners<T>(this UIElement elem)
             where T : System.Windows.Documents.Adorner
         {
             AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(elem);
@@ -24,7 +22,7 @@ namespace Chronos.Presentation.Controls.Adorner
         {
             System.Windows.Documents.Adorner[] adorners = adr.GetAdorners(elem);
 
-            if (adorners == null) 
+            if (adorners == null)
             {
                 return;
             }
@@ -55,7 +53,7 @@ namespace Chronos.Presentation.Controls.Adorner
         {
             System.Windows.Documents.Adorner[] adorners = adr.GetAdorners(elem);
 
-            if (adorners == null) 
+            if (adorners == null)
             {
                 return false;
             }
@@ -75,7 +73,7 @@ namespace Chronos.Presentation.Controls.Adorner
         {
             System.Windows.Documents.Adorner[] adorners = adr.GetAdorners(elem);
 
-            if (adorners == null) 
+            if (adorners == null)
             {
                 return;
             }
@@ -85,7 +83,5 @@ namespace Chronos.Presentation.Controls.Adorner
                 adr.Remove(toRemove);
             }
         }
-
-        #endregion
     }
 }

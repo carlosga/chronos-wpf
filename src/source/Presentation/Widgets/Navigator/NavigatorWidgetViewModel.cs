@@ -27,11 +27,11 @@ namespace Chronos.Presentation.Widgets
     {
         #region · Fields ·
 
-        private readonly ReadOnlyCollection<NavigationNode> functions;
-        private readonly SiteMapNode                        rootOption;
-        private List<NavigationNode>                        filteredFunctions;
-        private string                                      filterText;
-        private ICommand                                    navigateToCommand;
+        private readonly ReadOnlyCollection<NavigationNode> _functions;
+        private readonly SiteMapNode _rootOption;
+        private List<NavigationNode> _filteredFunctions;
+        private string _filterText;
+        private ICommand _navigateToCommand;
 
         #endregion
 
@@ -44,16 +44,16 @@ namespace Chronos.Presentation.Widgets
         {
             get
             {
-                if (this.navigateToCommand == null)
+                if (_navigateToCommand == null)
                 {
-                    this.navigateToCommand = new ActionCommand<string>
+                    _navigateToCommand = new ActionCommand<string>
                     (
                         x => OnNavigateTo(x),
                         x => CanNavigate()
                     );
                 }
 
-                return this.navigateToCommand;
+                return _navigateToCommand;
             }
         }
 
@@ -71,13 +71,13 @@ namespace Chronos.Presentation.Widgets
         {
             get
             {
-                if (String.IsNullOrEmpty(this.filterText))
+                if (String.IsNullOrEmpty(_filterText))
                 {
-                    return this.functions;
+                    return _functions;
                 }
                 else
                 {
-                    return new ReadOnlyCollection<NavigationNode>(this.filteredFunctions);
+                    return new ReadOnlyCollection<NavigationNode>(_filteredFunctions);
                 }
             }
         }
@@ -91,12 +91,12 @@ namespace Chronos.Presentation.Widgets
         /// </summary>
         public string FilterText
         {
-            get { return this.filterText; }
+            get { return _filterText; }
             set
             {
-                if (value != filterText)
+                if (value != _filterText)
                 {
-                    this.filterText = value;
+                    _filterText = value;
                     this.PerformFilter();
                 }
             }
@@ -116,9 +116,9 @@ namespace Chronos.Presentation.Widgets
         {
             if (!DesignMode.IsInDesignMode)
             {
-                this.rootOption         = SiteMapService.SiteMap.RootNode;
-                this.filteredFunctions  = new List<NavigationNode>();
-                this.functions          = new ReadOnlyCollection<NavigationNode>(this.rootOption.ChildNodes.OfType<NavigationNode>().ToArray());
+                _rootOption = SiteMapService.SiteMap.RootNode;
+                _filteredFunctions = new List<NavigationNode>();
+                _functions = new ReadOnlyCollection<NavigationNode>(_rootOption.ChildNodes.OfType<NavigationNode>().ToArray());
             }
         }
 
@@ -132,7 +132,7 @@ namespace Chronos.Presentation.Widgets
         /// <returns></returns>
         private bool CanNavigate()
         {
-            return this.filteredFunctions != null && this.filteredFunctions.Count == 1;
+            return _filteredFunctions != null && _filteredFunctions.Count == 1;
         }
 
         /// <summary>
@@ -155,12 +155,12 @@ namespace Chronos.Presentation.Widgets
         private void VerifyMatchingOptionEnumerator()
         {
             // Clear current matching options
-            this.filteredFunctions.Clear();
+            _filteredFunctions.Clear();
 
             // Perform filter if needed
-            if (!String.IsNullOrEmpty(this.filterText))
+            if (!String.IsNullOrEmpty(_filterText))
             {
-                this.filteredFunctions.AddRange(this.FindMatches(this.filterText));
+                _filteredFunctions.AddRange(this.FindMatches(_filterText));
             }
 
             // Notify changes
@@ -169,7 +169,7 @@ namespace Chronos.Presentation.Widgets
 
         private List<NavigationNode> FindMatches(string filterText)
         {
-            var nodes = from node in this.rootOption
+            var nodes = from node in _rootOption
                             .ChildNodes
                             .OfType<NavigationNode>()
                             .Traverse<NavigationNode>(node => ((node.ChildNodes) != null ? node.ChildNodes.OfType<NavigationNode>() : null))

@@ -7,8 +7,6 @@ namespace Chronos.Extensions
     /// </summary>
     public static class IntExtensions
     {
-        #region · Extensions ·
-
         /// <summary>
         /// Performs the specified action n times based on the underlying int value.
         /// </summary>
@@ -34,7 +32,5 @@ namespace Chronos.Extensions
                 action(i);
             }
         }
-
-        #endregion
     }
 }

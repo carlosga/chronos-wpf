@@ -6,11 +6,9 @@ namespace Chronos.Presentation.Core.ViewModel
     /// <summary>
     /// Interface for widget viewmodel implementations
     /// </summary>
-    public interface IWidgetViewModel 
+    public interface IWidgetViewModel
         : IClosableViewModel
     {
-        #region · Properties ·
-
         /// <summary>
         /// Gets the widget description
         /// </summary>
@@ -18,7 +16,5 @@ namespace Chronos.Presentation.Core.ViewModel
         {
             get;
         }
-
-        #endregion
     }
 }

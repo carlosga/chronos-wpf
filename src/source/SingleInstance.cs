@@ -1,4 +1,5 @@
-﻿namespace Chronos
+﻿
+namespace Chronos
 {
     using System;
     using System.Collections.Generic;
@@ -55,9 +56,9 @@
         #endregion
 
         #region · Fields ·
-        
-        private static Mutex            SingleInstanceMutex;
-        private static IpcServerChannel Channel;
+
+        private static Mutex s_singleInstanceMutex;
+        private static IpcServerChannel s_channel;
 
         #endregion
 
@@ -81,12 +82,12 @@
             IList<string> commandLineArgs = Environment.GetCommandLineArgs() ?? new string[0];
 
             // Build a repeatable machine unique name for the channel.
-            string appId        = applicationName + Environment.UserName;
-            string channelName  = String.Format("{0}:SingleInstanceIPCChannel", appId);
+            string appId = applicationName + Environment.UserName;
+            string channelName = String.Format("{0}:SingleInstanceIPCChannel", appId);
 
             bool isFirstInstance;
-            
-            SingleInstanceMutex = new Mutex(true, appId, out isFirstInstance);
+
+            s_singleInstanceMutex = new Mutex(true, appId, out isFirstInstance);
 
             if (isFirstInstance)
             {
@@ -102,12 +103,12 @@
 
         public static void Cleanup()
         {
-            SafeDispose(ref SingleInstanceMutex);
+            SafeDispose(ref s_singleInstanceMutex);
 
-            if (Channel != null)
+            if (s_channel != null)
             {
-                ChannelServices.UnregisterChannel(Channel);
-                Channel = null;
+                ChannelServices.UnregisterChannel(s_channel);
+                s_channel = null;
             }
         }
 
@@ -117,7 +118,7 @@
 
         private static void CreateRemoteService(string channelName)
         {
-            Channel = new IpcServerChannel(
+            s_channel = new IpcServerChannel(
                 new Dictionary<string, string>
                 {
                     { "name", channelName },
@@ -126,7 +127,7 @@
                 },
                 new BinaryServerFormatterSinkProvider { TypeFilterLevel = TypeFilterLevel.Full });
 
-            ChannelServices.RegisterChannel(Channel, true);
+            ChannelServices.RegisterChannel(s_channel, true);
             RemotingServices.Marshal(new IpcRemoteService(), RemoteServiceName);
         }
 

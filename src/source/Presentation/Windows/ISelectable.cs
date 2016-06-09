@@ -11,8 +11,6 @@ namespace Chronos.Presentation.Windows
     /// </summary>
     public interface ISelectable
     {
-        #region · Properties ·
-
         Guid ParentId
         {
             get;
@@ -30,7 +28,5 @@ namespace Chronos.Presentation.Windows
             get;
             set;
         }
-
-        #endregion
     }
 }

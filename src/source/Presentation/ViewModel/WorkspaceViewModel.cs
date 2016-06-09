@@ -20,48 +20,30 @@ namespace Chronos.Presentation.ViewModel
     public abstract class WorkspaceViewModel<TEntity> :
         WindowViewModel<TEntity>, IWorkspaceViewModel<TEntity> where TEntity : class, INotifyPropertyChanged, IDataErrorInfo, new()
     {
-        #region · Logger ·
+        private static Logger s_logger = LogManager.GetCurrentClassLogger();
 
-        private static Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly PropertyChangedEventArgs s_hasBookmarksChangedArgs = CreateArgs<WorkspaceViewModel<TEntity>>(x => x.HasBookMarks);
+        private static readonly PropertyChangedEventArgs s_hasRelationsChangedArgs = CreateArgs<WorkspaceViewModel<TEntity>>(x => x.HasRelations);
+        private static readonly PropertyChangedEventArgs s_showZoomWindowChangedArgs = CreateArgs<WorkspaceViewModel<TEntity>>(x => x.ShowZoomWindow);
+        private static readonly PropertyChangedEventArgs s_zoomLevelChangedArgs = CreateArgs<WorkspaceViewModel<TEntity>>(x => x.ZoomLevel);
 
-        #endregion
+        private bool _hasBookMarks;
+        private bool _showZoomWindow;
+        private double _zoomLevel;
 
-        #region · PropertyChangedEventArgs Cached Instances ·
-
-        private static readonly PropertyChangedEventArgs HasBookmarksChangedArgs        = CreateArgs<WorkspaceViewModel<TEntity>>(x => x.HasBookMarks);
-        private static readonly PropertyChangedEventArgs HasRelationsChangedArgs        = CreateArgs<WorkspaceViewModel<TEntity>>(x => x.HasRelations);
-        private static readonly PropertyChangedEventArgs ShowZoomWindowChangedArgs      = CreateArgs<WorkspaceViewModel<TEntity>>(x => x.ShowZoomWindow);
-        private static readonly PropertyChangedEventArgs ZoomLevelChangedArgs           = CreateArgs<WorkspaceViewModel<TEntity>>(x => x.ZoomLevel);
-        
-        #endregion
-
-        #region · Fields ·
-
-        private bool    hasBookMarks;
-        private bool    showZoomWindow;
-        private double  zoomLevel;
-
-        #region · Commands ·
-
-        private ActionCommand addNewCommand;
-        private ActionCommand editCommand;
-        private ActionCommand deleteCommand;
-        private ActionCommand saveCommand;
-        private ActionCommand discardCommand;
-        private ActionCommand printCommand;
-        private ActionCommand printPreviewCommand;
-        private ActionCommand createShortcutCommand;
-        private ActionCommand bookmarkCurrentCommand;
-        private ActionCommand clearBookmarksCommand;
-        private ActionCommand organizeBookmarksCommand;
-        private ActionCommand showFormHelpCommand;
-        private ActionCommand showZoomWindowCommand;
-
-        #endregion
-
-        #endregion
-
-        #region · IWorkspaceViewModel<TEntity> Commands ·
+        private ActionCommand _addNewCommand;
+        private ActionCommand _editCommand;
+        private ActionCommand _deleteCommand;
+        private ActionCommand _saveCommand;
+        private ActionCommand _discardCommand;
+        private ActionCommand _printCommand;
+        private ActionCommand _printPreviewCommand;
+        private ActionCommand _createShortcutCommand;
+        private ActionCommand _bookmarkCurrentCommand;
+        private ActionCommand _clearBookmarksCommand;
+        private ActionCommand _organizeBookmarksCommand;
+        private ActionCommand _showFormHelpCommand;
+        private ActionCommand _showZoomWindowCommand;
 
         /// <summary>
         /// Gets the add new command
@@ -69,16 +51,16 @@ namespace Chronos.Presentation.ViewModel
         {
             get
             {
-                if (this.addNewCommand == null)
+                if (_addNewCommand == null)
                 {
-                    this.addNewCommand = new ActionCommand
+                    _addNewCommand = new ActionCommand
                     (
-                        () => OnAddNew(), 
+                        () => OnAddNew(),
                         () => CanAddNew()
                     );
                 }
 
-                return this.addNewCommand;
+                return _addNewCommand;
             }
         }
 
@@ -89,16 +71,16 @@ namespace Chronos.Presentation.ViewModel
         {
             get
             {
-                if (this.editCommand == null)
+                if (_editCommand == null)
                 {
-                    this.editCommand = new ActionCommand
+                    _editCommand = new ActionCommand
                     (
                         () => OnEdit(),
                         () => CanEdit()
                     );
                 }
 
-                return this.editCommand;
+                return _editCommand;
             }
         }
 
@@ -109,16 +91,16 @@ namespace Chronos.Presentation.ViewModel
         {
             get
             {
-                if (this.deleteCommand == null)
+                if (_deleteCommand == null)
                 {
-                    this.deleteCommand = new ActionCommand
+                    _deleteCommand = new ActionCommand
                     (
-                        () => OnDelete(), 
+                        () => OnDelete(),
                         () => CanDelete()
                     );
                 }
 
-                return this.deleteCommand;
+                return _deleteCommand;
             }
         }
 
@@ -129,16 +111,16 @@ namespace Chronos.Presentation.ViewModel
         {
             get
             {
-                if (this.saveCommand == null)
+                if (_saveCommand == null)
                 {
-                    this.saveCommand = new ActionCommand
+                    _saveCommand = new ActionCommand
                     (
                         () => OnSave(),
                         () => CanSave()
                     );
                 }
 
-                return this.saveCommand;
+                return _saveCommand;
             }
         }
 
@@ -149,16 +131,16 @@ namespace Chronos.Presentation.ViewModel
         {
             get
             {
-                if (this.discardCommand == null)
+                if (_discardCommand == null)
                 {
-                    this.discardCommand = new ActionCommand
+                    _discardCommand = new ActionCommand
                     (
                         () => OnDiscard(),
                         () => CanDiscard()
                     );
                 }
 
-                return this.discardCommand;
+                return _discardCommand;
             }
         }
 
@@ -169,16 +151,16 @@ namespace Chronos.Presentation.ViewModel
         {
             get
             {
-                if (this.printCommand == null)
+                if (_printCommand == null)
                 {
-                    this.printCommand = new ActionCommand
+                    _printCommand = new ActionCommand
                     (
                         () => OnPrint(),
                         () => CanPrint()
                     );
                 }
 
-                return this.printCommand;
+                return _printCommand;
             }
         }
 
@@ -189,16 +171,16 @@ namespace Chronos.Presentation.ViewModel
         {
             get
             {
-                if (this.printPreviewCommand == null)
+                if (_printPreviewCommand == null)
                 {
-                    this.printPreviewCommand = new ActionCommand
+                    _printPreviewCommand = new ActionCommand
                     (
                         () => OnPrintPreview(),
                         () => CanPrintPreview()
                     );
                 }
 
-                return this.printPreviewCommand;
+                return _printPreviewCommand;
             }
         }
 
@@ -209,16 +191,16 @@ namespace Chronos.Presentation.ViewModel
         {
             get
             {
-                if (this.showFormHelpCommand == null)
+                if (_showFormHelpCommand == null)
                 {
-                    this.showFormHelpCommand = new ActionCommand
+                    _showFormHelpCommand = new ActionCommand
                     (
                         () => OnShowFormHelp(),
                         () => CanShowFormHelp()
                     );
                 }
 
-                return this.showFormHelpCommand;
+                return _showFormHelpCommand;
             }
         }
 
@@ -229,22 +211,18 @@ namespace Chronos.Presentation.ViewModel
         {
             get
             {
-                if (this.showZoomWindowCommand == null)
+                if (_showZoomWindowCommand == null)
                 {
-                    this.showZoomWindowCommand = new ActionCommand
+                    _showZoomWindowCommand = new ActionCommand
                     (
                         () => OnShowZoomWindow(),
                         () => CanShowZoomWindow()
                     );
                 }
 
-                return this.showZoomWindowCommand;
+                return _showZoomWindowCommand;
             }
         }
-
-        #endregion        
-
-        #region · IBookmarkViewModel Commands ·
 
         /// <summary>
         /// Gets the bookmark current command
@@ -253,16 +231,16 @@ namespace Chronos.Presentation.ViewModel
         {
             get
             {
-                if (this.bookmarkCurrentCommand == null)
+                if (_bookmarkCurrentCommand == null)
                 {
-                    this.bookmarkCurrentCommand = new ActionCommand
+                    _bookmarkCurrentCommand = new ActionCommand
                     (
                         () => OnBookmarkCurrent(),
                         () => CanBookmarkCurrent()
                     );
                 }
 
-                return this.bookmarkCurrentCommand;
+                return _bookmarkCurrentCommand;
             }
         }
 
@@ -273,16 +251,16 @@ namespace Chronos.Presentation.ViewModel
         {
             get
             {
-                if (this.clearBookmarksCommand == null)
+                if (_clearBookmarksCommand == null)
                 {
-                    this.clearBookmarksCommand = new ActionCommand
+                    _clearBookmarksCommand = new ActionCommand
                     (
                         () => OnClearBookmarks(),
                         () => CanClearBookmarks()
                     );
                 }
 
-                return this.clearBookmarksCommand;
+                return _clearBookmarksCommand;
             }
         }
 
@@ -293,16 +271,16 @@ namespace Chronos.Presentation.ViewModel
         {
             get
             {
-                if (this.organizeBookmarksCommand == null)
+                if (_organizeBookmarksCommand == null)
                 {
-                    this.organizeBookmarksCommand = new ActionCommand
+                    _organizeBookmarksCommand = new ActionCommand
                     (
                         () => OnOrganizeBookmarks(),
                         () => CanOrganizeBookmarks()
                     );
                 }
 
-                return this.organizeBookmarksCommand;
+                return _organizeBookmarksCommand;
             }
         }
 
@@ -313,42 +291,34 @@ namespace Chronos.Presentation.ViewModel
         {
             get
             {
-                if (this.createShortcutCommand == null)
+                if (_createShortcutCommand == null)
                 {
-                    this.createShortcutCommand = new ActionCommand
+                    _createShortcutCommand = new ActionCommand
                     (
                         () => OnCreateShortcut(),
                         () => CanCreateShortcut()
                     );
                 }
 
-                return this.createShortcutCommand;
+                return _createShortcutCommand;
             }
         }
-
-        #endregion
-
-        #region · IBookmarkViewModel Properties ·
 
         /// <summary>
         /// Gets a value indicating if there are available bookmarks
         /// </summary>
         public bool HasBookMarks
         {
-            get { return this.hasBookMarks; }
+            get { return _hasBookMarks; }
             set
             {
-                if (this.hasBookMarks != value)
+                if (_hasBookMarks != value)
                 {
-                    this.hasBookMarks = value;
-                    this.NotifyPropertyChanged(HasBookmarksChangedArgs);
+                    _hasBookMarks = value;
+                    this.NotifyPropertyChanged(s_hasBookmarksChangedArgs);
                 }
             }
         }
-
-        #endregion
-
-        #region · IEntityViewModel<TEntity> Properties & Indexers ·
 
         /// <summary>
         /// Gets an error message indicating what is wrong with this object.
@@ -406,22 +376,18 @@ namespace Chronos.Presentation.ViewModel
             get { return false; }
         }
 
-        #endregion
-
-        #region · IWorkspaceViewModel<TEntity> Properties ·
-
         /// <summary>
         /// Gets or sets a value indicating whether the zoom window is shown
         /// </summary>
         public bool ShowZoomWindow
         {
-            get { return this.showZoomWindow; }
+            get { return _showZoomWindow; }
             set
             {
-                if (this.showZoomWindow != value)
+                if (_showZoomWindow != value)
                 {
-                    this.showZoomWindow = value;
-                    this.NotifyPropertyChanged(ShowZoomWindowChangedArgs);
+                    _showZoomWindow = value;
+                    this.NotifyPropertyChanged(s_showZoomWindowChangedArgs);
                 }
             }
         }
@@ -431,20 +397,16 @@ namespace Chronos.Presentation.ViewModel
         /// </summary>
         public double ZoomLevel
         {
-            get { return this.zoomLevel; }
+            get { return _zoomLevel; }
             set
             {
-                if (this.zoomLevel != value)
+                if (_zoomLevel != value)
                 {
-                    this.zoomLevel = value;
-                    this.NotifyPropertyChanged(ZoomLevelChangedArgs);
+                    _zoomLevel = value;
+                    this.NotifyPropertyChanged(s_zoomLevelChangedArgs);
                 }
             }
         }
-
-        #endregion
-
-        #region · Private Properties ·
 
         private bool IsEditing
         {
@@ -455,10 +417,6 @@ namespace Chronos.Presentation.ViewModel
             }
         }
 
-        #endregion
-
-        #region · Constructors ·
-
         /// <summary>
         /// Initializes a new instance of the <see cref="WorkspaceViewModel&lt;TEntity&gt;"/> class.
         /// </summary>
@@ -468,12 +426,6 @@ namespace Chronos.Presentation.ViewModel
             this.ZoomLevel = 100;
         }
 
-        #endregion
-
-        #region · Command Actions ·
-
-        #region · Add New ·
-
         protected virtual bool CanAddNew()
         {
             return false;
@@ -481,7 +433,7 @@ namespace Chronos.Presentation.ViewModel
 
         protected virtual void OnAddNew()
         {
-            Logger.Debug("Add new '{0}", typeof(TEntity));
+            s_logger.Debug("Add new '{0}", typeof(TEntity));
 
             this.ViewMode = ViewModeType.Add;
 
@@ -492,10 +444,6 @@ namespace Chronos.Presentation.ViewModel
             this.ResetDataModel(newEntity);
         }
 
-        #endregion
-
-        #region · Edit ·
-
         protected virtual bool CanEdit()
         {
             return (this.ViewMode == ViewModeType.ViewOnly &&
@@ -504,14 +452,10 @@ namespace Chronos.Presentation.ViewModel
 
         protected virtual void OnEdit()
         {
-            Logger.Debug("Edit '{0}", this.Entity.ToString());
+            s_logger.Debug("Edit '{0}", this.Entity.ToString());
 
             this.ViewMode = ViewModeType.Edit;
         }
-
-        #endregion
-
-        #region · Delete ·
 
         protected virtual bool CanDelete()
         {
@@ -527,7 +471,7 @@ namespace Chronos.Presentation.ViewModel
             (
                 () =>
                 {
-                    Logger.Debug("Delete '{0}", this.Entity.ToString());
+                    s_logger.Debug("Delete '{0}", this.Entity.ToString());
 
                     this.OnDeleteAction();
                 }
@@ -537,10 +481,10 @@ namespace Chronos.Presentation.ViewModel
             (
                 _ =>
                 {
-                    Logger.Debug("Delete successful '{0}'", this.Entity.ToString());
+                    s_logger.Debug("Delete successful '{0}'", this.Entity.ToString());
 
                     this.OnDeleteActionComplete();
-                }, 
+                },
                 CancellationToken.None,
                 TaskContinuationOptions.OnlyOnRanToCompletion | TaskContinuationOptions.AttachedToParent,
                 TaskScheduler.FromCurrentSynchronizationContext()
@@ -550,7 +494,7 @@ namespace Chronos.Presentation.ViewModel
             (
                 (t) =>
                 {
-                    Logger.Debug("Error at delete '{0}'", t.Exception.ToString());
+                    s_logger.Debug("Error at delete '{0}'", t.Exception.ToString());
 
                     this.OnDeleteActionFailed(ViewModeType.ViewOnly);
 
@@ -566,7 +510,7 @@ namespace Chronos.Presentation.ViewModel
                     }
 
                     this.NotificationMessage = exception.Message;
-                }, 
+                },
                 CancellationToken.None,
                 TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.AttachedToParent,
                 TaskScheduler.FromCurrentSynchronizationContext()
@@ -589,10 +533,6 @@ namespace Chronos.Presentation.ViewModel
             this.ViewMode = previousViewMode;
         }
 
-        #endregion
-
-        #region · Save ·
-
         protected virtual bool CanSave()
         {
             return ((this.ViewMode == ViewModeType.Add ||
@@ -604,14 +544,14 @@ namespace Chronos.Presentation.ViewModel
         {
             ViewModeType previousViewMode = this.ViewMode;
 
-            this.ViewMode       = ViewModeType.Busy;
-            this.StatusMessage  = "Saving changes, please wait ...";
+            this.ViewMode = ViewModeType.Busy;
+            this.StatusMessage = "Saving changes, please wait ...";
 
             Task task = Task.Factory.StartNew
             (
                 () =>
                 {
-                    Logger.Debug("Save changes '{0}'", this.Entity);
+                    s_logger.Debug("Save changes '{0}'", this.Entity);
 
                     if (this.Entity != null && this.HasChanges)
                     {
@@ -624,10 +564,10 @@ namespace Chronos.Presentation.ViewModel
             (
                 _ =>
                 {
-                    Logger.Debug("Save changes successful '{0}'", this.Entity);
+                    s_logger.Debug("Save changes successful '{0}'", this.Entity);
 
                     this.OnSaveActionComplete();
-                }, 
+                },
                 CancellationToken.None,
                 TaskContinuationOptions.OnlyOnRanToCompletion | TaskContinuationOptions.AttachedToParent,
                 TaskScheduler.FromCurrentSynchronizationContext()
@@ -637,7 +577,7 @@ namespace Chronos.Presentation.ViewModel
             (
                 (t) =>
                 {
-                    Logger.Debug("Error at save changes '{0}'", t.Exception.ToString());
+                    s_logger.Debug("Error at save changes '{0}'", t.Exception.ToString());
 
                     this.OnSaveActionFailed(previousViewMode);
 
@@ -653,7 +593,7 @@ namespace Chronos.Presentation.ViewModel
                     }
 
                     this.NotificationMessage = exception.Message;
-                }, 
+                },
                 CancellationToken.None,
                 TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.AttachedToParent,
                 TaskScheduler.FromCurrentSynchronizationContext()
@@ -676,10 +616,6 @@ namespace Chronos.Presentation.ViewModel
             this.ViewMode = previousViewMode;
         }
 
-        #endregion
-
-        #region · Discard ·
-
         protected virtual bool CanDiscard()
         {
             return (this.ViewMode == ViewModeType.Add ||
@@ -691,13 +627,9 @@ namespace Chronos.Presentation.ViewModel
             this.ViewMode = ViewModeType.Busy;
 
             this.ResetDataModel();
-            
+
             this.ViewMode = ViewModeType.ViewOnly;
         }
-
-        #endregion
-
-        #region · Inquiry ·
 
         protected override void OnInquiryActionComplete(InquiryActionResult<TEntity> result)
         {
@@ -712,10 +644,6 @@ namespace Chronos.Presentation.ViewModel
                     break;
             }
         }
-
-        #endregion
-
-        #region · Print ·
 
         protected virtual bool CanPrint()
         {
@@ -740,14 +668,14 @@ namespace Chronos.Presentation.ViewModel
                     task.ContinueWith(
                         (t) =>
                         {
-                            Logger.Debug("Error al imprimir '{0}'", this.NavigationRoute);
+                            s_logger.Debug("Error al imprimir '{0}'", this.NavigationRoute);
 
                             this.Invoke(
                                 () =>
                                 {
                                     this.OnPrintActionFailed();
 
-                                    Exception exception     = null;
+                                    Exception exception = null;
 
                                     if (t.Exception.InnerException != null)
                                     {
@@ -765,7 +693,7 @@ namespace Chronos.Presentation.ViewModel
                     task.ContinueWith(
                         _ =>
                         {
-                            Logger.Debug("Impresion finalizada correctamente '{0}'", this.NavigationRoute);
+                            s_logger.Debug("Impresion finalizada correctamente '{0}'", this.NavigationRoute);
 
                             this.Invoke(
                                 () =>
@@ -791,10 +719,6 @@ namespace Chronos.Presentation.ViewModel
             this.ViewMode = ViewModeType.ViewOnly;
         }
 
-        #endregion
-
-        #region · Print Preview ·
-
         protected virtual bool CanPrintPreview()
         {
             return false;
@@ -818,7 +742,7 @@ namespace Chronos.Presentation.ViewModel
                     task.ContinueWith(
                         (t) =>
                         {
-                            Logger.Debug("Error al mostrar la vista previa '{0}'", this.NavigationRoute);
+                            s_logger.Debug("Error al mostrar la vista previa '{0}'", this.NavigationRoute);
 
                             this.Invoke(
                                 () =>
@@ -843,7 +767,7 @@ namespace Chronos.Presentation.ViewModel
                     task.ContinueWith(
                         _ =>
                         {
-                            Logger.Debug("Impresion finalizada correctamente '{0}'", this.NavigationRoute);
+                            s_logger.Debug("Impresion finalizada correctamente '{0}'", this.NavigationRoute);
 
                             this.Invoke(
                                 () =>
@@ -869,10 +793,6 @@ namespace Chronos.Presentation.ViewModel
             this.ViewMode = ViewModeType.ViewOnly;
         }
 
-        #endregion
-
-        #region · Bookmark Current Command ·
-
         protected virtual bool CanBookmarkCurrent()
         {
             return this.ViewMode == ViewModeType.ViewOnly &&
@@ -883,10 +803,6 @@ namespace Chronos.Presentation.ViewModel
         {
         }
 
-        #endregion
-
-        #region · Clear Bookmarks Command ·
-
         protected virtual bool CanClearBookmarks()
         {
             return this.ViewMode == ViewModeType.ViewOnly;
@@ -896,10 +812,6 @@ namespace Chronos.Presentation.ViewModel
         {
         }
 
-        #endregion
-
-        #region · Organize Bookmarks Command ·
-
         protected virtual bool CanOrganizeBookmarks()
         {
             return this.ViewMode == ViewModeType.ViewOnly;
@@ -908,10 +820,6 @@ namespace Chronos.Presentation.ViewModel
         protected virtual void OnOrganizeBookmarks()
         {
         }
-
-        #endregion
-
-        #region · Create Shortcut Command ·
 
         protected virtual bool CanCreateShortcut()
         {
@@ -923,10 +831,6 @@ namespace Chronos.Presentation.ViewModel
             this.GetService<IVirtualDesktopManager>().CreateShortcut<InternalShortcutViewModel>(this.Title, this.NavigationRoute);
         }
 
-        #endregion
-
-        #region · Show Form Help Command ·
-
         private bool CanShowFormHelp()
         {
             return false;
@@ -935,10 +839,6 @@ namespace Chronos.Presentation.ViewModel
         private void OnShowFormHelp()
         {
         }
-
-        #endregion
-
-        #region · Show Zoom Window Command ·
 
         private bool CanShowZoomWindow()
         {
@@ -950,42 +850,32 @@ namespace Chronos.Presentation.ViewModel
             this.ShowZoomWindow = !this.ShowZoomWindow;
         }
 
-        #endregion
-
-        #endregion
-
-        #region · Overriden Methods ·
-
         /// <summary>
         /// Called when the related view is being closed.
         /// </summary>
         public override void Close()
         {
-            Logger.Debug("Cerrar ventana '{0}'", this.GetType());
+            s_logger.Debug("Cerrar ventana '{0}'", this.GetType());
 
-            this.addNewCommand              = null;
-            this.editCommand                = null;
-            this.deleteCommand              = null;
-            this.saveCommand                = null;
-            this.discardCommand             = null;
-            this.printCommand               = null;
-            this.printPreviewCommand        = null;
-            this.createShortcutCommand      = null;
-            this.bookmarkCurrentCommand     = null;
-            this.clearBookmarksCommand      = null;
-            this.organizeBookmarksCommand   = null;
-            this.showFormHelpCommand        = null;
-            this.showZoomWindowCommand      = null;
-            this.hasBookMarks               = false;
-            this.showZoomWindow             = false;
-            this.zoomLevel                  = 0;
+            _addNewCommand = null;
+            _editCommand = null;
+            _deleteCommand = null;
+            _saveCommand = null;
+            _discardCommand = null;
+            _printCommand = null;
+            _printPreviewCommand = null;
+            _createShortcutCommand = null;
+            _bookmarkCurrentCommand = null;
+            _clearBookmarksCommand = null;
+            _organizeBookmarksCommand = null;
+            _showFormHelpCommand = null;
+            _showZoomWindowCommand = null;
+            _hasBookMarks = false;
+            _showZoomWindow = false;
+            _zoomLevel = 0;
 
             base.Close();
         }
-
-        #endregion  
-
-        #region · Protected Methods ·
 
         protected virtual void FillDefaultValues()
         {
@@ -1015,7 +905,5 @@ namespace Chronos.Presentation.ViewModel
                 }
             );
         }
-
-        #endregion
     }
 }

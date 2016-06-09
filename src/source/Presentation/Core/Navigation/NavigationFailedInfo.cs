@@ -5,30 +5,18 @@ using nRoute.Navigation;
 
 namespace Chronos.Presentation.Core.Navigation
 {
-    public sealed class NavigationFailedInfo 
+    public sealed class NavigationFailedInfo
     {
-        #region · Fields ·
-
-        private NavigationRequest request;
-
-        #endregion
-
-        #region · Properties ·
+        private NavigationRequest _request;
 
         public NavigationRequest Request
         {
-            get { return this.request; }
+            get { return _request; }
         }
-
-        #endregion
-
-        #region · Constructors ·
 
         public NavigationFailedInfo(NavigationRequest request)
         {
-            this.request = request;
+            _request = request;
         }
-
-        #endregion
     }
 }

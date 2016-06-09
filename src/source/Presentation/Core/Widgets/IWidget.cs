@@ -10,8 +10,6 @@ namespace Chronos.Presentation.Core.Widgets
     /// </summary>
     public interface IWidget
     {
-        #region · Properties ·
-
         /// <summary>
         /// Gets the widget title
         /// </summary>
@@ -44,16 +42,10 @@ namespace Chronos.Presentation.Core.Widgets
             get;
         }
 
-        #endregion
-
-        #region · Methods ·
-
         /// <summary>
         /// Creates the widget view
         /// </summary>
         /// <returns></returns>
         FrameworkElement CreateView();
-
-        #endregion
     }
 }

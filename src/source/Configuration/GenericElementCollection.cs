@@ -13,8 +13,6 @@ namespace Chronos.Configuration
     public abstract class GenericElementCollection<K, V>
         : ConfigurationElementCollection where V : ConfigurationElement, new()
     {
-        #region · Properties ·
-
         /// <summary>
         /// Gets the type of the <see cref="T:System.Configuration.ConfigurationElementCollection"/>.
         /// </summary>
@@ -39,10 +37,6 @@ namespace Chronos.Configuration
             get;
         }
 
-        #endregion
-
-        #region · Indexers ·
-
         /// <summary>
         /// Gets the <see cref="ConfigurationElement"/> with the specified key.
         /// </summary>
@@ -61,20 +55,12 @@ namespace Chronos.Configuration
             get { return (V)BaseGet(index); }
         }
 
-        #endregion
-
-        #region · Constructors ·
-
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericElementCollection&lt;K, V&gt;"/> class.
         /// </summary>
         public GenericElementCollection()
         {
         }
-
-        #endregion
-
-        #region · Methods ·
 
         /// <summary>
         /// Adds the specified path.
@@ -93,10 +79,6 @@ namespace Chronos.Configuration
         {
             BaseRemove(key);
         }
-
-        #endregion
-
-        #region · Overriden Methods ·
 
         /// <summary>
         /// When overridden in a derived class, creates a new <see cref="T:System.Configuration.ConfigurationElement"/>.
@@ -121,17 +103,11 @@ namespace Chronos.Configuration
             return GetElementKey((V)element);
         }
 
-        #endregion
-
-        #region · Protected Abstract Methods ·
-
         /// <summary>
         /// Gets the element key.
         /// </summary>
         /// <param name="element">The element.</param>
         /// <returns></returns>
         protected abstract K GetElementKey(V element);
-
-        #endregion
     }
 }

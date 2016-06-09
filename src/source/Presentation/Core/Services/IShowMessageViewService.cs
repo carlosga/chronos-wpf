@@ -10,8 +10,6 @@ namespace Chronos.Presentation.Core.Services
     /// </summary>
     public interface IShowMessageViewService
     {
-        #region · Properties ·
-
         /// <summary>
         /// Gets or sets the message caption
         /// </summary>
@@ -39,16 +37,10 @@ namespace Chronos.Presentation.Core.Services
             set;
         }
 
-        #endregion
-
-        #region · Methods ·
-
         /// <summary>
         /// Shows a new message window
         /// </summary>
         /// <returns></returns>
         DialogResult ShowMessage();
-
-        #endregion
     }
 }

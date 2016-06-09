@@ -14,10 +14,6 @@ namespace Chronos.Extensions
     /// </summary>
     public static class StringExtensions
     {
-        #region · Extensions ·
-
-        #region · Common string extensions ·
-
         /// <summary>
         /// Determines whether the specified string is null or empty.
         /// </summary>
@@ -115,7 +111,7 @@ namespace Chronos.Extensions
         public static XmlDocument ToXmlDOM(this string xml)
         {
             var document = new XmlDocument();
-            
+
             document.LoadXml(xml);
 
             return document;
@@ -146,9 +142,9 @@ namespace Chronos.Extensions
             }
 
             var chars = value.ToCharArray();
-            
+
             Array.Reverse(chars);
-            
+
             return new string(chars);
         }
 
@@ -195,10 +191,6 @@ namespace Chronos.Extensions
 
             return string.Concat(value, suffix);
         }
-
-        #endregion
-
-        #region · Regex based extension methods ·
 
         /// <summary>
         /// Uses regular expressions to determine if the string matches to a given regex pattern.
@@ -436,10 +428,6 @@ namespace Chronos.Extensions
             return words[index];
         }
 
-        #endregion
-
-        #region · Bytes & Base64 ·
-
         /// <summary>
         /// Converts the string to a byte-array using the default encoding
         /// </summary>
@@ -486,9 +474,9 @@ namespace Chronos.Extensions
         public static string EncodeBase64(this string value, Encoding encoding)
         {
             encoding = (encoding ?? Encoding.UTF8);
-            
+
             var bytes = encoding.GetBytes(value);
-            
+
             return Convert.ToBase64String(bytes);
         }
 
@@ -511,14 +499,10 @@ namespace Chronos.Extensions
         public static string DecodeBase64(this string encodedValue, Encoding encoding)
         {
             encoding = (encoding ?? Encoding.UTF8);
-            
+
             var bytes = Convert.FromBase64String(encodedValue);
-            
+
             return encoding.GetString(bytes);
         }
-
-        #endregion
-
-        #endregion
     }
 }

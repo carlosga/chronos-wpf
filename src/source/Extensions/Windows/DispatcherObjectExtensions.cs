@@ -11,8 +11,6 @@ namespace Chronos.Extensions.Windows
     /// </summary>
     public static class DispatcherObjectExtensions
     {
-        #region · Extensions ·
-
         /// <summary>
         /// Executes the specified <see cref="Action "/> at the <see cref="DispatcherPriority.ApplicationIdle"/> priority 
         /// on the thread on which the DispatcherObject is associated with. 
@@ -45,7 +43,5 @@ namespace Chronos.Extensions.Windows
         {
             dispatcherObject.Dispatcher.Invoke(action);
         }
-
-        #endregion
     }
 }

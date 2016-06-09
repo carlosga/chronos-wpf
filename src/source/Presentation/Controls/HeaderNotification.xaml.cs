@@ -12,16 +12,10 @@ namespace Chronos.Presentation.Controls
     public partial class HeaderNotification
         : UserControl
     {
-        #region · Constants ·
-        
-        private const string                NOTIFICATION_STATEGROUP = "NotificationStateGroup";
-        private const string                HIDDEN_STATENAME        = "HiddenState";
-        private const string                VISIBLE_STATENAME       = "VisibleState";
-        private readonly static TimeSpan    TRANSITION_TIMEOUT      = TimeSpan.FromMilliseconds(600);
-
-        #endregion
-
-        #region · Dependency Properties ·
+        private const string NOTIFICATION_STATEGROUP = "NotificationStateGroup";
+        private const string HIDDEN_STATENAME = "HiddenState";
+        private const string VISIBLE_STATENAME = "VisibleState";
+        private readonly static TimeSpan s_TRANSITION_TIMEOUT = TimeSpan.FromMilliseconds(600);
 
         /// <summary>
         /// Identifies the MessageText dependency property.
@@ -29,10 +23,6 @@ namespace Chronos.Presentation.Controls
         public static readonly DependencyProperty MessageTextProperty =
             DependencyProperty.Register("MessageText", typeof(String), typeof(HeaderNotification),
                 new FrameworkPropertyMetadata(String.Empty, FrameworkPropertyMetadataOptions.None, new PropertyChangedCallback(OnMessageTextChanged)));
-
-        #endregion
-
-        #region · Dependency Properties Callback Handlers ·
 
         private static void OnMessageTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -47,18 +37,10 @@ namespace Chronos.Presentation.Controls
             }
         }
 
-        #endregion
-
-        #region · Fields ·
-
-        private readonly Object             syncObject = new Object();
-        private Queue<InteractiveMessage>   messages;
-        private InteractiveMessage          currentMessage;
-        private DispatcherTimer             stateTimer;
-
-        #endregion
-
-        #region · Properties ·
+        private readonly Object _syncObject = new Object();
+        private Queue<InteractiveMessage> _messages;
+        private InteractiveMessage _currentMessage;
+        private DispatcherTimer _stateTimer;
 
         public string MessageText
         {
@@ -66,24 +48,16 @@ namespace Chronos.Presentation.Controls
             set { base.SetValue(HeaderNotification.MessageTextProperty, value); }
         }
 
-        #endregion
-
-        #region · Constructors ·
-
         public HeaderNotification()
         {
             InitializeComponent();
 
             // set up
-            this.messages               = new Queue<InteractiveMessage>();
-            this.stateTimer             = new DispatcherTimer();
-            this.stateTimer.Interval    = TRANSITION_TIMEOUT;
-            this.stateTimer.Tick        += new EventHandler(StateTimer_Tick);
+            _messages = new Queue<InteractiveMessage>();
+            _stateTimer = new DispatcherTimer();
+            _stateTimer.Interval = s_TRANSITION_TIMEOUT;
+            _stateTimer.Tick += new EventHandler(StateTimer_Tick);
         }
-
-        #endregion
-
-        #region · Methods ·
 
         public void ShowNotification(string notification)
         {
@@ -94,51 +68,47 @@ namespace Chronos.Presentation.Controls
             }
 
             // show or enque message
-            lock (syncObject)
+            lock (_syncObject)
             {
                 // if no items are queued then show the message, else enque
                 var message = new InteractiveMessage() { Message = notification };
 
-                if (this.messages.Count == 0 && this.currentMessage == null)
+                if (_messages.Count == 0 && _currentMessage == null)
                 {
                     ShowMessage(message);
                 }
                 else
                 {
-                    messages.Enqueue(message);
+                    _messages.Enqueue(message);
                 }
             }
         }
 
-        #endregion
-
-        #region · Event Handlers ·
-
         private void StateTimer_Tick(object sender, EventArgs e)
         {
-            this.stateTimer.Stop();
+            _stateTimer.Stop();
             this.ProcessQueue();
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             // basic check
-            if (stateTimer.IsEnabled)
+            if (_stateTimer.IsEnabled)
             {
                 return;
             }
-            
+
             // we stop the timers and start transitioning
             VisualStateManager.GoToState(this, HIDDEN_STATENAME, true);
 
             // and transition
-            this.stateTimer.Start();
+            _stateTimer.Start();
         }
 
         private void Header_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             // basic check
-            if (this.stateTimer.IsEnabled)
+            if (_stateTimer.IsEnabled)
             {
                 return;
             }
@@ -147,24 +117,20 @@ namespace Chronos.Presentation.Controls
             VisualStateManager.GoToState(this, HIDDEN_STATENAME, true);
 
             // and transition
-            this.stateTimer.Start();
+            _stateTimer.Start();
         }
-
-        #endregion
-
-        #region · Helpers ·
 
         private void ProcessQueue()
         {
-            lock (syncObject)
+            lock (_syncObject)
             {
-                if (messages.Count == 0)
+                if (_messages.Count == 0)
                 {
-                    currentMessage = null;
+                    _currentMessage = null;
                 }
                 else
                 {
-                    ShowMessage(messages.Dequeue());
+                    ShowMessage(_messages.Dequeue());
                 }
             }
         }
@@ -173,26 +139,16 @@ namespace Chronos.Presentation.Controls
         {
             this.HeaderText.Text = message.Message;
             VisualStateManager.GoToState(this, VISIBLE_STATENAME, true);
-            this.currentMessage = message;
+            _currentMessage = message;
         }
 
-        #endregion
-
-        #region · Internal Class ·
-
-        class InteractiveMessage
+        private class InteractiveMessage
         {
-            #region · Properties ·
-            
             public string Message
             {
                 get;
                 set;
             }
-
-            #endregion
         }
-
-        #endregion
     }
 }

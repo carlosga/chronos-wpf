@@ -13,8 +13,6 @@ namespace Chronos.Extensions
     /// </code></example>
     public static class StringConverter
     {
-        #region · Extensions ·
-
         /// <summary>
         /// Converts a string to an Int32 value
         /// </summary>
@@ -57,7 +55,5 @@ namespace Chronos.Extensions
 
             return int.Parse(value.Value);
         }
-
-        #endregion
     }
 }

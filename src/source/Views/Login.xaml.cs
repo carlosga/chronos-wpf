@@ -11,7 +11,7 @@ namespace Chronos.Views
     /// Interaction logic for LoginView.xaml
     /// </summary>
     [MapNavigationContent(NavigationRoutes.Login)]
-    [DefineViewViewModel(typeof(Login), typeof(LoginViewModel))] 
+    [DefineViewViewModel(typeof(Login), typeof(LoginViewModel))]
     public partial class Login : WindowElement
     {
         #region · Constructors ·

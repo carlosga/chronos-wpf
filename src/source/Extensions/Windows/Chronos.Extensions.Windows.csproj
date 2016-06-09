@@ -12,10 +12,14 @@
     <AssemblyName>Chronos.Extensions.Windows</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,12 +54,22 @@
     <Compile Include="..\..\..\SolutionInfo.cs">
       <Link>Properties\SolutionInfo.cs</Link>
     </Compile>
-    <Compile Include="AdornerExtensions.cs" />
-    <Compile Include="ApplicationExtensions.cs" />
+    <Compile Include="AdornerExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ApplicationExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="BitmapSourceExtensions.cs" />
-    <Compile Include="DispatcherObjectExtensions.cs" />
-    <Compile Include="FrameworkElementExtensions.cs" />
-    <Compile Include="PanelExtensions.cs" />
+    <Compile Include="DispatcherObjectExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="FrameworkElementExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="PanelExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RenderTier.cs" />
     <Compile Include="UIElementExtensions.cs" />

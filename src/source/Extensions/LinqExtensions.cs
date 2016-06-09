@@ -9,8 +9,6 @@ namespace Chronos.Extensions
 {
     public static class LinqExtensions
     {
-        #region · Extensions ·
-
         /// <summary>
         /// Traverses the specified source.
         /// </summary>
@@ -35,7 +33,5 @@ namespace Chronos.Extensions
                 }
             }
         }
-
-        #endregion
     }
 }

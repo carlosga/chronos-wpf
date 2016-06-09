@@ -21,14 +21,14 @@ using nRoute.Services;
 namespace Chronos.Presentation.Windows
 {
     [MapService(typeof(IVirtualDesktopManager),
-        InitializationMode=InitializationMode.OnDemand,
-        Lifetime=InstanceLifetime.Singleton)]
-    public sealed class VirtualDesktopManager 
+        InitializationMode = InitializationMode.OnDemand,
+        Lifetime = InstanceLifetime.Singleton)]
+    public sealed class VirtualDesktopManager
         : DispatcherObject, IVirtualDesktopManager
     {
         #region · Logger ·
 
-        private static Logger Logger = LogManager.GetCurrentClassLogger();
+        private static Logger s_logger = LogManager.GetCurrentClassLogger();
 
         #endregion
 
@@ -128,8 +128,8 @@ namespace Chronos.Presentation.Windows
 
         #region · Fields ·
 
-        private List<IVirtualDesktop>   virtualDesktops;
-        private IVirtualDesktop         activeDesktop;
+        private List<IVirtualDesktop> _virtualDesktops;
+        private IVirtualDesktop _activeDesktop;
 
         #endregion
 
@@ -153,23 +153,23 @@ namespace Chronos.Presentation.Windows
         {
             get
             {
-                if (this.virtualDesktops == null)
+                if (_virtualDesktops == null)
                 {
-                    this.virtualDesktops = new List<IVirtualDesktop>();
+                    _virtualDesktops = new List<IVirtualDesktop>();
                 }
 
-                return this.virtualDesktops;
+                return _virtualDesktops;
             }
         }
 
         private IVirtualDesktop ActiveDesktop
         {
-            get { return this.activeDesktop; }
+            get { return _activeDesktop; }
             set
             {
-                if (this.activeDesktop != value)
+                if (_activeDesktop != value)
                 {
-                    this.activeDesktop = value;
+                    _activeDesktop = value;
                 }
             }
         }
@@ -191,7 +191,7 @@ namespace Chronos.Presentation.Windows
         /// </summary>
         public void ActivateDefaultDesktop()
         {
-            Logger.Debug("Activar el escritorio virtual por defecto");
+            s_logger.Debug("Activar el escritorio virtual por defecto");
 
             Debug.Assert(this.Desktops.Count > 0, "There are no desktop registered");
 
@@ -204,7 +204,7 @@ namespace Chronos.Presentation.Windows
         /// </summary>
         public void SwitchDesktop()
         {
-            Logger.Debug("Cambiar el escritorio virtual activo");
+            s_logger.Debug("Cambiar el escritorio virtual activo");
 
             Debug.Assert(this.Desktops.Count > 0, "There are no desktop registered");
 
@@ -241,7 +241,7 @@ namespace Chronos.Presentation.Windows
         /// </summary>
         public void ShowDesktop()
         {
-            Logger.Debug("Mostrar el escritorio virtual activo");
+            s_logger.Debug("Mostrar el escritorio virtual activo");
 
             this.VerifyActiveDesktop();
 
@@ -253,7 +253,7 @@ namespace Chronos.Presentation.Windows
         /// </summary>
         public void SaveCurrentDesktop()
         {
-            Logger.Debug("Guardar los cambios del escritorio virtual activo");
+            s_logger.Debug("Guardar los cambios del escritorio virtual activo");
 
             this.VerifyActiveDesktop();
 
@@ -262,7 +262,7 @@ namespace Chronos.Presentation.Windows
 
         public void SaveAllDesktops()
         {
-            Logger.Debug("Guardar los cambios de todos los escritorios virtuales");
+            s_logger.Debug("Guardar los cambios de todos los escritorios virtuales");
 
             this.Desktops
                 .ToList()
@@ -279,7 +279,7 @@ namespace Chronos.Presentation.Windows
         /// <param name="element">A <see cref="WindowElement"/> instance</param>
         public void Show(IWindow window)
         {
-            Logger.Debug<IWindow>("Mostrar una nueva ventana ({0})", window);
+            s_logger.Debug<IWindow>("Mostrar una nueva ventana ({0})", window);
 
             this.VerifyActiveDesktop();
 
@@ -293,7 +293,7 @@ namespace Chronos.Presentation.Windows
         /// <returns></returns>
         public DialogResult ShowDialog(IModalVindow window)
         {
-            Logger.Debug<IModalVindow>("Mostrar una nueva ventana modal ({0})", window);
+            s_logger.Debug<IModalVindow>("Mostrar una nueva ventana modal ({0})", window);
 
             DialogResult dialogResult = DialogResult.None;
 
@@ -324,7 +324,7 @@ namespace Chronos.Presentation.Windows
         /// </summary>
         public void CloseDialog()
         {
-            Logger.Debug("Cierre de la ventana modal activa");
+            s_logger.Debug("Cierre de la ventana modal activa");
 
             this.VerifyActiveDesktop();
 
@@ -360,10 +360,10 @@ namespace Chronos.Presentation.Windows
         /// </summary>
         /// <param name="title"></param>
         /// <param name="target"></param>
-        public void CreateShortcut<T>(string title, string target) 
+        public void CreateShortcut<T>(string title, string target)
             where T : IShortcutViewModel, new()
         {
-            Logger.Debug("Crear un nuevo acceso directo en el escritorio virtual activo ({0} - {1})", title, target);
+            s_logger.Debug("Crear un nuevo acceso directo en el escritorio virtual activo ({0} - {1})", title, target);
 
             this.VerifyActiveDesktop();
 
@@ -375,10 +375,10 @@ namespace Chronos.Presentation.Windows
         /// </summary>
         /// <param name="title"></param>
         /// <param name="target"></param>
-        public void CreateShortcut<T>(string title, string target, Point position) 
+        public void CreateShortcut<T>(string title, string target, Point position)
             where T : IShortcutViewModel, new()
         {
-            Logger.Debug("Crear un nuevo acceso directo en el escritorio virtual activo ({0} - {1})", title, target);
+            s_logger.Debug("Crear un nuevo acceso directo en el escritorio virtual activo ({0} - {1})", title, target);
 
             this.VerifyActiveDesktop();
 
@@ -392,17 +392,17 @@ namespace Chronos.Presentation.Windows
         public void Show<T>()
             where T : IDesktopElement, new()
         {
-            Logger.Debug("Mostrar un nuevo elemento en el escritorio virtual activo ({0})", typeof(T));
+            s_logger.Debug("Mostrar un nuevo elemento en el escritorio virtual activo ({0})", typeof(T));
 
             this.VerifyActiveDesktop();
 
-            this.ActiveDesktop.Show<T>();            
+            this.ActiveDesktop.Show<T>();
         }
 
         public void Show<T>(Point position)
             where T : IDesktopElement, new()
         {
-            Logger.Debug("Mostrar un nuevo elemento en el escritorio virtual activo ({0})", typeof(T));
+            s_logger.Debug("Mostrar un nuevo elemento en el escritorio virtual activo ({0})", typeof(T));
 
             this.VerifyActiveDesktop();
 
@@ -411,7 +411,7 @@ namespace Chronos.Presentation.Windows
 
         public void Show(IDesktopElement instance)
         {
-            Logger.Debug("Mostrar un nuevo elemento en el escritorio virtual activo ({0})", instance.GetType());
+            s_logger.Debug("Mostrar un nuevo elemento en el escritorio virtual activo ({0})", instance.GetType());
 
             this.VerifyActiveDesktop();
 
@@ -420,7 +420,7 @@ namespace Chronos.Presentation.Windows
 
         public void Show(IDesktopElement instance, Point position)
         {
-            Logger.Debug("Mostrar un nuevo elemento en el escritorio virtual activo ({0})", instance.GetType());
+            s_logger.Debug("Mostrar un nuevo elemento en el escritorio virtual activo ({0})", instance.GetType());
 
             this.VerifyActiveDesktop();
 
@@ -437,7 +437,7 @@ namespace Chronos.Presentation.Windows
         /// <param name="id">The id.</param>
         public void Close(Guid id)
         {
-            Logger.Debug("Cerrar un elemento en el escritorio virtual activo ({0})", id);
+            s_logger.Debug("Cerrar un elemento en el escritorio virtual activo ({0})", id);
 
             this.VerifyActiveDesktop();
 
@@ -449,7 +449,7 @@ namespace Chronos.Presentation.Windows
         /// </summary>
         public void CloseAll()
         {
-            Logger.Debug("Cerrar todos los elementos en el escritorio virtual activo");
+            s_logger.Debug("Cerrar todos los elementos en el escritorio virtual activo");
 
             this.VerifyActiveDesktop();
 
@@ -470,7 +470,7 @@ namespace Chronos.Presentation.Windows
         /// <param name="desktop"></param>
         public void RegisterDesktop(DependencyObject d)
         {
-            Logger.Debug("Registro de escritorio virtual ({0})", d);
+            s_logger.Debug("Registro de escritorio virtual ({0})", d);
 
             Debug.Assert(d != null, "do");
             Debug.Assert(d is Desktop, "do is not an instance of Desktop");
@@ -492,7 +492,7 @@ namespace Chronos.Presentation.Windows
         /// <param name="desktop"></param>
         public void RegisterModalContainer(DependencyObject d)
         {
-            Logger.Debug("Registro de contenedor para ventanas modales ({0})", d);
+            s_logger.Debug("Registro de contenedor para ventanas modales ({0})", d);
 
             Panel container = d as Panel;
 

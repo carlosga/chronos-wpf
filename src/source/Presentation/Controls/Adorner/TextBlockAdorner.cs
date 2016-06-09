@@ -4,55 +4,39 @@ using System.Windows.Media;
 
 namespace Chronos.Presentation.Controls.Adorner
 {
-    public sealed class TextBlockAdorner 
+    public sealed class TextBlockAdorner
         : System.Windows.Documents.Adorner
     {
-        #region · Fields ·
-
-        private readonly TextBlock adornerTextBlock;
-
-        #endregion
-
-        #region · Properties ·
+        private readonly TextBlock _adornerTextBlock;
 
         protected override int VisualChildrenCount
         {
             get { return 1; }
         }
 
-        #endregion
-
-        #region · Constructors ·
-
         public TextBlockAdorner(UIElement adornedElement, string label, Style labelStyle)
             : base(adornedElement)
         {
-            this.adornerTextBlock = new TextBlock { Style = labelStyle, Text = label };
+            _adornerTextBlock = new TextBlock { Style = labelStyle, Text = label };
         }
 
-        #endregion
-
-        #region · Overriden Methods ·
-        
         protected override Size MeasureOverride(Size constraint)
         {
-            this.adornerTextBlock.Measure(constraint);
+            _adornerTextBlock.Measure(constraint);
 
             return constraint;
         }
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            this.adornerTextBlock.Arrange(new Rect(finalSize));
+            _adornerTextBlock.Arrange(new Rect(finalSize));
 
             return finalSize;
         }
 
         protected override Visual GetVisualChild(int index)
         {
-            return this.adornerTextBlock;
+            return _adornerTextBlock;
         }
-
-        #endregion
     }
 }

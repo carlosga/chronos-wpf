@@ -11,11 +11,9 @@ namespace Chronos.Presentation.Core.Windows
     /// <summary>
     /// 
     /// </summary>
-    public interface IWindow 
+    public interface IWindow
         : IDesktopElement
     {
-        #region · Events ·
-
         /// <summary>
         /// Occurs when the window state has changed
         /// </summary>
@@ -30,10 +28,6 @@ namespace Chronos.Presentation.Core.Windows
         /// Occurs when the window is closed
         /// </summary>
         event EventHandler Closed;
-
-        #endregion
-
-        #region · Commands ·
 
         /// <summary>
         /// Gets the close window command
@@ -58,10 +52,6 @@ namespace Chronos.Presentation.Core.Windows
         {
             get;
         }
-
-        #endregion
-
-        #region · Properties ·
 
         /// <summary>
         /// Gets or sets the window title
@@ -117,10 +107,6 @@ namespace Chronos.Presentation.Core.Windows
             set;
         }
 
-        #endregion
-
-        #region · Methods ·
-
         /// <summary>
         /// Shows the window
         /// </summary>
@@ -135,7 +121,5 @@ namespace Chronos.Presentation.Core.Windows
         /// Hides the window
         /// </summary>
         void Hide();
-
-        #endregion
     }
 }

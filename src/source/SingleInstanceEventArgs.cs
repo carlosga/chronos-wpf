@@ -6,7 +6,7 @@ namespace Chronos
     /// <summary>
     /// http://www.fishbowlclient.com/
     /// </summary>
-    public sealed class SingleInstanceEventArgs 
+    public sealed class SingleInstanceEventArgs
         : EventArgs
     {
         #region · Properties ·

@@ -9,8 +9,6 @@ namespace Chronos.Extensions
     /// </summary>
     public static class BitmapExtensions
     {
-        #region · Extensions ·
-
         /// <summary>
         /// Scales the bitmap to the passed target size without respecting the aspect.
         /// </summary>
@@ -185,7 +183,5 @@ namespace Chronos.Extensions
 
             return scaledBitmap;
         }
-
-        #endregion
     }
 }

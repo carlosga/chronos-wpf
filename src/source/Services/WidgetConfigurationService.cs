@@ -3,68 +3,44 @@
 
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using Chronos.Configuration;
 using Chronos.Presentation.Core.Configuration;
 using Chronos.Presentation.Core.Widgets;
 using NLog;
 using nRoute.Components.Composition;
 using nRoute.Services;
-using System.Configuration;
 
 namespace Chronos.Services
 {
-    [MapService(typeof(IWidgetConfigurationService),
-        InitializationMode  = InitializationMode.OnDemand,
-        Lifetime            = InstanceLifetime.Singleton)]
+    [MapService(typeof(IWidgetConfigurationService), InitializationMode = InitializationMode.OnDemand, Lifetime = InstanceLifetime.Singleton)]
     public sealed class WidgetConfigurationService
         : IWidgetConfigurationService
     {
-        #region · Logger ·
+        private static Logger s_logger = LogManager.GetCurrentClassLogger();
 
-        private static Logger Logger = LogManager.GetCurrentClassLogger();
+        private static readonly object s_syncObject = new object();
 
-        #endregion
+        private static readonly string s_rootConfigFile = "Widgets.config";
+        private static readonly string s_rootSection = "chronoserp.widgets";
 
-        #region · SyncObject ·
-
-        private static readonly object SyncObject = new object();
-
-        #endregion
-
-        #region · Constants ·
-
-        private static readonly string RootConfigFile   = "Widgets.config";
-        private static readonly string RootSection      = "chronoserp.widgets";
-
-        #endregion
-
-        #region · Fields ·
-
-        private List<IWidget> widgets;
-
-        #endregion
-
-        #region · Constructors ·
+        private List<IWidget> _widgets;
 
         public WidgetConfigurationService()
         {
         }
 
-        #endregion
-
-        #region · Methods ·
-
         public IEnumerable<IWidget> GetWidgets()
         {
-            lock (SyncObject)
+            lock (s_syncObject)
             {
-                if (this.widgets == null)
+                if (_widgets == null)
                 {
-                    WidgetsSectionHandler section = ConfigurationManager.GetSection(RootSection) as WidgetsSectionHandler;
+                    var section = ConfigurationManager.GetSection(s_rootSection) as WidgetsSectionHandler;
 
                     if (section != null)
                     {
-                        this.widgets = new List<IWidget>();
+                        _widgets = new List<IWidget>();
 
                         foreach (WidgetConfigurationElement widgetConfig in section.Widgets)
                         {
@@ -72,30 +48,26 @@ namespace Chronos.Services
 
                             if (widget == null)
                             {
-                                Logger.Debug("Widget not found {0} - {1}", widgetConfig.Id, widgetConfig.Type);
+                                s_logger.Debug("Widget not found {0} - {1}", widgetConfig.Id, widgetConfig.Type);
                             }
                             else
                             {
-                                this.widgets.Add(widget);
+                                _widgets.Add(widget);
                             }
                         }
                     }
                 }
             }
 
-            return this.widgets;
+            return _widgets;
         }
 
         public T GetWidgetConfigurationSection<T>(string sectionName)
-            where T: ConfigurationSection
+            where T : ConfigurationSection
         {
             throw new NotImplementedException();
         }
 
-        #endregion
-
-        #region · Private Methods ·
-        
         private IWidget CreateWidgetDefinition(WidgetConfigurationElement widgetConfig)
         {
             IWidget widget = null;
@@ -106,7 +78,7 @@ namespace Chronos.Services
             }
             catch (Exception ex)
             {
-                Logger.ErrorException
+                s_logger.ErrorException
                 (
                     String.Format("Widget not found {0} - {1}", widgetConfig.Id, widgetConfig.Type),
                     ex
@@ -115,7 +87,5 @@ namespace Chronos.Services
 
             return widget;
         }
-
-        #endregion
     }
 }

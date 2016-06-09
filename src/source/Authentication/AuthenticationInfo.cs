@@ -8,8 +8,6 @@ namespace Chronos.Authentication
     /// </summary>
     public sealed class AuthenticationInfo
     {
-        #region · Properties ·
-
         /// <summary>
         /// Gets or sets the user id
         /// </summary>
@@ -28,17 +26,11 @@ namespace Chronos.Authentication
             set;
         }
 
-        #endregion
-
-        #region · Constructors ·
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationInfo"/> class
         /// </summary>
         public AuthenticationInfo()
         {
         }
-
-        #endregion
     }
 }

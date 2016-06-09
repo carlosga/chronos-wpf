@@ -35,15 +35,15 @@ namespace Chronos
     /// <summary>
     /// Dedicated observer for application state notifications
     /// </summary>
-    [MapChannelObserver(typeof(ApplicationStateInfo), 
-        InitializationMode=InitializationMode.WhenAvailable,
-        Lifetime=InstanceLifetime.Singleton,
-        ThreadOption=ThreadOption.UIThread)]
+    [MapChannelObserver(typeof(ApplicationStateInfo),
+        InitializationMode = InitializationMode.WhenAvailable,
+        Lifetime = InstanceLifetime.Singleton,
+        ThreadOption = ThreadOption.UIThread)]
     public sealed class ApplicationStateObserver : IObserver<ApplicationStateInfo>
     {
         #region · Fields ·
 
-        private SplashScreen splashScreen;
+        private SplashScreen _splashScreen;
 
         #endregion
 
@@ -72,16 +72,16 @@ namespace Chronos
         {
             if (value.CurrentState == ApplicationState.Starting)
             {
-                this.splashScreen = new SplashScreen("SplashScreen.png");
-                this.splashScreen.Show(false);
+                _splashScreen = new SplashScreen("SplashScreen.png");
+                _splashScreen.Show(false);
             }
             else if (value.CurrentState == ApplicationState.Started)
             {
                 // Close the splash screen
-                if (this.splashScreen != null)
+                if (_splashScreen != null)
                 {
-                    this.splashScreen.Close(new TimeSpan(0, 0, 1));
-                    this.splashScreen = null;
+                    _splashScreen.Close(new TimeSpan(0, 0, 1));
+                    _splashScreen = null;
                 }
 
                 // Initialize the JumpList
@@ -93,7 +93,7 @@ namespace Chronos
                     new AuthenticationInfo
                     {
                         Action = AuthenticationAction.LogOn
-                    }, 
+                    },
                     true
                 );
             }

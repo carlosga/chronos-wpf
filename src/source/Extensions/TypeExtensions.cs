@@ -8,8 +8,6 @@ namespace Chronos.Extensions
     /// </summary>
     public static class TypeExtensions
     {
-        #region · Extensions ·
-
         /// <summary>
         /// Creates and returns an instance of the desired type
         /// </summary>
@@ -45,7 +43,5 @@ namespace Chronos.Extensions
             var instance = Activator.CreateInstance(type, constructorParameters);
             return (T)instance;
         }
-
-        #endregion
     }
 }

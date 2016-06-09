@@ -9,15 +9,9 @@ namespace Chronos.Model
     public sealed class UserLogin
         : ObservableObject, IDataErrorInfo
     {
-        #region · Fields ·
-
-        private string  userId;
-        private string  password;
-        private int     workYear;
-
-        #endregion
-
-        #region · IDataErrorInfo Members ·
+        private string _userId;
+        private string _password;
+        private int _workYear;
 
         public string Error
         {
@@ -29,18 +23,14 @@ namespace Chronos.Model
             get { return null; }
         }
 
-        #endregion
-
-        #region · Properties ·
-
         public string UserId
         {
-            get { return this.userId; }
+            get { return _userId; }
             set
             {
-                if (this.userId != value)
+                if (_userId != value)
                 {
-                    this.userId = value;
+                    _userId = value;
                     this.NotifyPropertyChanged(() => UserId);
                 }
             }
@@ -48,12 +38,12 @@ namespace Chronos.Model
 
         public string Password
         {
-            get { return this.password; }
+            get { return _password; }
             set
             {
-                if (this.password != value)
+                if (_password != value)
                 {
-                    this.password = value;
+                    _password = value;
                     this.NotifyPropertyChanged(() => Password);
                 }
             }
@@ -61,25 +51,19 @@ namespace Chronos.Model
 
         public int WorkYear
         {
-            get { return this.workYear; }
+            get { return _workYear; }
             set
             {
-                if (this.workYear != value)
+                if (_workYear != value)
                 {
-                    this.workYear = value;
+                    _workYear = value;
                     this.NotifyPropertyChanged(() => WorkYear);
                 }
             }
         }
 
-        #endregion
-
-        #region · Constructors ·
-
         public UserLogin()
         {
         }
-
-        #endregion
     }
 }

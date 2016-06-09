@@ -10,8 +10,6 @@ namespace Chronos.Extensions
     /// </summary>
     public static class DirectoryInfoExtensions
     {
-        #region · Extensions ·
-
         /// <summary>
         /// Gets all files in the directory matching one of the several (!) supplied patterns (instead of just one in the regular implementation).
         /// </summary>
@@ -157,7 +155,5 @@ namespace Chronos.Extensions
             
             directory.GetDirectories().ForEach(d => FindFilesRecursive(d, predicate, foundFiles));
         }
-
-        #endregion
     }
 }

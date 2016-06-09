@@ -15,52 +15,30 @@ namespace Chronos.Presentation.ViewModel
     public abstract class ObservableObject
         : IObservableObject
     {
-        #region · Static Methods ·
-
         public static PropertyChangedEventArgs CreateArgs<T>(Expression<Func<T, object>> propertyExpression)
         {
             return new PropertyChangedEventArgs(propertyExpression.GetPropertyName());
         }
 
-        #endregion
-
-        #region · INotifyPropertyChanged Members ·
-
         public event PropertyChangedEventHandler PropertyChanged;
 
-        #endregion
-
-        #region · Fields ·
-        
-        private readonly Dispatcher dispatcher;
-        
-        #endregion
-
-        #region · Protected Properties ·
+        private readonly Dispatcher _dispatcher;
 
         /// <summary>
         /// Gets the Dispatcher this DispatcherObject is associated with.
         /// </summary>
         protected Dispatcher Dispatcher
         {
-            get { return this.dispatcher; }
+            get { return _dispatcher; }
         }
-
-        #endregion
-
-        #region · Constructors ·
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ObservableObject"/> class.
         /// </summary>
         protected ObservableObject()
         {
-            this.dispatcher = Dispatcher.CurrentDispatcher;
+            _dispatcher = Dispatcher.CurrentDispatcher;
         }
-
-        #endregion
-
-        #region · Protected Methods ·
 
         /// <summary>
         /// Executes the specified <see cref="Action "/> at the <see cref="DispatcherPriority.ApplicationIdle"/> priority 
@@ -140,7 +118,5 @@ namespace Chronos.Presentation.ViewModel
                 this.PropertyChanged(this, args);
             }
         }
-
-        #endregion
     }
 }

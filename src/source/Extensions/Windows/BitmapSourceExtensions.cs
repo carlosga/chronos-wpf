@@ -10,8 +10,6 @@ namespace Chronos.Extensions.Windows
     /// </summary>
     public static class BitmapSourceExtensions
     {
-        #region · Extensions ·
-
         /// <summary>
         /// Create a System.Drawing.Bitmap from the passed WPF BitmapSource instance
         /// </summary>
@@ -30,7 +28,5 @@ namespace Chronos.Extensions.Windows
                 return new Bitmap(new Bitmap(stream));
             }
         }
-
-        #endregion
     }
 }

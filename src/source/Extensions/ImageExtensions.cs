@@ -6,8 +6,6 @@ namespace Chronos.Extensions
 {
     public static class ImageExtensions
     {
-        #region · Extensions ·
-
         /// <summary>
         /// Resizes the specified image.
         /// </summary>
@@ -41,7 +39,5 @@ namespace Chronos.Extensions
 
             return resized;
         }
-
-        #endregion
     }
 }

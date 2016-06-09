@@ -14,7 +14,7 @@ namespace Chronos.Presentation.Windows.Controls
     /// <summary>
     /// Provides the ability to create modal message windows (like messageboxes)
     /// </summary>
-    public sealed class MessageWindowElement 
+    public sealed class MessageWindowElement
         : WindowElement
     {
         #region · Dependency Properties ·
@@ -30,7 +30,7 @@ namespace Chronos.Presentation.Windows.Controls
 
         #region · Sync Object ·
 
-        static readonly object SyncObject = new object();
+        private static readonly object s_syncObject = new object();
 
         #endregion
 
@@ -66,7 +66,7 @@ namespace Chronos.Presentation.Windows.Controls
         }
 
         #endregion
-        
+
         #region · Show "Factory" Methods ·
 
         /// <summary>
@@ -97,9 +97,9 @@ namespace Chronos.Presentation.Windows.Controls
         /// <param name="message"></param>
         /// <param name="buttons"></param>
         /// <returns></returns>
-        public static DialogResult Show(string caption, string message, DialogButton buttons) 
+        public static DialogResult Show(string caption, string message, DialogButton buttons)
         {
-            lock (SyncObject)
+            lock (s_syncObject)
             {
                 DialogResult result = DialogResult.None;
 
@@ -108,9 +108,9 @@ namespace Chronos.Presentation.Windows.Controls
                     {
                         MessageWindowElement window = new MessageWindowElement
                         {
-                            Title           = caption,
-                            Content         = message,
-                            Buttons         = buttons,
+                            Title = caption,
+                            Content = message,
+                            Buttons = buttons,
                             StartupLocation = StartupPosition.CenterParent
                         };
 

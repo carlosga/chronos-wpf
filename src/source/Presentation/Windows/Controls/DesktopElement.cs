@@ -14,15 +14,15 @@ namespace Chronos.Presentation.Windows.Controls
     /// Base class for <see cref="Desktop"/> elements (shortcuts, widgets,...)
     /// </summary>
     [TemplatePart(Name = DesktopElement.PART_Dragger, Type = typeof(FrameworkElement))]
-    public abstract class DesktopElement 
+    public abstract class DesktopElement
         : ContentControl, IDesktopElement, IActiveAware
     {
         #region · Constants ·
 
-        protected const string  PART_Dragger        = "PART_Dragger";
-        protected const int     ResizeSideThichness = 5;
-        protected const int     ResizeCornerSize    = 5;
-        
+        protected const string PART_Dragger = "PART_Dragger";
+        protected const int ResizeSideThichness = 5;
+        protected const int ResizeCornerSize = 5;
+
         #endregion
 
         #region · Dependency Properties ·
@@ -136,18 +136,18 @@ namespace Chronos.Presentation.Windows.Controls
 
         #region · Fields ·
 
-        private Panel               parent;
-        private FrameworkElement    partDragger;
-        private DragOrResizeStatus  previewDragOrResizeStatus;
-        private DragOrResizeStatus  dragOrResizeStatus;
-        private Point               startMousePosition;
-        private Point               previousMousePosition;
-        private Point               oldPosition;
-        private Size                originalSize;
-        private Size                previousSize;
-        private bool                isInitialized;
-        private bool                oldCanResize;
-        
+        private Panel _parent;
+        private FrameworkElement _partDragger;
+        private DragOrResizeStatus _previewDragOrResizeStatus;
+        private DragOrResizeStatus _dragOrResizeStatus;
+        private Point _startMousePosition;
+        private Point _previousMousePosition;
+        private Point _oldPosition;
+        private Size _originalSize;
+        private Size _previousSize;
+        private bool _isInitialized;
+        private bool _oldCanResize;
+
         #endregion
 
         #region · Properties ·
@@ -167,8 +167,8 @@ namespace Chronos.Presentation.Windows.Controls
         /// </summary>
         public new Panel Parent
         {
-            get { return this.parent; }
-            set { this.parent = value; }
+            get { return _parent; }
+            set { _parent = value; }
         }
 
         /// <summary>
@@ -239,7 +239,7 @@ namespace Chronos.Presentation.Windows.Controls
         /// </summary>
         protected DragOrResizeStatus DragOrResizeStatus
         {
-            get { return this.dragOrResizeStatus; }
+            get { return _dragOrResizeStatus; }
         }
 
         /// <summary>
@@ -247,8 +247,8 @@ namespace Chronos.Presentation.Windows.Controls
         /// </summary>
         protected Point OldPosition
         {
-            get { return this.oldPosition; }
-            set { this.oldPosition = value; }
+            get { return _oldPosition; }
+            set { _oldPosition = value; }
         }
 
         /// <summary>
@@ -256,8 +256,8 @@ namespace Chronos.Presentation.Windows.Controls
         /// </summary>
         protected Size OriginalSize
         {
-            get { return this.originalSize; }
-            set { this.originalSize = value; }
+            get { return _originalSize; }
+            set { _originalSize = value; }
         }
 
         /// <summary>
@@ -267,13 +267,13 @@ namespace Chronos.Presentation.Windows.Controls
         protected Desktop ParentDesktop
         {
             //get { return this.GetParent<Desktop>(); }
-            get { return this.parent as Desktop; }
+            get { return _parent as Desktop; }
         }
 
         protected FrameworkElement PartDragger
         {
-            get { return this.partDragger; }
-            set { this.partDragger = value; }
+            get { return _partDragger; }
+            set { _partDragger = value; }
         }
 
         #endregion
@@ -285,10 +285,10 @@ namespace Chronos.Presentation.Windows.Controls
         /// </summary>
         protected DesktopElement()
         {
-            this.previewDragOrResizeStatus  = DragOrResizeStatus.None;
-            this.dragOrResizeStatus         = DragOrResizeStatus.None;
-            this.startMousePosition         = new Point();
-            this.oldCanResize               = this.CanResize;
+            _previewDragOrResizeStatus = DragOrResizeStatus.None;
+            _dragOrResizeStatus = DragOrResizeStatus.None;
+            _startMousePosition = new Point();
+            _oldCanResize = this.CanResize;
         }
 
         #endregion
@@ -329,20 +329,20 @@ namespace Chronos.Presentation.Windows.Controls
             }
 
             // Clean up
-            this.Id                         = Guid.Empty;
-            this.previewDragOrResizeStatus  = DragOrResizeStatus.None;
-            this.dragOrResizeStatus         = DragOrResizeStatus.None;
-            this.startMousePosition         = new Point();
-            this.previousMousePosition      = new Point();
-            this.oldPosition                = new Point();
-            this.previousSize               = Size.Empty;
-            this.originalSize               = Size.Empty;
-            this.isInitialized              = false;
-            this.oldCanResize               = false;
-            this.partDragger                = null;
-            this.parent                     = null;
-            this.Content                    = null;
-            this.DataContext                = null;
+            this.Id = Guid.Empty;
+            _previewDragOrResizeStatus = DragOrResizeStatus.None;
+            _dragOrResizeStatus = DragOrResizeStatus.None;
+            _startMousePosition = new Point();
+            _previousMousePosition = new Point();
+            _oldPosition = new Point();
+            _previousSize = Size.Empty;
+            _originalSize = Size.Empty;
+            _isInitialized = false;
+            _oldCanResize = false;
+            _partDragger = null;
+            _parent = null;
+            this.Content = null;
+            this.DataContext = null;
         }
 
         #endregion
@@ -357,12 +357,12 @@ namespace Chronos.Presentation.Windows.Controls
         {
             base.OnRenderSizeChanged(sizeInfo);
 
-            if (!this.isInitialized)
+            if (!_isInitialized)
             {
                 this.RefreshCalculatedVisualProperties();
 
-                this.OriginalSize   = new Size(this.ActualWidth, this.ActualHeight);
-                this.isInitialized  = true;
+                this.OriginalSize = new Size(this.ActualWidth, this.ActualHeight);
+                _isInitialized = true;
             }
         }
 
@@ -471,9 +471,9 @@ namespace Chronos.Presentation.Windows.Controls
 
             if (this.Parent != null)
             {
-                Vector changeFromStart = Point.Subtract(mousePosition, this.startMousePosition);
+                Vector changeFromStart = Point.Subtract(mousePosition, _startMousePosition);
 
-                if (this.dragOrResizeStatus == DragOrResizeStatus.Drag)
+                if (_dragOrResizeStatus == DragOrResizeStatus.Drag)
                 {
                     if (this.CanDrag)
                     {
@@ -508,17 +508,17 @@ namespace Chronos.Presentation.Windows.Controls
                 }
                 else
                 {
-                    Size    size                = this.RenderSize;
-                    Vector  changeFromPrevious  = Point.Subtract(mousePosition, this.previousMousePosition);
+                    Size size = this.RenderSize;
+                    Vector changeFromPrevious = Point.Subtract(mousePosition, _previousMousePosition);
 
-                    if (this.dragOrResizeStatus.IsOnRight)
+                    if (_dragOrResizeStatus.IsOnRight)
                     {
                         if (size.Width + changeFromPrevious.X > this.MinWidth)
                         {
                             size.Width += changeFromPrevious.X;
                         }
                     }
-                    else if (this.dragOrResizeStatus.IsOnLeft)
+                    else if (_dragOrResizeStatus.IsOnLeft)
                     {
                         if (size.Width - changeFromStart.X > this.MinWidth)
                         {
@@ -527,14 +527,14 @@ namespace Chronos.Presentation.Windows.Controls
                         }
                     }
 
-                    if (this.dragOrResizeStatus.IsOnBottom)
+                    if (_dragOrResizeStatus.IsOnBottom)
                     {
                         if (size.Height + changeFromPrevious.Y > this.MinHeight)
                         {
                             size.Height += changeFromPrevious.Y;
                         }
                     }
-                    else if (this.dragOrResizeStatus.IsOnTop)
+                    else if (_dragOrResizeStatus.IsOnTop)
                     {
                         if (size.Height - changeFromStart.Y > this.MinHeight)
                         {
@@ -543,7 +543,7 @@ namespace Chronos.Presentation.Windows.Controls
                         }
                     }
 
-                    this.Width  = size.Width;
+                    this.Width = size.Width;
                     this.Height = size.Height;
                 }
             }
@@ -583,17 +583,17 @@ namespace Chronos.Presentation.Windows.Controls
         /// </param>
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            if (!e.Handled 
+            if (!e.Handled
                 && e.ClickCount == 1
                 && e.Source == this)
             {
-                if (this.dragOrResizeStatus == DragOrResizeStatus.None &&
-                    this.previewDragOrResizeStatus != DragOrResizeStatus.None)
+                if (_dragOrResizeStatus == DragOrResizeStatus.None &&
+                    _previewDragOrResizeStatus != DragOrResizeStatus.None)
                 {
                     e.Handled = true;
 
-                    this.dragOrResizeStatus = this.previewDragOrResizeStatus;
-                    this.startMousePosition = this.previousMousePosition = e.GetPosition(this);
+                    _dragOrResizeStatus = _previewDragOrResizeStatus;
+                    _startMousePosition = _previousMousePosition = e.GetPosition(this);
 
                     this.CaptureMouse();
                 }
@@ -610,21 +610,21 @@ namespace Chronos.Presentation.Windows.Controls
         /// <param name="e">The <see cref="T:System.Windows.Input.MouseEventArgs"/> that contains the event data.</param>
         protected override void OnPreviewMouseMove(MouseEventArgs e)
         {
-            if (this.dragOrResizeStatus == DragOrResizeStatus.None)
+            if (_dragOrResizeStatus == DragOrResizeStatus.None)
             {
                 // http://www.switchonthecode.com/tutorials/wpf-snippet-reliably-getting-the-mouse-position
                 Point point = e.GetPosition(this);
 
-                this.previewDragOrResizeStatus = this.GetDragOrResizeMode(point);
+                _previewDragOrResizeStatus = this.GetDragOrResizeMode(point);
 
                 if (!this.CanResize
-                    && this.previewDragOrResizeStatus != DragOrResizeStatus.Drag
-                    && this.previewDragOrResizeStatus != DragOrResizeStatus.None)
+                    && _previewDragOrResizeStatus != DragOrResizeStatus.Drag
+                    && _previewDragOrResizeStatus != DragOrResizeStatus.None)
                 {
-                    this.previewDragOrResizeStatus = DragOrResizeStatus.None;
+                    _previewDragOrResizeStatus = DragOrResizeStatus.None;
                 }
 
-                this.SetResizeCursor(this.previewDragOrResizeStatus);
+                this.SetResizeCursor(_previewDragOrResizeStatus);
             }
             else if (this.IsMouseCaptured)
             {
@@ -633,13 +633,13 @@ namespace Chronos.Presentation.Windows.Controls
                     // http://www.switchonthecode.com/tutorials/wpf-snippet-reliably-getting-the-mouse-position
                     Point point = e.GetPosition(this);
 
-                    if (Math.Abs(point.X - this.previousMousePosition.X) > SystemParameters.MinimumHorizontalDragDistance ||
-                        Math.Abs(point.Y - this.previousMousePosition.Y) > SystemParameters.MinimumVerticalDragDistance)
+                    if (Math.Abs(point.X - _previousMousePosition.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                        Math.Abs(point.Y - _previousMousePosition.Y) > SystemParameters.MinimumVerticalDragDistance)
                     {
                         e.Handled = true;
 
                         this.AdjustBounds(point);
-                        this.previousMousePosition = point;
+                        _previousMousePosition = point;
                     }
                 }
                 else
@@ -683,8 +683,8 @@ namespace Chronos.Presentation.Windows.Controls
             DragOrResizeStatus status = DragOrResizeStatus.None;
 
             if (this.CanDrag &&
-                this.partDragger != null &&
-                this.partDragger.IsMouseOver)
+                _partDragger != null &&
+                _partDragger.IsMouseOver)
             {
                 status = DragOrResizeStatus.Drag;
             }
@@ -793,9 +793,9 @@ namespace Chronos.Presentation.Windows.Controls
 
         private void CancelDragOrResize()
         {
-            this.Cursor                     = null;
-            this.dragOrResizeStatus         = DragOrResizeStatus.None;
-            this.previewDragOrResizeStatus  = DragOrResizeStatus.None;
+            this.Cursor = null;
+            _dragOrResizeStatus = DragOrResizeStatus.None;
+            _previewDragOrResizeStatus = DragOrResizeStatus.None;
 
             this.ReleaseMouseCapture();
         }

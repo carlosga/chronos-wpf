@@ -10,15 +10,13 @@ using System.Windows.Markup;
 namespace Chronos.Presentation.Controls
 {
     /// <summary>
-    /// Implemetation of a Split Button
+    /// Implementation of a Split Button
     /// </summary>
     [ContentProperty("Items")]
     [DefaultProperty("Items")]
     public partial class SplitButton
         : Button
     {
-        #region · Dependency Properties ·
-
         // AddOwner Dependency properties
         public static readonly DependencyProperty IsContextMenuOpenProperty =
                 DependencyProperty.Register(
@@ -27,8 +25,8 @@ namespace Chronos.Presentation.Controls
                     typeof(SplitButton),
                     new FrameworkPropertyMetadata(false,
                             new PropertyChangedCallback(OnIsContextMenuOpenChanged)));
-        
-        public static readonly DependencyProperty PlacementProperty = 
+
+        public static readonly DependencyProperty PlacementProperty =
                 ContextMenuService.PlacementProperty.AddOwner(
                     typeof(SplitButton),
                     new FrameworkPropertyMetadata(PlacementMode.Bottom,
@@ -51,10 +49,6 @@ namespace Chronos.Presentation.Controls
                     typeof(SplitButton),
                     new FrameworkPropertyMetadata(0.0,
                         new PropertyChangedCallback(OnVerticalOffsetChanged)));
-
-        #endregion
-
-        #region · Dependency Properties Callbacks ·
 
         private static void OnIsContextMenuOpenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -141,10 +135,6 @@ namespace Chronos.Presentation.Controls
             s.ContextMenu.VerticalOffset = (double)e.NewValue;
         }
 
-        #endregion
-
-        #region · Static Constructor ·
-
         /// <summary>
         /// Static Constructor
         /// </summary>
@@ -154,10 +144,6 @@ namespace Chronos.Presentation.Controls
                 typeof(SplitButton),
                     new FrameworkPropertyMetadata(typeof(SplitButton)));
         }
-
-        #endregion
-
-        #region · Properties ·
 
         /// <summary>
         /// The Split Button's Items property maps to the base classes ContextMenu.Items property
@@ -217,18 +203,10 @@ namespace Chronos.Presentation.Controls
             set { SetValue(VerticalOffsetProperty, value); }
         }
 
-        #endregion
-
-        #region · Constructors ·
-
         public SplitButton()
             : base()
         {
         }
-
-        #endregion
-
-        #region · Overriden Methods ·
 
         /// <summary>
         ///     Handles the Base Buttons OnClick event
@@ -238,10 +216,6 @@ namespace Chronos.Presentation.Controls
             this.OnDropdown();
         }
 
-        #endregion
-
-        #region · Private Methods ·
-
         /// <summary>
         /// Make sure the Context menu is not null
         /// </summary>
@@ -249,9 +223,9 @@ namespace Chronos.Presentation.Controls
         {
             if (this.ContextMenu == null)
             {
-                this.ContextMenu                    = new ContextMenu();
-                this.ContextMenu.PlacementTarget    = this;
-                this.ContextMenu.Placement          = this.Placement;
+                this.ContextMenu = new ContextMenu();
+                this.ContextMenu.PlacementTarget = this;
+                this.ContextMenu.Placement = this.Placement;
 
                 this.ContextMenu.Opened += ((sender, routedEventArgs) => IsContextMenuOpen = true);
                 this.ContextMenu.Closed += ((sender, routedEventArgs) => IsContextMenuOpen = false);
@@ -269,7 +243,5 @@ namespace Chronos.Presentation.Controls
 
             this.ContextMenu.IsOpen = !IsContextMenuOpen; // open it if closed, close it if open
         }
-
-        #endregion
     }
 }

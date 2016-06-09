@@ -14,8 +14,6 @@ namespace Chronos.Presentation.Core.VirtualDesktops
     /// </summary>
     public interface IVirtualDesktop
     {
-        #region · Properties ·
-
         /// <summary>
         /// Gets the desktop identifier
         /// </summary>
@@ -32,10 +30,6 @@ namespace Chronos.Presentation.Core.VirtualDesktops
             get;
         }
 
-        #endregion
-
-        #region · Methods ·
-
         /// <summary>
         /// Activates the desktop instance
         /// </summary>
@@ -50,7 +44,7 @@ namespace Chronos.Presentation.Core.VirtualDesktops
         /// Shows the desktop
         /// </summary>
         void ShowDesktop();
-        
+
         /// <summary>
         /// Saves the desktop to disk
         /// </summary>
@@ -73,7 +67,7 @@ namespace Chronos.Presentation.Core.VirtualDesktops
         /// <summary>
         /// Shows a new instance of the given element type
         /// </summary>
-        void Show<T>() where T: IDesktopElement, new();
+        void Show<T>() where T : IDesktopElement, new();
 
         /// <summary>
         /// Shows a new instance of the given element type
@@ -115,7 +109,5 @@ namespace Chronos.Presentation.Core.VirtualDesktops
         /// </summary>
         /// <param name="id">The identifier.</param>
         void Restore(Guid id);
-
-        #endregion
     }
 }

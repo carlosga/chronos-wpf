@@ -14,8 +14,6 @@ namespace Chronos.Presentation.Core.VirtualDesktops
     /// </summary>
     public interface IVirtualDesktopManager
     {
-        #region · Properties ·
-
         /// <summary>
         /// Gets the active desktop windows.
         /// </summary>
@@ -35,10 +33,6 @@ namespace Chronos.Presentation.Core.VirtualDesktops
         {
             get;
         }
-
-        #endregion
-
-        #region · Methods ·
 
         /// <summary>
         /// Activates the default desktop
@@ -147,7 +141,5 @@ namespace Chronos.Presentation.Core.VirtualDesktops
         /// </summary>
         /// <param name="d"></param>
         void RegisterModalContainer(DependencyObject d);
-
-        #endregion
     }
 }

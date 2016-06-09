@@ -12,8 +12,6 @@ namespace Chronos.Extensions.Windows
     /// </summary>
     public static class UIElementExtensions
     {
-        #region · Extensions ·
-
         /// <summary>
         /// Gets the parent of an <see cref="UIElement"/>.
         /// </summary>
@@ -51,14 +49,14 @@ namespace Chronos.Extensions.Windows
         /// <returns>The created bitmap frame</returns>
         public static BitmapSource RenderToBitmap(this UIElement element, double scale)
         {
-            var renderWidth     = (int)(element.RenderSize.Width * scale);
-            var renderHeight    = (int)(element.RenderSize.Height * scale);
+            var renderWidth = (int)(element.RenderSize.Width * scale);
+            var renderHeight = (int)(element.RenderSize.Height * scale);
 
-            var renderTarget    = new RenderTargetBitmap(renderWidth, renderHeight, 96, 96, PixelFormats.Pbgra32);
-            var sourceBrush     = new VisualBrush(element);
+            var renderTarget = new RenderTargetBitmap(renderWidth, renderHeight, 96, 96, PixelFormats.Pbgra32);
+            var sourceBrush = new VisualBrush(element);
 
-            var drawingVisual   = new DrawingVisual();
-            var drawingContext  = drawingVisual.RenderOpen();
+            var drawingVisual = new DrawingVisual();
+            var drawingContext = drawingVisual.RenderOpen();
 
             using (drawingContext)
             {
@@ -70,7 +68,5 @@ namespace Chronos.Extensions.Windows
 
             return renderTarget;
         }
-
-        #endregion
     }
 }

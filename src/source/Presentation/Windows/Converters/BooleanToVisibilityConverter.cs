@@ -10,10 +10,9 @@ namespace Chronos.Presentation.Windows.Converters
     /// <summary>
     /// Value converter for visibility values
     /// </summary>
-    public sealed class BooleanToVisibilityConverter : IValueConverter
+    public sealed class BooleanToVisibilityConverter 
+        : IValueConverter
     {
-        #region · IValueConverter Members ·
-
         /// <summary>
         /// Converts a value.
         /// </summary>
@@ -43,7 +42,5 @@ namespace Chronos.Presentation.Windows.Converters
         {
             throw new NotImplementedException();
         }
-
-        #endregion
     }
 }

@@ -8,42 +8,30 @@ namespace Chronos.Presentation.Core.Navigation
 {
     public sealed class NavigatedInfo
     {
-        #region · Fields ·
-
-        private NavigationRequest   request;
-        private string              title;
-        private Guid                windowId;
-
-        #endregion
-
-        #region · Properties ·
+        private NavigationRequest _request;
+        private string _title;
+        private Guid _windowId;
 
         public NavigationRequest Request
         {
-            get { return this.request; }
+            get { return _request; }
         }
 
         public string Title
         {
-            get { return this.title; }
+            get { return _title; }
         }
 
         public Guid Id
         {
-            get { return this.windowId; }
+            get { return _windowId; }
         }
-
-        #endregion
-
-        #region · Constructors ·
 
         public NavigatedInfo(NavigationRequest request, string title, Guid windowId)
         {
-            this.request    = request;
-            this.title      = title;
-            this.windowId   = windowId;
-        }        
-
-        #endregion
+            _request = request;
+            _title = title;
+            _windowId = windowId;
+        }
     }
 }

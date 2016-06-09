@@ -12,8 +12,6 @@ namespace Chronos.Presentation.Widgets
     public sealed class ClockWidget
         : IWidget
     {
-        #region · Properties ·
-
         /// <summary>
         /// Gets the widget title
         /// </summary>
@@ -50,10 +48,6 @@ namespace Chronos.Presentation.Widgets
             get { return String.Empty; }
         }
 
-        #endregion
-
-        #region · Methods ·
-
         /// <summary>
         /// Creates the widget view
         /// </summary>
@@ -62,7 +56,5 @@ namespace Chronos.Presentation.Widgets
         {
             return new ClockWidgetView();
         }
-
-        #endregion
     }
 }

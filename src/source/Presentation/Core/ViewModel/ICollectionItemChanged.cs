@@ -15,13 +15,9 @@ namespace Chronos.Presentation.Core.ViewModel
     /// <typeparam name="V"></typeparam>
     public interface ICollectionItemChanged<T, V>
     {
-        #region · Events ·
-
         /// <summary>
         /// Occurs when a property of an item collection has been changed
         /// </summary>
         event EventHandler<ItemChangedEventArgs<T, V>> ItemChanged;
-
-        #endregion
     }
 }

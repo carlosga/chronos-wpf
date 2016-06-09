@@ -9,8 +9,6 @@ namespace Chronos.Extensions
     /// </summary>
     public static class TextReaderExtensions
     {
-        #region · Extensions ·
-
         /// <summary>
         /// The method provides an iterator through all lines of the text reader.
         /// </summary>
@@ -54,7 +52,5 @@ namespace Chronos.Extensions
                 action(line);
             }
         }
-
-        #endregion
     }
 }

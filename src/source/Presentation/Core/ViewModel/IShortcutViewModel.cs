@@ -8,11 +8,9 @@ namespace Chronos.Presentation.Core.ViewModel
     /// <summary>
     /// Interface for shortcut viewmodel implementations
     /// </summary>
-    public interface IShortcutViewModel 
+    public interface IShortcutViewModel
         : IClosableViewModel
     {
-        #region · Commands ·
-
         /// <summary>
         /// Gets the open command
         /// </summary>
@@ -20,10 +18,6 @@ namespace Chronos.Presentation.Core.ViewModel
         {
             get;
         }
-
-        #endregion
-
-        #region · Properties ·
 
         /// <summary>
         /// Gets or sets the shortcut target
@@ -51,7 +45,5 @@ namespace Chronos.Presentation.Core.ViewModel
             get;
             set;
         }
-
-        #endregion
     }
 }

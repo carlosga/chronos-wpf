@@ -15,75 +15,61 @@ namespace Chronos.Presentation.DragAndDrop
 {
     public sealed class DragHelper
     {
-        #region � Static Methods �
-
         private static UIElement GetDragElementOnHitTest(UIElement src, MouseEventArgs args)
         {
             HitTestResult hr = VisualTreeHelper.HitTest(src, args.GetPosition((IInputElement)src));
             return hr.VisualHit as UIElement;
         }
 
-        #endregion
-
-        #region � Fields �
-
-        private UIElement               dragSource;
-        private UIElement               dragScope;
-        private IDataDropObjectProvider callback;
-        private Point                   startPoint;
-        private DragAdorner             adorner;
-        private AdornerLayer            layer;
-        private Window                  dragdropWindow;
-        private DragDropEffects         allowedEffects;
-        private bool                    mouseLeftScope;
-        private bool                    isDragging;
-        private double                  opacity;        
-
-        #endregion
-
-        #region � Properties �
+        private UIElement _dragSource;
+        private UIElement _dragScope;
+        private IDataDropObjectProvider _callback;
+        private Point _startPoint;
+        private DragAdorner _adorner;
+        private AdornerLayer _layer;
+        private Window _dragdropWindow;
+        private DragDropEffects _allowedEffects;
+        private bool _mouseLeftScope;
+        private bool _isDragging;
+        private double _opacity;
 
         public double Opacity
         {
-            get { return this.opacity; }
+            get { return _opacity; }
         }
 
         public DragDropEffects AllowedEffects
         {
-            get { return this.allowedEffects; }
-            set { this.allowedEffects = value; }
+            get { return _allowedEffects; }
+            set { _allowedEffects = value; }
         }
-
-        #endregion
-
-        #region � Private Properties �
 
         private UIElement DragSource
         {
-            get { return this.dragSource; }
+            get { return _dragSource; }
             set
             {
-                this.dragSource = value;
+                _dragSource = value;
                 this.WireEvents(value);
             }
         }
 
         private UIElement DragScope
         {
-            get { return this.dragScope; }
-            set { this.dragScope = value; }
+            get { return _dragScope; }
+            set { _dragScope = value; }
         }
 
         private IDataDropObjectProvider Callback
         {
-            get { return this.callback; }
-            set { this.callback = value; }
+            get { return _callback; }
+            set { _callback = value; }
         }
 
         private bool IsDragging
         {
-            get { return this.isDragging; }
-            set { this.isDragging = value; }
+            get { return _isDragging; }
+            set { _isDragging = value; }
         }
 
         private bool AllowsLink
@@ -101,26 +87,18 @@ namespace Chronos.Presentation.DragAndDrop
             get { return ((this.AllowedEffects & DragDropEffects.Copy) != 0); }
         }
 
-        #endregion
-
-        #region � Constructors �
-
         public DragHelper(UIElement dragSource, IDataDropObjectProvider callback, UIElement dragScope)
         {
-            this.allowedEffects = DragDropEffects.Copy | DragDropEffects.Move;
-            this.opacity        = 0.7;
-            this.DragSource     = dragSource;
-            this.Callback       = callback;
-            this.DragScope      = dragScope;
+            _allowedEffects = DragDropEffects.Copy | DragDropEffects.Move;
+            _opacity = 0.7;
+            this.DragSource = dragSource;
+            this.Callback = callback;
+            this.DragScope = dragScope;
         }
-
-        #endregion
-
-        #region � DragSource Event Handlers �
 
         private void DragSource_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            this.startPoint = e.GetPosition(DragScope);
+            _startPoint = e.GetPosition(DragScope);
         }
 
 #if DEBUG
@@ -136,38 +114,30 @@ namespace Chronos.Presentation.DragAndDrop
             {
                 Point position = e.GetPosition((IInputElement)DragScope);
 
-                if (Math.Abs(position.X - startPoint.X) > SystemParameters.MinimumHorizontalDragDistance ||
-                    Math.Abs(position.Y - startPoint.Y) > SystemParameters.MinimumVerticalDragDistance)
+                if (Math.Abs(position.X - _startPoint.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                    Math.Abs(position.Y - _startPoint.Y) > SystemParameters.MinimumVerticalDragDistance)
                 {
                     this.StartDrag(e);
                 }
             }
         }
 
-        #endregion
-
-        #region � DragScope Event Handlers �
-
         private void DragScope_DragLeave(object sender, DragEventArgs args)
         {
             if (args.OriginalSource == this.DragScope)
             {
-                this.mouseLeftScope = true;
+                _mouseLeftScope = true;
             }
         }
 
         private void DragScope_DragOver(object sender, DragEventArgs args)
         {
-            if (this.adorner != null)
+            if (_adorner != null)
             {
-                this.adorner.LeftOffset = args.GetPosition(this.DragScope).X; /* - _startPoint.X */
-                this.adorner.TopOffset  = args.GetPosition(this.DragScope).Y; /* - _startPoint.Y */
+                _adorner.LeftOffset = args.GetPosition(this.DragScope).X; /* - _startPoint.X */
+                _adorner.TopOffset = args.GetPosition(this.DragScope).Y; /* - _startPoint.Y */
             }
         }
-
-        #endregion
-
-        #region � Event Wiring �
 
         private void WireEvents(UIElement uie)
         {
@@ -175,8 +145,8 @@ namespace Chronos.Presentation.DragAndDrop
 
             if (uie != null)
             {
-                uie.PreviewMouseLeftButtonDown  += new MouseButtonEventHandler(DragSource_PreviewMouseLeftButtonDown);
-                uie.PreviewMouseMove            += new MouseEventHandler(DragSource_PreviewMouseMove);
+                uie.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(DragSource_PreviewMouseLeftButtonDown);
+                uie.PreviewMouseMove += new MouseEventHandler(DragSource_PreviewMouseMove);
 
 #if DEBUG
                 uie.PreviewMouseLeftButtonUp    += new MouseButtonEventHandler(DragSource_PreviewMouseLeftButtonUp);
@@ -184,14 +154,10 @@ namespace Chronos.Presentation.DragAndDrop
             }
         }
 
-        #endregion
-
-        #region � Private Methods �
-
         private void StartDrag(MouseEventArgs args)
         {
-            IDataObject data        = null;
-            UIElement   dragelement = null;
+            IDataObject data = null;
+            UIElement dragelement = null;
 
             // ADD THE DATA 
             if (this.Callback != null)
@@ -205,7 +171,7 @@ namespace Chronos.Presentation.DragAndDrop
                     this.Callback.AppendData(ref data, args);
                 }
 
-                if ((this.Callback.SupportedActions & DragDropProviderActions.Data) != 0) 
+                if ((this.Callback.SupportedActions & DragDropProviderActions.Data) != 0)
                 {
                     dw.Data = this.Callback.GetData();
                 }
@@ -219,38 +185,38 @@ namespace Chronos.Presentation.DragAndDrop
                     dragelement = args.OriginalSource as UIElement;
                 }
 
-                dw.Source   = this.DragSource;
-                dw.Shim     = this.Callback;
+                dw.Source = this.DragSource;
+                dw.Shim = this.Callback;
 
-                Debug.Assert(this.DragScope == null, "The DragDataWrapper is meant for in-proc...  Sorry for asserting, just wanted to confirm.. comment out assertion if needed"); 
+                Debug.Assert(this.DragScope == null, "The DragDataWrapper is meant for in-proc...  Sorry for asserting, just wanted to confirm.. comment out assertion if needed");
             }
             else
             {
                 dragelement = args.OriginalSource as UIElement;
-                data        = new DataObject(typeof(UIElement).ToString(), dragelement);                 
+                data = new DataObject(typeof(UIElement).ToString(), dragelement);
             }
 
             if (dragelement == null || data == null || dragelement == this.DragSource)
             {
                 return;
-            }         
+            }
 
-            DragEventHandler                dragOver        = null;
-            DragEventHandler                dragLeave       = null;
-            QueryContinueDragEventHandler   queryContinue   = null;
-            GiveFeedbackEventHandler        giveFeedback    = null;
-            DragDropEffects                 effects         = this.GetDragDropEffects();
-            DragDropEffects                 resultEffects;
+            DragEventHandler dragOver = null;
+            DragEventHandler dragLeave = null;
+            QueryContinueDragEventHandler queryContinue = null;
+            GiveFeedbackEventHandler giveFeedback = null;
+            DragDropEffects effects = this.GetDragDropEffects();
+            DragDropEffects resultEffects;
 
             // Inprocess Drag  ...
             if (this.DragScope != null)
             {
                 bool previousAllowDrop = this.DragScope.AllowDrop;
 
-                this.adorner    = new DragAdorner(this.DragScope, (UIElement)dragelement, true, this.Opacity);
-                this.layer      = AdornerLayer.GetAdornerLayer(this.DragScope as Visual);
+                _adorner = new DragAdorner(this.DragScope, (UIElement)dragelement, true, this.Opacity);
+                _layer = AdornerLayer.GetAdornerLayer(this.DragScope as Visual);
 
-                this.layer.Add(this.adorner);
+                _layer.Add(_adorner);
 
                 if (this.DragScope != this.DragSource)
                 {
@@ -263,9 +229,9 @@ namespace Chronos.Presentation.DragAndDrop
 
                 try
                 {
-                    this.IsDragging     = true;
-                    this.mouseLeftScope = false;                    
-                    resultEffects       = DragDrop.DoDragDrop(this.DragSource, data, effects);
+                    this.IsDragging = true;
+                    _mouseLeftScope = false;
+                    resultEffects = DragDrop.DoDragDrop(this.DragSource, data, effects);
 
                     this.DragFinished(resultEffects);
                 }
@@ -280,10 +246,10 @@ namespace Chronos.Presentation.DragAndDrop
 
                     DragDrop.RemovePreviewDragOverHandler(this.DragScope, dragOver);
                     DragDrop.RemovePreviewDragLeaveHandler(this.DragScope, dragLeave);
-                    DragDrop.RemovePreviewQueryContinueDragHandler(this.DragSource, queryContinue); 
+                    DragDrop.RemovePreviewQueryContinueDragHandler(this.DragSource, queryContinue);
                 }
             }
-            else  
+            else
             {
                 DragDrop.AddPreviewQueryContinueDragHandler(this.DragSource, queryContinue = new QueryContinueDragEventHandler(OnQueryContinueDrag));
                 DragDrop.AddGiveFeedbackHandler(this.DragSource, giveFeedback = new GiveFeedbackEventHandler(OnGiveFeedback));
@@ -293,15 +259,15 @@ namespace Chronos.Presentation.DragAndDrop
                 if ((this.Callback.SupportedActions & DragDropProviderActions.Visual) != 0)
                 {
                     this.CreateDragDropWindow(dragelement);
-                    this.dragdropWindow.Show();
+                    _dragdropWindow.Show();
                 }
 
                 try
                 {
                     resultEffects = DragDrop.DoDragDrop(this.DragSource, data, effects);
                 }
-                finally 
-                { 
+                finally
+                {
                 }
 
                 if ((this.Callback.SupportedActions & DragDropProviderActions.Visual) != 0)
@@ -311,7 +277,7 @@ namespace Chronos.Presentation.DragAndDrop
 
                 DragDrop.RemovePreviewQueryContinueDragHandler(this.DragSource, OnQueryContinueDrag);
                 DragDrop.AddGiveFeedbackHandler(this.DragSource, OnGiveFeedback);
-                
+
                 this.IsDragging = false;
                 this.DragFinished(resultEffects);
             }
@@ -321,8 +287,8 @@ namespace Chronos.Presentation.DragAndDrop
         {
             DragDropEffects effects = DragDropEffects.None;
 
-            bool ctrl   = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
-            bool shift  = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+            bool ctrl = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+            bool shift = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
 
             if (ctrl && shift && this.AllowsLink)
             {
@@ -338,13 +304,13 @@ namespace Chronos.Presentation.DragAndDrop
             }
 
             return effects;
-        }     
-     
+        }
+
         private void OnGiveFeedback(object sender, GiveFeedbackEventArgs args)
         {
-            args.UseDefaultCursors  = ((this.Callback.SupportedActions & DragDropProviderActions.Visual) == 0);
-            args.Handled            = true;
-        }       
+            args.UseDefaultCursors = ((this.Callback.SupportedActions & DragDropProviderActions.Visual) == 0);
+            args.Handled = true;
+        }
 
         private void OnQueryContinueDrag(object sender, QueryContinueDragEventArgs e)
         {
@@ -362,50 +328,50 @@ namespace Chronos.Presentation.DragAndDrop
             {
                 Point p = Mouse.GetPosition(this.DragScope);
 
-                if (this.adorner != null)
+                if (_adorner != null)
                 {
-                    this.adorner.LeftOffset    = p.X /* - _startPoint.X */ ;
-                    this.adorner.TopOffset     = p.Y /* - _startPoint.Y */ ;
+                    _adorner.LeftOffset = p.X /* - _startPoint.X */ ;
+                    _adorner.TopOffset = p.Y /* - _startPoint.Y */ ;
                 }
 
-                if (this.mouseLeftScope)
+                if (_mouseLeftScope)
                 {
                     e.Action = DragAction.Cancel;
-                    e.Handled = true; 
-                } 
-            }       
+                    e.Handled = true;
+                }
+            }
         }
 
         private void DestroyDragDropWindow()
         {
-            if (this.dragdropWindow != null)
+            if (_dragdropWindow != null)
             {
-                this.dragdropWindow.Close();
-                this.dragdropWindow = null;
+                _dragdropWindow.Close();
+                _dragdropWindow = null;
             }
         }
 
         private void CreateDragDropWindow(Visual dragElement)
         {
-            Debug.Assert(this.dragdropWindow == null);
+            Debug.Assert(_dragdropWindow == null);
 
-            this.dragdropWindow = new Window();
+            _dragdropWindow = new Window();
 
-            this.dragdropWindow.WindowStyle        = WindowStyle.None;
-            this.dragdropWindow.AllowsTransparency = true;
-            this.dragdropWindow.AllowDrop          = false;
-            this.dragdropWindow.Background         = null;
-            this.dragdropWindow.IsHitTestVisible   = false;
-            this.dragdropWindow.SizeToContent      = SizeToContent.WidthAndHeight;
-            this.dragdropWindow.Topmost            = true;
-            this.dragdropWindow.ShowInTaskbar      = false;
+            _dragdropWindow.WindowStyle = WindowStyle.None;
+            _dragdropWindow.AllowsTransparency = true;
+            _dragdropWindow.AllowDrop = false;
+            _dragdropWindow.Background = null;
+            _dragdropWindow.IsHitTestVisible = false;
+            _dragdropWindow.SizeToContent = SizeToContent.WidthAndHeight;
+            _dragdropWindow.Topmost = true;
+            _dragdropWindow.ShowInTaskbar = false;
 
-            this.dragdropWindow.SourceInitialized += new EventHandler(
-                delegate(object sender, EventArgs args)
+            _dragdropWindow.SourceInitialized += new EventHandler(
+                delegate (object sender, EventArgs args)
                 {
                     //TODO assert that we can do this.. 
-                    PresentationSource  windowSource    = PresentationSource.FromVisual(this.dragdropWindow);
-                    IntPtr              handle          = ((HwndSource)windowSource).Handle;
+                    PresentationSource windowSource = PresentationSource.FromVisual(_dragdropWindow);
+                    IntPtr handle = ((HwndSource)windowSource).Handle;
 
                     Int32 styles = Win32Interop.GetWindowLong(handle, Win32Interop.GWL_EXSTYLE);
 
@@ -414,11 +380,11 @@ namespace Chronos.Presentation.DragAndDrop
 
             Rectangle r = new Rectangle();
 
-            r.Width     = ((FrameworkElement)dragElement).ActualWidth;
-            r.Height    = ((FrameworkElement)dragElement).ActualHeight;
-            r.Fill  = new VisualBrush(dragElement);
+            r.Width = ((FrameworkElement)dragElement).ActualWidth;
+            r.Height = ((FrameworkElement)dragElement).ActualHeight;
+            r.Fill = new VisualBrush(dragElement);
 
-            this.dragdropWindow.Content = r;
+            _dragdropWindow.Content = r;
 
             // we want QueryContinueDrag notification so we can update the window position
             //DragDrop.AddPreviewQueryContinueDragHandler(source, QueryContinueDrag);
@@ -429,7 +395,7 @@ namespace Chronos.Presentation.DragAndDrop
 
         private void UpdateWindowLocation()
         {
-            if (this.dragdropWindow != null)
+            if (_dragdropWindow != null)
             {
                 Win32Interop.POINT p;
 
@@ -438,8 +404,8 @@ namespace Chronos.Presentation.DragAndDrop
                     return;
                 }
 
-                this.dragdropWindow.Left   = (double)p.X;
-                this.dragdropWindow.Top    = (double)p.Y;
+                _dragdropWindow.Left = (double)p.X;
+                _dragdropWindow.Top = (double)p.Y;
             }
         }
 
@@ -462,7 +428,5 @@ namespace Chronos.Presentation.DragAndDrop
 
             this.IsDragging = false;
         }
-
-        #endregion
     }
 }

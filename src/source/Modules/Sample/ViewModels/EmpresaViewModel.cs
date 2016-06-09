@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Carlos Guzmán Álvarez. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-
 using System.ComponentModel;
 using Chronos.Modules.Navigation;
 using Chronos.Modules.Sample.Models;
@@ -16,33 +15,27 @@ namespace Chronos.Modules.Sample.ViewModels
     public sealed class EmpresaViewModel
         : WorkspaceViewModel<EmpresaEntity>
     {
-        #region · PropertyChangedEventArgs Cached Instances ·
-
-        private static readonly PropertyChangedEventArgs IdEmpresaChangedArgs       = CreateArgs<EmpresaViewModel>(x => x.IdEmpresa);
-        private static readonly PropertyChangedEventArgs CifChangedArgs             = CreateArgs<EmpresaViewModel>(x => x.Cif);
-        private static readonly PropertyChangedEventArgs IdEpigrafeIaeChangedArgs   = CreateArgs<EmpresaViewModel>(x => x.IdEpigrafeIae);
-        private static readonly PropertyChangedEventArgs IdCnaeChangedArgs          = CreateArgs<EmpresaViewModel>(x => x.IdCnae);
-        private static readonly PropertyChangedEventArgs NombreChangedArgs          = CreateArgs<EmpresaViewModel>(x => x.Nombre);
-        private static readonly PropertyChangedEventArgs NombreComercialChangedArgs = CreateArgs<EmpresaViewModel>(x => x.NombreComercial);
-        private static readonly PropertyChangedEventArgs IdTipoViaChangedArgs       = CreateArgs<EmpresaViewModel>(x => x.IdTipoVia);
-        private static readonly PropertyChangedEventArgs DireccionChangedArgs       = CreateArgs<EmpresaViewModel>(x => x.Direccion);
-        private static readonly PropertyChangedEventArgs NumeroBloqueChangedArgs    = CreateArgs<EmpresaViewModel>(x => x.NumeroBloque);
-        private static readonly PropertyChangedEventArgs PisoChangedArgs            = CreateArgs<EmpresaViewModel>(x => x.Piso);
-        private static readonly PropertyChangedEventArgs PuertaChangedArgs          = CreateArgs<EmpresaViewModel>(x => x.Puerta);
-        private static readonly PropertyChangedEventArgs CodigoPostalChangedArgs    = CreateArgs<EmpresaViewModel>(x => x.CodigoPostal);
-        private static readonly PropertyChangedEventArgs CiudadChangedArgs          = CreateArgs<EmpresaViewModel>(x => x.Ciudad);
-        private static readonly PropertyChangedEventArgs ProvinciaChangedArgs       = CreateArgs<EmpresaViewModel>(x => x.Provincia);
-        private static readonly PropertyChangedEventArgs PaisChangedArgs            = CreateArgs<EmpresaViewModel>(x => x.Pais);
-        private static readonly PropertyChangedEventArgs Telefono1ChangedArgs       = CreateArgs<EmpresaViewModel>(x => x.Telefono1);
-        private static readonly PropertyChangedEventArgs Telefono2ChangedArgs       = CreateArgs<EmpresaViewModel>(x => x.Telefono2);
-        private static readonly PropertyChangedEventArgs Fax1ChangedArgs            = CreateArgs<EmpresaViewModel>(x => x.Fax1);
-        private static readonly PropertyChangedEventArgs Fax2ChangedArgs            = CreateArgs<EmpresaViewModel>(x => x.Fax2);
-        private static readonly PropertyChangedEventArgs WwwChangedArgs             = CreateArgs<EmpresaViewModel>(x => x.Www);
-        private static readonly PropertyChangedEventArgs EmailChangedArgs           = CreateArgs<EmpresaViewModel>(x => x.Email);
-
-        #endregion
-
-        #region · Model Data ·
+        private static readonly PropertyChangedEventArgs s_idEmpresaChangedArgs = CreateArgs<EmpresaViewModel>(x => x.IdEmpresa);
+        private static readonly PropertyChangedEventArgs s_cifChangedArgs = CreateArgs<EmpresaViewModel>(x => x.Cif);
+        private static readonly PropertyChangedEventArgs s_idEpigrafeIaeChangedArgs = CreateArgs<EmpresaViewModel>(x => x.IdEpigrafeIae);
+        private static readonly PropertyChangedEventArgs s_idCnaeChangedArgs = CreateArgs<EmpresaViewModel>(x => x.IdCnae);
+        private static readonly PropertyChangedEventArgs s_nombreChangedArgs = CreateArgs<EmpresaViewModel>(x => x.Nombre);
+        private static readonly PropertyChangedEventArgs s_nombreComercialChangedArgs = CreateArgs<EmpresaViewModel>(x => x.NombreComercial);
+        private static readonly PropertyChangedEventArgs s_idTipoViaChangedArgs = CreateArgs<EmpresaViewModel>(x => x.IdTipoVia);
+        private static readonly PropertyChangedEventArgs s_direccionChangedArgs = CreateArgs<EmpresaViewModel>(x => x.Direccion);
+        private static readonly PropertyChangedEventArgs s_numeroBloqueChangedArgs = CreateArgs<EmpresaViewModel>(x => x.NumeroBloque);
+        private static readonly PropertyChangedEventArgs s_pisoChangedArgs = CreateArgs<EmpresaViewModel>(x => x.Piso);
+        private static readonly PropertyChangedEventArgs s_puertaChangedArgs = CreateArgs<EmpresaViewModel>(x => x.Puerta);
+        private static readonly PropertyChangedEventArgs s_codigoPostalChangedArgs = CreateArgs<EmpresaViewModel>(x => x.CodigoPostal);
+        private static readonly PropertyChangedEventArgs s_ciudadChangedArgs = CreateArgs<EmpresaViewModel>(x => x.Ciudad);
+        private static readonly PropertyChangedEventArgs s_provinciaChangedArgs = CreateArgs<EmpresaViewModel>(x => x.Provincia);
+        private static readonly PropertyChangedEventArgs s_paisChangedArgs = CreateArgs<EmpresaViewModel>(x => x.Pais);
+        private static readonly PropertyChangedEventArgs s_telefono1ChangedArgs = CreateArgs<EmpresaViewModel>(x => x.Telefono1);
+        private static readonly PropertyChangedEventArgs s_telefono2ChangedArgs = CreateArgs<EmpresaViewModel>(x => x.Telefono2);
+        private static readonly PropertyChangedEventArgs s_fax1ChangedArgs = CreateArgs<EmpresaViewModel>(x => x.Fax1);
+        private static readonly PropertyChangedEventArgs s_fax2ChangedArgs = CreateArgs<EmpresaViewModel>(x => x.Fax2);
+        private static readonly PropertyChangedEventArgs s_wwwChangedArgs = CreateArgs<EmpresaViewModel>(x => x.Www);
+        private static readonly PropertyChangedEventArgs s_emailChangedArgs = CreateArgs<EmpresaViewModel>(x => x.Email);
 
         public string IdEmpresa
         {
@@ -52,7 +45,7 @@ namespace Chronos.Modules.Sample.ViewModels
                 if (this.Entity.IdEmpresa != value)
                 {
                     this.Entity.IdEmpresa = value;
-                    this.NotifyPropertyChanged(IdEmpresaChangedArgs);
+                    this.NotifyPropertyChanged(s_idEmpresaChangedArgs);
                 }
             }
         }
@@ -65,7 +58,7 @@ namespace Chronos.Modules.Sample.ViewModels
                 if (this.Entity.Cif != value)
                 {
                     this.Entity.Cif = value;
-                    this.NotifyPropertyChanged(CifChangedArgs);
+                    this.NotifyPropertyChanged(s_cifChangedArgs);
                 }
             }
         }
@@ -78,7 +71,7 @@ namespace Chronos.Modules.Sample.ViewModels
                 if (this.Entity.IdEpigrafeIae != value)
                 {
                     this.Entity.IdEpigrafeIae = value;
-                    this.NotifyPropertyChanged(IdEpigrafeIaeChangedArgs);
+                    this.NotifyPropertyChanged(s_idEpigrafeIaeChangedArgs);
                 }
             }
         }
@@ -91,7 +84,7 @@ namespace Chronos.Modules.Sample.ViewModels
                 if (this.Entity.IdCnae != value)
                 {
                     this.Entity.IdCnae = value;
-                    this.NotifyPropertyChanged(IdCnaeChangedArgs);
+                    this.NotifyPropertyChanged(s_idCnaeChangedArgs);
                 }
             }
         }
@@ -104,7 +97,7 @@ namespace Chronos.Modules.Sample.ViewModels
                 if (this.Entity.Nombre != value)
                 {
                     this.Entity.Nombre = value;
-                    this.NotifyPropertyChanged(NombreChangedArgs);
+                    this.NotifyPropertyChanged(s_nombreChangedArgs);
                 }
             }
         }
@@ -117,7 +110,7 @@ namespace Chronos.Modules.Sample.ViewModels
                 if (this.Entity.NombreComercial != value)
                 {
                     this.Entity.NombreComercial = value;
-                    this.NotifyPropertyChanged(NombreComercialChangedArgs);
+                    this.NotifyPropertyChanged(s_nombreComercialChangedArgs);
                 }
             }
         }
@@ -130,7 +123,7 @@ namespace Chronos.Modules.Sample.ViewModels
                 if (this.Entity.IdTipoVia != value)
                 {
                     this.Entity.IdTipoVia = value;
-                    this.NotifyPropertyChanged(IdTipoViaChangedArgs);
+                    this.NotifyPropertyChanged(s_idTipoViaChangedArgs);
                 }
             }
         }
@@ -143,7 +136,7 @@ namespace Chronos.Modules.Sample.ViewModels
                 if (this.Entity.Direccion != value)
                 {
                     this.Entity.Direccion = value;
-                    this.NotifyPropertyChanged(DireccionChangedArgs);
+                    this.NotifyPropertyChanged(s_direccionChangedArgs);
                 }
             }
         }
@@ -156,7 +149,7 @@ namespace Chronos.Modules.Sample.ViewModels
                 if (this.Entity.NumeroBloque != value)
                 {
                     this.Entity.NumeroBloque = value;
-                    this.NotifyPropertyChanged(NumeroBloqueChangedArgs);
+                    this.NotifyPropertyChanged(s_numeroBloqueChangedArgs);
                 }
             }
         }
@@ -169,7 +162,7 @@ namespace Chronos.Modules.Sample.ViewModels
                 if (this.Entity.Piso != value)
                 {
                     this.Entity.Piso = value;
-                    this.NotifyPropertyChanged(PisoChangedArgs);
+                    this.NotifyPropertyChanged(s_pisoChangedArgs);
                 }
             }
         }
@@ -182,7 +175,7 @@ namespace Chronos.Modules.Sample.ViewModels
                 if (this.Entity.Puerta != value)
                 {
                     this.Entity.Puerta = value;
-                    this.NotifyPropertyChanged(PuertaChangedArgs);
+                    this.NotifyPropertyChanged(s_puertaChangedArgs);
                 }
             }
         }
@@ -195,7 +188,7 @@ namespace Chronos.Modules.Sample.ViewModels
                 if (this.Entity.CodigoPostal != value)
                 {
                     this.Entity.CodigoPostal = value;
-                    this.NotifyPropertyChanged(CodigoPostalChangedArgs);
+                    this.NotifyPropertyChanged(s_codigoPostalChangedArgs);
                 }
             }
         }
@@ -208,7 +201,7 @@ namespace Chronos.Modules.Sample.ViewModels
                 if (this.Entity.Ciudad != value)
                 {
                     this.Entity.Ciudad = value;
-                    this.NotifyPropertyChanged(CiudadChangedArgs);
+                    this.NotifyPropertyChanged(s_ciudadChangedArgs);
                 }
             }
         }
@@ -221,7 +214,7 @@ namespace Chronos.Modules.Sample.ViewModels
                 if (this.Entity.Provincia != value)
                 {
                     this.Entity.Provincia = value;
-                    this.NotifyPropertyChanged(ProvinciaChangedArgs);
+                    this.NotifyPropertyChanged(s_provinciaChangedArgs);
                 }
             }
         }
@@ -234,7 +227,7 @@ namespace Chronos.Modules.Sample.ViewModels
                 if (this.Entity.Pais != value)
                 {
                     this.Entity.Pais = value;
-                    this.NotifyPropertyChanged(PaisChangedArgs);
+                    this.NotifyPropertyChanged(s_paisChangedArgs);
                 }
             }
         }
@@ -247,7 +240,7 @@ namespace Chronos.Modules.Sample.ViewModels
                 if (this.Entity.Telefono1 != value)
                 {
                     this.Entity.Telefono1 = value;
-                    this.NotifyPropertyChanged(Telefono1ChangedArgs);
+                    this.NotifyPropertyChanged(s_telefono1ChangedArgs);
                 }
             }
         }
@@ -260,7 +253,7 @@ namespace Chronos.Modules.Sample.ViewModels
                 if (this.Entity.Telefono2 != value)
                 {
                     this.Entity.Telefono2 = value;
-                    this.NotifyPropertyChanged(Telefono2ChangedArgs);
+                    this.NotifyPropertyChanged(s_telefono2ChangedArgs);
                 }
             }
         }
@@ -273,7 +266,7 @@ namespace Chronos.Modules.Sample.ViewModels
                 if (this.Entity.Fax1 != value)
                 {
                     this.Entity.Fax1 = value;
-                    this.NotifyPropertyChanged(Fax1ChangedArgs);
+                    this.NotifyPropertyChanged(s_fax1ChangedArgs);
                 }
             }
         }
@@ -286,7 +279,7 @@ namespace Chronos.Modules.Sample.ViewModels
                 if (this.Entity.Fax2 != value)
                 {
                     this.Entity.Fax2 = value;
-                    this.NotifyPropertyChanged(Fax2ChangedArgs);
+                    this.NotifyPropertyChanged(s_fax2ChangedArgs);
                 }
             }
         }
@@ -299,7 +292,7 @@ namespace Chronos.Modules.Sample.ViewModels
                 if (this.Entity.Www != value)
                 {
                     this.Entity.Www = value;
-                    this.NotifyPropertyChanged(WwwChangedArgs);
+                    this.NotifyPropertyChanged(s_wwwChangedArgs);
                 }
             }
         }
@@ -312,14 +305,10 @@ namespace Chronos.Modules.Sample.ViewModels
                 if (this.Entity.Email != value)
                 {
                     this.Entity.Email = value;
-                    this.NotifyPropertyChanged(EmailChangedArgs);
+                    this.NotifyPropertyChanged(s_emailChangedArgs);
                 }
             }
         }
-
-        #endregion
-
-        #region · Properties ·
 
         /// <summary>
         /// Gets the navigation URL
@@ -330,18 +319,10 @@ namespace Chronos.Modules.Sample.ViewModels
             get { return NavigationRoutes.Companies; }
         }
 
-        #endregion
-
-        #region · Constructors ·
-
         public EmpresaViewModel()
             : base()
         {
         }
-
-        #endregion
-
-        #region · Overriden Methods ·
 
         protected override void OnInitialize(nRoute.Components.ParametersCollection requestParameters)
         {
@@ -390,39 +371,33 @@ namespace Chronos.Modules.Sample.ViewModels
                 bool editing = this.ViewMode == Chronos.Presentation.Core.Windows.ViewModeType.Add ||
                                this.ViewMode == Chronos.Presentation.Core.Windows.ViewModeType.Edit;
 
-                this.PropertyStates[x => x.IdEmpresa].IsEditable                = this.ViewMode == ViewModeType.ViewOnly;
-                this.PropertyStates[x => x.Nombre].IsEditable                   = editing;
-                this.PropertyStates[x => x.Cif].IsEditable                      = editing;
-                this.PropertyStates[x => x.NombreComercial].IsEditable          = editing;
-                this.PropertyStates[x => x.IdEpigrafeIae].IsEditable            = editing;
-                this.PropertyStates[x => x.IdCnae].IsEditable                   = editing;
-                this.PropertyStates[x => x.NombreComercial].IsEditable          = editing;
-                this.PropertyStates[x => x.IdTipoVia].IsEditable      = editing;
-                this.PropertyStates[x => x.Direccion].IsEditable      = editing;
-                this.PropertyStates[x => x.NumeroBloque].IsEditable   = editing;
-                this.PropertyStates[x => x.Piso].IsEditable           = editing;
-                this.PropertyStates[x => x.Puerta].IsEditable         = editing;
-                this.PropertyStates[x => x.CodigoPostal].IsEditable   = editing;
-                this.PropertyStates[x => x.Ciudad].IsEditable         = editing;
-                this.PropertyStates[x => x.Provincia].IsEditable      = editing;
-                this.PropertyStates[x => x.Pais].IsEditable           = editing;
-                this.PropertyStates[x => x.Telefono1].IsEditable       = editing;
-                this.PropertyStates[x => x.Telefono2].IsEditable       = editing;
-                this.PropertyStates[x => x.Fax1].IsEditable            = editing;
-                this.PropertyStates[x => x.Fax2].IsEditable            = editing;
-                this.PropertyStates[x => x.Www].IsEditable             = editing;
-                this.PropertyStates[x => x.Email].IsEditable           = editing;
+                this.PropertyStates[x => x.IdEmpresa].IsEditable = this.ViewMode == ViewModeType.ViewOnly;
+                this.PropertyStates[x => x.Nombre].IsEditable = editing;
+                this.PropertyStates[x => x.Cif].IsEditable = editing;
+                this.PropertyStates[x => x.NombreComercial].IsEditable = editing;
+                this.PropertyStates[x => x.IdEpigrafeIae].IsEditable = editing;
+                this.PropertyStates[x => x.IdCnae].IsEditable = editing;
+                this.PropertyStates[x => x.NombreComercial].IsEditable = editing;
+                this.PropertyStates[x => x.IdTipoVia].IsEditable = editing;
+                this.PropertyStates[x => x.Direccion].IsEditable = editing;
+                this.PropertyStates[x => x.NumeroBloque].IsEditable = editing;
+                this.PropertyStates[x => x.Piso].IsEditable = editing;
+                this.PropertyStates[x => x.Puerta].IsEditable = editing;
+                this.PropertyStates[x => x.CodigoPostal].IsEditable = editing;
+                this.PropertyStates[x => x.Ciudad].IsEditable = editing;
+                this.PropertyStates[x => x.Provincia].IsEditable = editing;
+                this.PropertyStates[x => x.Pais].IsEditable = editing;
+                this.PropertyStates[x => x.Telefono1].IsEditable = editing;
+                this.PropertyStates[x => x.Telefono2].IsEditable = editing;
+                this.PropertyStates[x => x.Fax1].IsEditable = editing;
+                this.PropertyStates[x => x.Fax2].IsEditable = editing;
+                this.PropertyStates[x => x.Www].IsEditable = editing;
+                this.PropertyStates[x => x.Email].IsEditable = editing;
             }
         }
-
-        #endregion
-
-        #region · Command Actions ·
 
         protected override void OnInquiryAction(InquiryActionResult<EmpresaEntity> result)
         {
         }
-
-        #endregion
     }
 }

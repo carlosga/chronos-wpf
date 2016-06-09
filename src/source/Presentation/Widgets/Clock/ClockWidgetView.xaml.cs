@@ -98,7 +98,7 @@ namespace Chronos.Presentation.Widgets
         public ClockWidgetView()
         {
             InitializeComponent();
-            
+
             this.DataContext = new ClockWidgetViewModel();
         }
 

@@ -9,11 +9,9 @@ namespace Chronos.Presentation.Core.ViewModel
     /// Interface for entity viewmodel implementations
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public interface IEntityViewModel<TEntity> : 
+    public interface IEntityViewModel<TEntity> :
         IDataErrorInfo where TEntity : class, new()
     {
-        #region · Properties ·
-
         /// <summary>
         /// Gets a value indicating wheter this instance is valid
         /// </summary>
@@ -29,7 +27,5 @@ namespace Chronos.Presentation.Core.ViewModel
         {
             get;
         }
-
-        #endregion
     }
 }

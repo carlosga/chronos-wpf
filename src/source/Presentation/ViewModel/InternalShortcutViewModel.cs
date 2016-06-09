@@ -10,22 +10,12 @@ namespace Chronos.Presentation.ViewModel
     /// <summary>
     /// Internal shortcut viewmodel class
     /// </summary>
-    public sealed class InternalShortcutViewModel 
+    public sealed class InternalShortcutViewModel
         : ShortcutViewModel
     {
-        #region · Logger ·
+        private static Logger s_logger = LogManager.GetCurrentClassLogger();
 
-        private static Logger Logger = LogManager.GetCurrentClassLogger();
-
-        #endregion
-
-        #region · Consts ·
-
-        private static readonly string DefaultIconStyle = "WindowIconStyle";
-
-        #endregion
-
-        #region · Properties ·
+        private static readonly string s_defaultIconStyle = "WindowIconStyle";
 
         /// <summary>
         /// Gets or sets the shortcut icon style.
@@ -37,17 +27,13 @@ namespace Chronos.Presentation.ViewModel
             {
                 if (String.IsNullOrWhiteSpace(base.IconStyle))
                 {
-                    return DefaultIconStyle;
+                    return s_defaultIconStyle;
                 }
 
                 return base.IconStyle;
             }
             set { base.IconStyle = value; }
         }
-
-        #endregion
-
-        #region · Constructors ·
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InternalShortcutViewModel"/> class.
@@ -57,20 +43,14 @@ namespace Chronos.Presentation.ViewModel
         {
         }
 
-        #endregion
-
-        #region · Command Execution ·
-
         /// <summary>
         /// Called when the <see cref="OpenCommand"/>  is executed.
         /// </summary>
         protected override void OnOpen()
         {
-            Logger.Debug("Ejecución de un acceso directo ({0})", this.Target);
+            s_logger.Debug("Ejecuci\u00F3n de un acceso directo ({0})", this.Target);
 
             this.GetService<INavigationService>().Navigate(this.Target, 10, 20, "BBB");
         }
-
-        #endregion
     }
 }

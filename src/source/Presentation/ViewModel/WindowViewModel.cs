@@ -13,15 +13,9 @@ using nRoute.Components;
 namespace Chronos.Presentation.ViewModel
 {
     public abstract class WindowViewModel<TEntity>
-        : NavigationViewModel, IWindowViewModel where TEntity: class, new()
+        : NavigationViewModel, IWindowViewModel where TEntity : class, new()
     {
-        #region · Logger ·
-
-        private static Logger Logger = LogManager.GetCurrentClassLogger();
-
-        #endregion
-
-        #region · Inner Types ·
+        private static Logger s_logger = LogManager.GetCurrentClassLogger();
 
         [Serializable]
         protected enum InquiryActionResultType
@@ -34,8 +28,6 @@ namespace Chronos.Presentation.ViewModel
         protected sealed class InquiryActionResult<TResult>
             where TResult : class
         {
-            #region · Properties ·
-
             public TResult Data
             {
                 get;
@@ -48,54 +40,27 @@ namespace Chronos.Presentation.ViewModel
                 set;
             }
 
-            #endregion
-
-            #region · Constructors ·
-
             public InquiryActionResult()
             {
             }
-
-            #endregion
         }
 
-        #endregion
-
-        #region · PropertyChangedEventArgs Cached Instances ·
-
-        private static readonly PropertyChangedEventArgs ViewModeChangedArgs            = CreateArgs<WindowViewModel<TEntity>>(x => x.ViewMode);
-        private static readonly PropertyChangedEventArgs StatusMessageChangedArgs       = CreateArgs<WindowViewModel<TEntity>>(x => x.StatusMessage);
-        private static readonly PropertyChangedEventArgs NotificationMessageChangedArgs = CreateArgs<WindowViewModel<TEntity>>(x => x.NotificationMessage);
-
-        #endregion
-
-        #region · Events ·
+        private static readonly PropertyChangedEventArgs s_viewModeChangedArgs = CreateArgs<WindowViewModel<TEntity>>(x => x.ViewMode);
+        private static readonly PropertyChangedEventArgs s_statusMessageChangedArgs = CreateArgs<WindowViewModel<TEntity>>(x => x.StatusMessage);
+        private static readonly PropertyChangedEventArgs s_notificationMessageChangedArgs = CreateArgs<WindowViewModel<TEntity>>(x => x.NotificationMessage);
 
         /// <summary>
         /// Occurs when view mode is changed.
         /// </summary>
         public event EventHandler ViewModeChanged;
 
-        #endregion
-
-        #region · Fields ·
-
-        private TEntity                             originalEntity;
-        private string                              statusMessage;
-        private string                              notificationMessage;
-        private TEntity                             entity;
-        private ViewModeType                        viewMode;
-        private PropertyStateCollection<TEntity>    propertyStates;
-
-        #region · Commands ·
-
-        private ActionCommand inquiryCommand;
-
-        #endregion
-        
-        #endregion
-
-        #region · Properties ·
+        private ActionCommand _inquiryCommand;
+        private TEntity _originalEntity;
+        private string _statusMessage;
+        private string _notificationMessage;
+        private TEntity _entity;
+        private ViewModeType _viewMode;
+        private PropertyStateCollection<TEntity> _propertyStates;
 
         /// <summary>
         /// Gets the property state collection
@@ -104,12 +69,12 @@ namespace Chronos.Presentation.ViewModel
         {
             get
             {
-                if (this.propertyStates == null)
+                if (_propertyStates == null)
                 {
-                    this.propertyStates = new PropertyStateCollection<TEntity>();
+                    _propertyStates = new PropertyStateCollection<TEntity>();
                 }
 
-                return this.propertyStates;
+                return _propertyStates;
             }
         }
 
@@ -119,15 +84,15 @@ namespace Chronos.Presentation.ViewModel
         /// <value>The state of the smart part.</value>
         public ViewModeType ViewMode
         {
-            get { return this.viewMode; }
+            get { return _viewMode; }
             set
             {
-                if (this.viewMode != value)
+                if (_viewMode != value)
                 {
-                    this.viewMode = value;
+                    _viewMode = value;
                     try
                     {
-                        this.OnViewModeChanged();
+                        OnViewModeChanged();
                     }
                     catch
                     {
@@ -144,16 +109,16 @@ namespace Chronos.Presentation.ViewModel
         {
             get
             {
-                if (this.inquiryCommand == null)
+                if (_inquiryCommand == null)
                 {
-                    this.inquiryCommand = new ActionCommand
+                    _inquiryCommand = new ActionCommand
                     (
                         () => OnInquiryData(),
                         () => CanInquiryData()
                     );
                 }
 
-                return this.inquiryCommand;
+                return _inquiryCommand;
             }
         }
 
@@ -162,13 +127,13 @@ namespace Chronos.Presentation.ViewModel
         /// </summary>
         public string StatusMessage
         {
-            get { return this.statusMessage; }
+            get { return _statusMessage; }
             set
             {
-                if (this.statusMessage != value)
+                if (_statusMessage != value)
                 {
-                    this.statusMessage = value;
-                    this.NotifyPropertyChanged(StatusMessageChangedArgs);
+                    _statusMessage = value;
+                    NotifyPropertyChanged(s_statusMessageChangedArgs);
                 }
             }
         }
@@ -178,20 +143,16 @@ namespace Chronos.Presentation.ViewModel
         /// </summary>
         public string NotificationMessage
         {
-            get { return this.notificationMessage; }
+            get { return _notificationMessage; }
             set
             {
-                if (this.notificationMessage != value)
+                if (_notificationMessage != value)
                 {
-                    this.notificationMessage = value;
-                    this.NotifyPropertyChanged(NotificationMessageChangedArgs);
+                    _notificationMessage = value;
+                    this.NotifyPropertyChanged(s_notificationMessageChangedArgs);
                 }
             }
         }
-
-        #endregion
-
-        #region · Protected Properties ·
 
         /// <summary>
         /// Gets or sets the data model.
@@ -199,40 +160,30 @@ namespace Chronos.Presentation.ViewModel
         /// <value>The data model.</value>
         protected TEntity Entity
         {
-            get { return this.entity; }
+            get { return _entity; }
             private set
             {
-                if (!Object.ReferenceEquals(this.entity, value))
+                if (!Object.ReferenceEquals(_entity, value))
                 {
-                    this.entity = value;
+                    _entity = value;
                 }
             }
         }
 
         protected TEntity OriginalEntity
         {
-            get { return this.originalEntity; }
-            set { this.originalEntity = value; }
+            get { return _originalEntity; }
+            set { _originalEntity = value; }
         }
-
-        #endregion
-
-        #region · Constructors ·
 
         protected WindowViewModel()
             : base()
         {
             this.InitializePropertyStates();
 
-            this.Entity     = new TEntity();
-            this.ViewMode   = ViewModeType.ViewOnly;
+            this.Entity = new TEntity();
+            this.ViewMode = ViewModeType.ViewOnly;
         }
-
-        #endregion
-
-        #region · Command Actions ·
-
-        #region · Inquiry ·
 
         protected virtual bool CanInquiryData()
         {
@@ -246,14 +197,14 @@ namespace Chronos.Presentation.ViewModel
                 Result = InquiryActionResultType.DataNotFound
             };
 
-            this.ViewMode       = ViewModeType.Busy;
-            this.StatusMessage  = "Obteniendo datos, espere por favor ...";
+            this.ViewMode = ViewModeType.Busy;
+            this.StatusMessage = "Obteniendo datos, espere por favor ...";
 
             Task task = Task.Factory.StartNew
             (
                 (o) =>
                 {
-                    Logger.Debug("Obteniendo datos '{0}'", this.Entity.ToString());
+                    s_logger.Debug("Obteniendo datos '{0}'", this.Entity.ToString());
 
                     this.OnInquiryAction(result);
                 }, result
@@ -263,12 +214,12 @@ namespace Chronos.Presentation.ViewModel
             (
                 (t) =>
                 {
-                    Logger.Debug("Error al obtener datos '{0}'", t.Exception.InnerException.ToString());
+                    s_logger.Debug("Error al obtener datos '{0}'", t.Exception.InnerException.ToString());
 
                     this.OnInquiryActionFailed();
 
-                    Exception exception     = null;
-                    this.OriginalEntity     = null;
+                    Exception exception = null;
+                    this.OriginalEntity = null;
 
                     if (t.Exception.InnerException != null)
                     {
@@ -280,7 +231,7 @@ namespace Chronos.Presentation.ViewModel
                     }
 
                     this.NotificationMessage = exception.Message;
-                }, 
+                },
                 CancellationToken.None,
                 TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.AttachedToParent,
                 TaskScheduler.FromCurrentSynchronizationContext()
@@ -290,11 +241,11 @@ namespace Chronos.Presentation.ViewModel
             (
                 _ =>
                 {
-                    Logger.Debug("Datos obtenidos correctamente '{0}'", this.Entity.ToString());
+                    s_logger.Debug("Datos obtenidos correctamente '{0}'", this.Entity.ToString());
 
                     this.StatusMessage = null;
                     this.OnInquiryActionComplete(result);
-                }, 
+                },
                 CancellationToken.None,
                 TaskContinuationOptions.OnlyOnRanToCompletion | TaskContinuationOptions.AttachedToParent,
                 TaskScheduler.FromCurrentSynchronizationContext()
@@ -311,7 +262,7 @@ namespace Chronos.Presentation.ViewModel
                     this.OriginalEntity = null;
 
                     this.ResetDataModel();
-                    
+
                     this.ViewMode = ViewModeType.ViewOnly;
                     break;
 
@@ -321,8 +272,8 @@ namespace Chronos.Presentation.ViewModel
                 case InquiryActionResultType.DataFetched:
                     this.ResetDataModel(result.Data);
 
-                    this.OriginalEntity = this.entity;
-                    this.ViewMode       = ViewModeType.ViewOnly;
+                    this.OriginalEntity = _entity;
+                    this.ViewMode = ViewModeType.ViewOnly;
                     break;
             }
         }
@@ -332,49 +283,39 @@ namespace Chronos.Presentation.ViewModel
             this.ViewMode = ViewModeType.ViewOnly;
         }
 
-        #endregion
-
-        #endregion
-
-        #region · Overriden Methods ·
-
         /// <summary>
         /// Called when the related view is being closed.
         /// </summary>
         public override void Close()
         {
-            Logger.Debug("Cerrar ventana '{0}'", this.GetType());
+            s_logger.Debug("Cerrar ventana '{0}'", this.GetType());
 
-            if (this.originalEntity != null)
+            if (_originalEntity != null)
             {
-                this.originalEntity = null;
+                _originalEntity = null;
             }
-            if (this.entity != null)
+            if (_entity != null)
             {
-                this.entity = null;
+                _entity = null;
             }
-            if (this.propertyStates != null)
+            if (_propertyStates != null)
             {
-                this.propertyStates.Clear();
-                this.propertyStates = null;
+                _propertyStates.Clear();
+                _propertyStates = null;
             }
 
-            this.inquiryCommand         = null;
-            this.statusMessage          = null;
-            this.notificationMessage    = null;
+            _inquiryCommand = null;
+            _statusMessage = null;
+            _notificationMessage = null;
 
             base.Close();
         }
 
-        #endregion
-
-        #region · DataModel Reset Methods ·
-
         protected void ResetDataModel()
         {
-            Logger.Debug("Resetar model '{0}'", this.GetType());
+            s_logger.Debug("Resetar model '{0}'", this.GetType());
             this.ResetDataModel(new TEntity());
-            Logger.Debug("Model reseteado '{0}'", this.GetType());
+            s_logger.Debug("Model reseteado '{0}'", this.GetType());
         }
 
         protected virtual void ResetDataModel(TEntity model)
@@ -382,7 +323,7 @@ namespace Chronos.Presentation.ViewModel
             this.OnResetingDataModel(this.Entity, model);
 
             this.OriginalEntity = null;
-            this.Entity         = model;
+            this.Entity = model;
 
             this.OnResetedDataModel(model);
         }
@@ -396,10 +337,6 @@ namespace Chronos.Presentation.ViewModel
             this.NotifyAllPropertiesChanged();
         }
 
-        #endregion        
-
-        #region · Protected Methods ·
-
         protected virtual void InitializePropertyStates()
         {
         }
@@ -408,10 +345,10 @@ namespace Chronos.Presentation.ViewModel
         {
             if (this.ViewModeChanged != null)
             {
-                this.ViewModeChanged(this, new EventArgs());            
+                this.ViewModeChanged(this, new EventArgs());
             }
 
-            this.NotifyPropertyChanged(ViewModeChangedArgs);
+            this.NotifyPropertyChanged(s_viewModeChangedArgs);
         }
 
         protected virtual void UpdateAllowedUserActions()
@@ -427,11 +364,11 @@ namespace Chronos.Presentation.ViewModel
 
         protected override void NotifyPropertyChanged(PropertyChangedEventArgs args)
         {
-            if (args != StatusMessageChangedArgs)
+            if (args != s_statusMessageChangedArgs)
             {
                 this.StatusMessage = null;
             }
-            if (args != NotificationMessageChangedArgs)
+            if (args != s_notificationMessageChangedArgs)
             {
                 this.NotificationMessage = null;
             }
@@ -439,7 +376,5 @@ namespace Chronos.Presentation.ViewModel
             this.UpdateAllowedUserActions();
             base.NotifyPropertyChanged(args);
         }
-
-        #endregion
     }
 }

@@ -17,7 +17,7 @@ namespace Chronos.Presentation.Windows.Controls
     /// <summary>
     /// Virtual desktop representation using a <see cref="Canvas"/> control
     /// </summary>
-    public class Desktop 
+    public class Desktop
         : Canvas
     {
         #region · Dependency Properties ·
@@ -55,8 +55,8 @@ namespace Chronos.Presentation.Windows.Controls
 
         #region · Fields ·
 
-        private Point?              rubberbandSelectionStartPoint;
-        private SelectionService    selectionService;
+        private Point? _rubberbandSelectionStartPoint;
+        private SelectionService _selectionService;
 
         #endregion
 
@@ -80,12 +80,12 @@ namespace Chronos.Presentation.Windows.Controls
         {
             get
             {
-                if (this.selectionService == null)
+                if (_selectionService == null)
                 {
-                    this.selectionService = new SelectionService(this);
+                    _selectionService = new SelectionService(this);
                 }
 
-                return this.selectionService;
+                return _selectionService;
             }
         }
 
@@ -116,7 +116,7 @@ namespace Chronos.Presentation.Windows.Controls
             element.Parent = this;
 
             this.Children.Add(element);
-            
+
             this.DeactivateAll();
             element.Activate();
         }
@@ -171,14 +171,14 @@ namespace Chronos.Presentation.Windows.Controls
         /// that contains the event data. This event data reports details about the mouse button that was pressed and the handled state.
         /// </param>
         protected override void OnMouseDown(MouseButtonEventArgs e)
-        {            
-            if (Object.ReferenceEquals(e.Source,  this))
+        {
+            if (Object.ReferenceEquals(e.Source, this))
             {
                 this.Activate();
 
                 // in case that this click is the start of a 
                 // drag operation we cache the start point
-                this.rubberbandSelectionStartPoint = new Point?(e.GetPosition(this));
+                _rubberbandSelectionStartPoint = new Point?(e.GetPosition(this));
 
                 // if you click directly on the canvas all 
                 // selected items are 'de-selected'
@@ -203,17 +203,17 @@ namespace Chronos.Presentation.Windows.Controls
             // if mouse button is not pressed we have no drag operation, ...
             if (e.LeftButton != MouseButtonState.Pressed)
             {
-                this.rubberbandSelectionStartPoint = null;
+                _rubberbandSelectionStartPoint = null;
             }
-            else if (this.rubberbandSelectionStartPoint.HasValue)   // ... but if mouse button is pressed and start
-                                                                    // point value is set we do have one
+            else if (_rubberbandSelectionStartPoint.HasValue)   // ... but if mouse button is pressed and start
+                                                                // point value is set we do have one
             {
                 // create rubberband adorner
                 AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(this);
 
                 if (adornerLayer != null)
                 {
-                    RubberbandAdorner adorner = new RubberbandAdorner(this, rubberbandSelectionStartPoint);
+                    RubberbandAdorner adorner = new RubberbandAdorner(this, _rubberbandSelectionStartPoint);
 
                     if (adorner != null)
                     {
@@ -256,9 +256,9 @@ namespace Chronos.Presentation.Windows.Controls
             var items = from item in this.SelectionService.CurrentSelection.OfType<DesktopElement>()
                         select item;
 
-            ShortcutGroupElement    group       = new ShortcutGroupElement();
-            ShortcutGroupViewModel  vm          = new ShortcutGroupViewModel();
-            Point                   position    = items.First().GetPosition();
+            ShortcutGroupElement group = new ShortcutGroupElement();
+            ShortcutGroupViewModel vm = new ShortcutGroupViewModel();
+            Point position = items.First().GetPosition();
 
             foreach (DesktopElement item in items)
             {
@@ -284,7 +284,7 @@ namespace Chronos.Presentation.Windows.Controls
         {
             int count = (from item in this.SelectionService.CurrentSelection.OfType<ISelectable>()
                          select item).Count();
-            
+
             e.CanExecute = (count > 1);
         }
 

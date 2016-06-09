@@ -16,24 +16,22 @@ namespace Chronos.Interop
     /// </remarks>
     public static class Win32Interop
     {
-        #region · Consts ·
-
         /// <summary>
         /// Sets a new extended window style
         /// </summary>
-        public static readonly Int32 GWL_EXSTYLE                = -20;
-        
+        public static readonly Int32 GWL_EXSTYLE = -20;
+
         /// <summary>
         /// Layered Windows
         /// </summary>
-        public static readonly Int32 WS_EX_LAYERED              = 0x00080000;
-        
+        public static readonly Int32 WS_EX_LAYERED = 0x00080000;
+
         /// <summary>
         /// Transparent window
         /// </summary>
-        public static readonly Int32 WS_EX_TRANSPARENT          = 0x00000020;
-        
-        private static readonly Int32 MONITOR_DEFAULTTONEAREST  = 0x00000002;
+        public static readonly Int32 WS_EX_TRANSPARENT = 0x00000020;
+
+        private static readonly Int32 s_MONITOR_DEFAULTTONEAREST = 0x00000002;
 
         /// <summary>
         /// Stop flashing. The system restores the window to its original state.
@@ -66,10 +64,6 @@ namespace Chronos.Interop
         /// </summary>
         public const UInt32 FLASHW_TIMERNOFG = 12;
 
-        #endregion
-
-        #region · Inner Types ·
-
         [StructLayout(LayoutKind.Sequential)]
         private struct FLASHWINFO
         {
@@ -94,8 +88,6 @@ namespace Chronos.Interop
         [StructLayout(LayoutKind.Sequential)]
         public struct POINT
         {
-            #region · Fields ·
-
             /// <summary>
             /// x coordinate of point.
             /// </summary>
@@ -105,10 +97,6 @@ namespace Chronos.Interop
             /// </summary>
             public int Y;
 
-            #endregion
-
-            #region · Constructors ·
-
             /// <summary>
             /// Construct a point of coordinates (x,y).
             /// </summary>
@@ -117,8 +105,6 @@ namespace Chronos.Interop
                 this.X = x;
                 this.Y = y;
             }
-
-            #endregion
         }
 
         /// <summary>
@@ -193,8 +179,6 @@ namespace Chronos.Interop
         [StructLayout(LayoutKind.Sequential, Pack = 0)]
         public struct RECT
         {
-            #region · Operators ·
-
             /// <summary> Determine if 2 RECT are equal (deep compare)</summary>
             public static bool operator ==(RECT rect1, RECT rect2)
             {
@@ -207,16 +191,8 @@ namespace Chronos.Interop
                 return !(rect1 == rect2);
             }
 
-            #endregion
-
-            #region · Static Members ·
-
             /// <summary> Win32 </summary>
             public static readonly RECT Empty = new RECT();
-
-            #endregion
-
-            #region · Public Fields ·
 
             /// <summary> Win32 </summary>
             public int left;
@@ -226,10 +202,6 @@ namespace Chronos.Interop
             public int right;
             /// <summary> Win32 </summary>
             public int bottom;
-
-            #endregion
-
-            #region · Properties ·
 
             /// <summary> Win32 </summary>
             public int Width
@@ -252,10 +224,6 @@ namespace Chronos.Interop
                     return left >= right || top >= bottom;
                 }
             }
-
-            #endregion
-
-            #region · Constructors ·
 
             /// <summary>
             /// Win32
@@ -283,10 +251,6 @@ namespace Chronos.Interop
                 this.right = rcSrc.right;
                 this.bottom = rcSrc.bottom;
             }
-
-            #endregion
-
-            #region · Methods ·
 
             /// <summary>
             /// Return a user friendly representation of this struct
@@ -330,26 +294,20 @@ namespace Chronos.Interop
             {
                 return left.GetHashCode() + top.GetHashCode() + right.GetHashCode() + bottom.GetHashCode();
             }
-
-            #endregion
         }
-
-        #endregion
-
-        #region · Static Methods ·
 
         public static void FlashWindow(IntPtr handle)
         {
-            IntPtr      hWnd    = handle;
-            FLASHWINFO  fInfo   = new FLASHWINFO();
+            IntPtr hWnd = handle;
+            FLASHWINFO fInfo = new FLASHWINFO();
 
-            fInfo.cbSize    = Convert.ToUInt32(Marshal.SizeOf(fInfo));
-            fInfo.hwnd      = hWnd;
-            fInfo.dwFlags   = Win32Interop.FLASHW_ALL |
+            fInfo.cbSize = Convert.ToUInt32(Marshal.SizeOf(fInfo));
+            fInfo.hwnd = hWnd;
+            fInfo.dwFlags = Win32Interop.FLASHW_ALL |
                               Win32Interop.FLASHW_TIMERNOFG |
                               Win32Interop.FLASHW_CAPTION;
 
-            fInfo.uCount    = UInt32.MaxValue;
+            fInfo.uCount = UInt32.MaxValue;
             fInfo.dwTimeout = 0;
 
             FlashWindowEx(ref fInfo);
@@ -425,7 +383,7 @@ namespace Chronos.Interop
             Win32Interop.MINMAXINFO mmi = (Win32Interop.MINMAXINFO)Marshal.PtrToStructure(lParam, typeof(Win32Interop.MINMAXINFO));
 
             // Adjust the maximized size and position to fit the work area of the correct monitor
-            System.IntPtr monitor = Win32Interop.MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
+            System.IntPtr monitor = Win32Interop.MonitorFromWindow(hwnd, s_MONITOR_DEFAULTTONEAREST);
 
             if (monitor != System.IntPtr.Zero)
             {
@@ -443,15 +401,11 @@ namespace Chronos.Interop
             Marshal.StructureToPtr(mmi, lParam, true);
         }
 
-        #endregion
-
-        #region · P/Invoke Functions ·
+        [DllImport("user32.dll")]
+        private static extern Int32 FlashWindowEx(ref FLASHWINFO pwfi);
 
         [DllImport("user32.dll")]
-        static extern Int32 FlashWindowEx(ref FLASHWINFO pwfi);
-
-        [DllImport("user32.dll")]
-        static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);
+        private static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);
 
         /// <summary>
         /// Gets information about a display monitor.
@@ -499,7 +453,5 @@ namespace Chronos.Interop
         /// <returns></returns>
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         public static extern Int32 SetWindowLong(IntPtr hWnd, Int32 nIndex, Int32 newVal);
-
-        #endregion
     }
 }

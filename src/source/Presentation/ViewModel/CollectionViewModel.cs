@@ -17,48 +17,34 @@ namespace Chronos.Presentation.ViewModel
     /// <typeparam name="TTarget">The type of the target.</typeparam>
     public class CollectionViewModel<TSource, TTarget>
         : IList<TTarget>, ICollection<TTarget>, IEnumerable<TTarget>, ICollectionItemChanged<TSource, TTarget>, IList, ICollection, IEnumerable, INotifyCollectionChanged, IDisposable
-        where TSource: INotifyPropertyChanged
-        where TTarget: INotifyPropertyChanged
+        where TSource : INotifyPropertyChanged
+        where TTarget : INotifyPropertyChanged
     {
-        #region · Events ·
-        
-        public event NotifyCollectionChangedEventHandler                    CollectionChanged;
-        public event EventHandler<ItemChangedEventArgs<TSource, TTarget>>   ItemChanged;
-        
-        #endregion
-        
-        #region · Fields ·
+        public event NotifyCollectionChangedEventHandler CollectionChanged;
+        public event EventHandler<ItemChangedEventArgs<TSource, TTarget>> ItemChanged;
 
-        private bool                            disposed;
-        private ObservableCollection<TSource>   sourceCollection;
-        private ObservableCollection<TTarget>   items;
-        private readonly Func<TSource, TTarget> setup;
-        private readonly Func<TTarget, TSource> coerce;
-        private readonly Action<TTarget>        teardown;
+        private bool _disposed;
+        private ObservableCollection<TSource> _sourceCollection;
+        private ObservableCollection<TTarget> _items;
+        private readonly Func<TSource, TTarget> _setup;
+        private readonly Func<TTarget, TSource> _coerce;
+        private readonly Action<TTarget> _teardown;
 
-        #endregion
-
-        #region · Protected Properties ·
-        
         /// <summary>
         /// Gets the list of target items
         /// </summary>
         protected ObservableCollection<TTarget> Items
         {
-            get 
-            {  
-                if (this.items == null)
+            get
+            {
+                if (_items == null)
                 {
-                    this.items = new ObservableCollection<TTarget>();
+                    _items = new ObservableCollection<TTarget>();
                 }
 
-                return this.items;
+                return _items;
             }
         }
-
-        #endregion
-
-        #region · Constructors ·
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CollectionViewModel&lt;TSource, TTarget&gt;"/> class.
@@ -70,28 +56,24 @@ namespace Chronos.Presentation.ViewModel
         public CollectionViewModel(
             ObservableCollection<TSource> sourceCollection, Func<TSource, TTarget> setup, Func<TTarget, TSource> coerce, Action<TTarget> teardown = null)
         {
-            this.setup              = setup;
-            this.coerce             = coerce;
-            this.teardown           = teardown;
-            this.sourceCollection   = sourceCollection;
+            _setup = setup;
+            _coerce = coerce;
+            _teardown = teardown;
+            _sourceCollection = sourceCollection;
 
             List<TTarget> targetItems = new List<TTarget>(sourceCollection.Select(setup));
 
-            targetItems.ForEach(i => i.PropertyChanged += (x, y) => this.NotifyItemChanged(this.coerce(i), i));
+            targetItems.ForEach(i => i.PropertyChanged += (x, y) => this.NotifyItemChanged(_coerce(i), i));
 
             this.Items.AddRange(targetItems);
-        
+
             var notifyCollectionChanged = this.Items as INotifyCollectionChanged;
-            
+
             if (notifyCollectionChanged != null)
             {
                 notifyCollectionChanged.CollectionChanged += this.OnSourceCollectionChanged;
             }
         }
-
-        #endregion
-
-        #region · IDisposable Members ·
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -107,14 +89,14 @@ namespace Chronos.Presentation.ViewModel
         /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
                     // Cleanup managed resources
                     this.Clear();
 
-                    var notifyCollectionChanged = this.sourceCollection as INotifyCollectionChanged;
+                    var notifyCollectionChanged = _sourceCollection as INotifyCollectionChanged;
 
                     if (notifyCollectionChanged != null)
                     {
@@ -125,13 +107,9 @@ namespace Chronos.Presentation.ViewModel
                 // Cleanup unmanaged resources
 
                 // Mark the object as disposed
-                this.disposed = true;
+                _disposed = true;
             }
         }
-
-        #endregion
-
-        #region · IList<TTarget> Members ·
 
         /// <summary>
         /// Gets or sets the <see cref="TTarget"/> at the specified index.
@@ -187,11 +165,11 @@ namespace Chronos.Presentation.ViewModel
         /// </exception>
         public void Add(TTarget item)
         {
-            TSource source = this.coerce(item);
+            TSource source = _coerce(item);
 
             item.PropertyChanged += (x, y) => this.NotifyItemChanged(source, item);
 
-            this.sourceCollection.Add(source);
+            _sourceCollection.Add(source);
             this.Items.Add(item);
         }
 
@@ -208,11 +186,11 @@ namespace Chronos.Presentation.ViewModel
         /// </exception>
         public void Insert(int index, TTarget item)
         {
-            TSource source = this.coerce(item);
+            TSource source = _coerce(item);
 
             item.PropertyChanged += (x, y) => this.NotifyItemChanged(source, item);
 
-            this.sourceCollection.Insert(index, source);
+            _sourceCollection.Insert(index, source);
             this.Items.Insert(index, item);
         }
 
@@ -240,15 +218,15 @@ namespace Chronos.Presentation.ViewModel
         /// </exception>
         public bool Remove(TTarget item)
         {
-            if (this.teardown != null)
+            if (_teardown != null)
             {
-                this.teardown(item);
+                _teardown(item);
             }
 
-            item.PropertyChanged -= (x, y) => this.NotifyItemChanged(this.coerce(item), item);
+            item.PropertyChanged -= (x, y) => this.NotifyItemChanged(_coerce(item), item);
 
             this.Items.Remove(item);
-            this.sourceCollection.Remove(this.coerce(item));
+            _sourceCollection.Remove(_coerce(item));
 
             return true;
         }
@@ -265,17 +243,17 @@ namespace Chronos.Presentation.ViewModel
         /// </exception>
         public void RemoveAt(int index)
         {
-            if (this.teardown != null)
+            if (_teardown != null)
             {
-                this.teardown(this.Items[index]);
+                _teardown(this.Items[index]);
             }
 
             TTarget target = this[index];
 
-            target.PropertyChanged -= (x, y) => this.NotifyItemChanged(this.coerce(target), target);
+            target.PropertyChanged -= (x, y) => this.NotifyItemChanged(_coerce(target), target);
 
             this.Items.RemoveAt(index);
-            this.sourceCollection.RemoveAt(index);
+            _sourceCollection.RemoveAt(index);
         }
 
         /// <summary>
@@ -286,14 +264,14 @@ namespace Chronos.Presentation.ViewModel
         /// </exception>
         public void Clear()
         {
-            if (this.teardown != null)
+            if (_teardown != null)
             {
-                this.Items.ForEach(target => this.teardown(target));
+                this.Items.ForEach(target => _teardown(target));
             }
 
-            this.Items.ForEach(target => target.PropertyChanged -= (x, y) => this.NotifyItemChanged(this.coerce(target), target));
-            
-            this.sourceCollection.Clear();
+            this.Items.ForEach(target => target.PropertyChanged -= (x, y) => this.NotifyItemChanged(_coerce(target), target));
+
+            _sourceCollection.Clear();
             this.Items.Clear();
         }
 
@@ -343,10 +321,6 @@ namespace Chronos.Presentation.ViewModel
         {
             throw new NotImplementedException();
         }
-
-        #endregion
-
-        #region · IList Members ·
 
         /// <summary>
         /// Adds an item to the <see cref="T:System.Collections.IList"/>.
@@ -545,15 +519,11 @@ namespace Chronos.Presentation.ViewModel
             get { return null; }
         }
 
-        #endregion
-
-        #region · Change Tracking Methods ·
-
         private void NotifyItemChanged(TSource source, TTarget target)
         {
             if (this.ItemChanged != null)
             {
-                this.ItemChanged(this, new ItemChangedEventArgs<TSource,TTarget>(source, target));
+                this.ItemChanged(this, new ItemChangedEventArgs<TSource, TTarget>(source, target));
             }
         }
 
@@ -564,7 +534,5 @@ namespace Chronos.Presentation.ViewModel
                 this.CollectionChanged(this, e);
             }
         }
-
-        #endregion
     }
 }

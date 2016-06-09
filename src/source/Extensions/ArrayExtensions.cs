@@ -12,8 +12,6 @@ namespace Chronos.Extensions
     /// </summary>
     public static class ArrayExtensions
     {
-        #region · Extensions ·
-
         /// <summary>
         /// Converts a given byte array to a base-64 string
         /// </summary>
@@ -114,7 +112,5 @@ namespace Chronos.Extensions
 
             return hex.ToString();
         }
-
-        #endregion
     }
 }

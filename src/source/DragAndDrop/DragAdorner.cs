@@ -8,53 +8,40 @@ using System.Windows.Shapes;
 
 namespace Chronos.Presentation.DragAndDrop
 {
-    public sealed class DragAdorner : Adorner
+    public sealed class DragAdorner
+        : Adorner
     {
-        #region � Fields �
-
-        private UIElement   child;
-        private UIElement   owner;
-        private double      XCenter;
-        private double      YCenter;
-        private double      topOffset;
-        private double      leftOffset;
-
-        #endregion
-
-        #region � Properties �
+        private UIElement _child;
+        private UIElement _owner;
+        private double _XCenter;
+        private double _YCenter;
+        private double _topOffset;
+        private double _leftOffset;
 
         public double LeftOffset
         {
-            get { return this.leftOffset; }
+            get { return _leftOffset; }
             set
             {
-                this.leftOffset = (value - this.XCenter);
+                _leftOffset = (value - _XCenter);
                 this.UpdatePosition();
             }
         }
-        
+
         public double TopOffset
         {
-            get { return this.topOffset; }
+            get { return _topOffset; }
             set
             {
-                this.topOffset = (value - this.YCenter);
+                _topOffset = (value - _YCenter);
                 this.UpdatePosition();
             }
         }
-
-        #endregion
-
-        #region � Protected Properties �
 
         protected override int VisualChildrenCount
         {
             get { return 1; }
         }
-
-        #endregion
-
-        #region � Constructors �
 
         public DragAdorner(UIElement owner)
             : base(owner)
@@ -64,72 +51,60 @@ namespace Chronos.Presentation.DragAndDrop
         public DragAdorner(UIElement owner, UIElement adornElement, bool useVisualBrush, double opacity)
             : base(owner)
         {
-            this.owner  = owner;
+            _owner = owner;
 
             if (useVisualBrush)
             {
-                VisualBrush brush   = new VisualBrush(adornElement);
-                Rectangle   rect    = new Rectangle();
+                VisualBrush brush = new VisualBrush(adornElement);
+                Rectangle rect = new Rectangle();
 
-                brush.Opacity       = opacity;
-                rect.RadiusX        = 3;
-                rect.RadiusY        = 3;
-                rect.Width          = adornElement.DesiredSize.Width;
-                rect.Height         = adornElement.DesiredSize.Height;
+                brush.Opacity = opacity;
+                rect.RadiusX = 3;
+                rect.RadiusY = 3;
+                rect.Width = adornElement.DesiredSize.Width;
+                rect.Height = adornElement.DesiredSize.Height;
 
-                this.XCenter        = adornElement.DesiredSize.Width / 2;
-                this.YCenter        = adornElement.DesiredSize.Height / 2;
+                _XCenter = adornElement.DesiredSize.Width / 2;
+                _YCenter = adornElement.DesiredSize.Height / 2;
 
                 rect.Fill = brush;
 
-                this.child = rect;
+                _child = rect;
             }
             else
             {
-                this.child = adornElement;
+                _child = adornElement;
             }
         }
-
-        #endregion
-
-        #region � Methods �
 
         public override GeneralTransform GetDesiredTransform(GeneralTransform transform)
         {
             GeneralTransformGroup result = new GeneralTransformGroup();
 
             result.Children.Add(base.GetDesiredTransform(transform));
-            result.Children.Add(new TranslateTransform(this.leftOffset, this.topOffset));
+            result.Children.Add(new TranslateTransform(_leftOffset, _topOffset));
 
             return result;
         }
 
-        #endregion
-
-        #region � Protected Methods �
-
         protected override Visual GetVisualChild(int index)
         {
-            return this.child;
+            return _child;
         }
 
         protected override Size MeasureOverride(Size finalSize)
         {
-            this.child.Measure(finalSize);
-            
-            return this.child.DesiredSize;
+            _child.Measure(finalSize);
+
+            return _child.DesiredSize;
         }
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            this.child.Arrange(new Rect(this.child.DesiredSize));
+            _child.Arrange(new Rect(_child.DesiredSize));
 
             return finalSize;
         }
-
-        #endregion
-
-        #region � Private Methods �
 
         private void UpdatePosition()
         {
@@ -140,7 +115,5 @@ namespace Chronos.Presentation.DragAndDrop
                 adorner.Update(this.AdornedElement);
             }
         }
-
-        #endregion
     }
 }

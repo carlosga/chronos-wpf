@@ -9,8 +9,6 @@ namespace Chronos.Extensions
     /// </summary>
     public static class FileInfoExtensions
     {
-        #region · Extensions ·
-
         /// <summary>
         /// Renames a file.
         /// </summary>
@@ -335,7 +333,5 @@ namespace Chronos.Extensions
 
             return files;
         }
-
-        #endregion
     }
 }

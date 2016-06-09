@@ -9,11 +9,9 @@ namespace Chronos.Presentation.Core.ViewModel
     /// <summary>
     /// Interface for navigation viewmodel implementations
     /// </summary>
-    public interface INavigationViewModel 
+    public interface INavigationViewModel
         : IClosableViewModel, ISupportNavigationLifecycle, ISupportNavigationState
     {
-        #region · Commands ·
-
         /// <summary>
         /// Gets the open new window command
         /// </summary>
@@ -31,10 +29,6 @@ namespace Chronos.Presentation.Core.ViewModel
             get;
         }
 
-        #endregion
-
-        #region · Properties ·
-
         /// <summary>
         /// Gets the navigation route
         /// </summary>
@@ -50,7 +44,5 @@ namespace Chronos.Presentation.Core.ViewModel
         {
             get;
         }
-
-        #endregion
     }
 }

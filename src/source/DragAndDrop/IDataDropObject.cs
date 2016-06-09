@@ -10,10 +10,6 @@ namespace Chronos.Presentation.DragAndDrop
 {
     public interface IDataDropObject
     {
-        #region · Methods ·
-
         object GetData();
-
-        #endregion
     }
 }

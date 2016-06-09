@@ -10,8 +10,6 @@ namespace Chronos.Presentation.Core.ViewModel
     /// </summary>
     public interface IBookmarkViewModel
     {
-        #region · Commands ·
-
         /// <summary>
         /// Gets the bookmark current command
         /// </summary>
@@ -44,10 +42,6 @@ namespace Chronos.Presentation.Core.ViewModel
             get;
         }
 
-        #endregion
-
-        #region · Properties ·
-
         /// <summary>
         /// Gets a value indicating if there are available bookmarks
         /// </summary>
@@ -55,7 +49,5 @@ namespace Chronos.Presentation.Core.ViewModel
         {
             get;
         }
-        
-        #endregion
     }
 }

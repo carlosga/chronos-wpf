@@ -13,7 +13,7 @@ namespace Chronos.Presentation.Windows.Helpers
     {
         #region · Static Members ·
 
-        private static bool IsUpdating = false;
+        private static bool s_isUpdating = false;
 
         #endregion
 
@@ -69,7 +69,7 @@ namespace Chronos.Presentation.Windows.Helpers
 
             if (e.NewValue != null)
             {
-                if (!IsUpdating)
+                if (!s_isUpdating)
                 {
                     password.Password = e.NewValue.ToString();
                 }
@@ -86,12 +86,12 @@ namespace Chronos.Presentation.Windows.Helpers
         /// <summary>
         /// Handles the password change event.
         /// </summary>
-        static void PasswordChanged(object sender, RoutedEventArgs e)
+        private static void PasswordChanged(object sender, RoutedEventArgs e)
         {
             PasswordBox password = sender as PasswordBox;
-            IsUpdating = true;
+            s_isUpdating = true;
             SetBoundPassword(password, password.Password);
-            IsUpdating = false;
+            s_isUpdating = false;
         }
 
         #endregion

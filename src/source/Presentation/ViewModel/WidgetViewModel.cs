@@ -9,42 +9,28 @@ namespace Chronos.Presentation.ViewModel
     /// <summary>
     /// Base class for widgets viewmodel imeplementations
     /// </summary>
-    public abstract class WidgetViewModel 
+    public abstract class WidgetViewModel
         : ClosableViewModel, IWidgetViewModel
     {
-        #region · NotifyPropertyChanged Cached Instances ·
+        private static readonly PropertyChangedEventArgs s_descriptionChangedArgs = CreateArgs<WidgetViewModel>(x => x.Description);
 
-        private static readonly PropertyChangedEventArgs DescriptionChangedArgs = CreateArgs<WidgetViewModel>(x => x.Description);
-
-        #endregion
-
-        #region · Fields ·
-
-        private string description;
-
-        #endregion
-
-        #region · Properties ·
+        private string _description;
 
         /// <summary>
         /// Returns the widget description.
         /// </summary>
         public virtual string Description
         {
-            get { return this.description; }
+            get { return _description; }
             set
             {
-                if (this.description != value)
+                if (_description != value)
                 {
-                    this.description = value;
-                    this.NotifyPropertyChanged(DescriptionChangedArgs);
+                    _description = value;
+                    this.NotifyPropertyChanged(s_descriptionChangedArgs);
                 }
             }
         }
-
-        #endregion
-
-        #region · Constructors ·
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WidgetViewModel"/> class.
@@ -54,20 +40,14 @@ namespace Chronos.Presentation.ViewModel
         {
         }
 
-        #endregion
-
-        #region · Command Actions ·
-
         /// <summary>
         /// Called when the related view is being closed.
         /// </summary>
         public override void Close()
         {
             base.Close();
-            
-            this.description = null;
-        }
 
-        #endregion
+            _description = null;
+        }
     }
 }

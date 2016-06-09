@@ -11,8 +11,6 @@ namespace Chronos.Presentation.Windows
     /// </summary>
     public interface IGroupable
     {
-        #region · Properties ·
-
         /// <summary>
         /// Gets the item id.
         /// </summary>
@@ -41,7 +39,5 @@ namespace Chronos.Presentation.Windows
             get;
             set;
         }
-
-        #endregion
     }
 }

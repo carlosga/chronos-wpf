@@ -11,11 +11,11 @@ namespace Chronos.Presentation.Windows.Controls
     /// <summary>
     /// Provides the ability to display shortcuts in a <see cref="Desktop"/> control.
     /// </summary>
-    public sealed class ShortcutElement 
+    public sealed class ShortcutElement
         : DesktopElement, ISelectable
     {
         #region · Dependency Properties ·
-        
+
         /// <summary>
         /// Identifies the IsSelected dependency property
         /// </summary>
@@ -54,7 +54,7 @@ namespace Chronos.Presentation.Windows.Controls
         #endregion
 
         #region · ISelectable Members ·
-        
+
         public Guid ParentId
         {
             get;

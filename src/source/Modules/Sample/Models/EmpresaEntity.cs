@@ -6,16 +6,10 @@ using System.ComponentModel;
 
 namespace Chronos.Modules.Sample.Models
 {
-    public partial class EmpresaEntity 
+    public partial class EmpresaEntity
         : INotifyPropertyChanged, IDataErrorInfo
     {
-        #region · INotifyPropertyChanged Members ·
-
         public event PropertyChangedEventHandler PropertyChanged;
-        
-        #endregion
-        
-        #region · Fields ·
 
         private string _idEmpresa;
         private string _cif;
@@ -38,10 +32,6 @@ namespace Chronos.Modules.Sample.Models
         private string _fax2;
         private string _www;
         private string _email;
-
-        #endregion
-
-        #region · Properties ·
 
         public string IdEmpresa
         {
@@ -316,10 +306,6 @@ namespace Chronos.Modules.Sample.Models
             }
         }
 
-        #endregion
-
-        #region · IDataErrorInfo Members ·
-
         public string Error
         {
             get { return null; }
@@ -329,10 +315,6 @@ namespace Chronos.Modules.Sample.Models
         {
             get { return null; }
         }
- 
-        #endregion
-
-        #region · ChangeTracking ·
 
         protected virtual void OnPropertyChanged(String propertyName)
         {
@@ -341,7 +323,5 @@ namespace Chronos.Modules.Sample.Models
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-
-        #endregion
     }
 }

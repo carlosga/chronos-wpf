@@ -29,8 +29,6 @@ namespace Chronos.Modules.Sample.Views
     public partial class EmpresaView
         : WindowElement
     {
-        #region · Constructors ·
-
         [ResolveConstructor]
         public EmpresaView([ResolveViewModel(typeof(EmpresaView))]INavigationViewModel viewModel)
         {
@@ -38,7 +36,5 @@ namespace Chronos.Modules.Sample.Views
 
             this.DataContext = viewModel;
         }
-
-        #endregion
     }
 }

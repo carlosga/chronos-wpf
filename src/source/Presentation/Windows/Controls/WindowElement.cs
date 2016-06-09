@@ -26,27 +26,27 @@ namespace Chronos.Presentation.Windows.Controls
     [TemplateVisualState(Name = NormalVisualState, GroupName = WindowStateGroup)]
     [TemplateVisualState(Name = MinimizedVisualState, GroupName = WindowStateGroup)]
     [TemplateVisualState(Name = MaximizedVisualState, GroupName = WindowStateGroup)]
-    public class WindowElement 
+    public class WindowElement
         : DesktopElement, IWindow, IModalVindow
     {
         #region · Constants ·
 
         #region · Template Parts ·
-        
-        private const string PART_ContentPresenter  = "PART_ContentPresenter";
-        private const string PART_Root              = "PART_Root";
-        private const string PART_MaximizeButton    = "PART_MaximizeButton";
-        private const string PART_MinimizeButton    = "PART_MinimizeButton";
-        private const string PART_CloseButton       = "PART_CloseButton";        
+
+        private const string PART_ContentPresenter = "PART_ContentPresenter";
+        private const string PART_Root = "PART_Root";
+        private const string PART_MaximizeButton = "PART_MaximizeButton";
+        private const string PART_MinimizeButton = "PART_MinimizeButton";
+        private const string PART_CloseButton = "PART_CloseButton";
 
         #endregion
 
         #region · Visual States ·
 
-        private const string WindowStateGroup       = "WindowState";
-        private const string NormalVisualState      = "Normal";
-        private const string MinimizedVisualState   = "Minimized";
-        private const string MaximizedVisualState   = "Maximized";
+        private const string WindowStateGroup = "WindowState";
+        private const string NormalVisualState = "Normal";
+        private const string MinimizedVisualState = "Minimized";
+        private const string MaximizedVisualState = "Maximized";
 
         #endregion
 
@@ -124,7 +124,7 @@ namespace Chronos.Presentation.Windows.Controls
                 {
                     ViewModeType oldViewModel = (ViewModeType)e.OldValue;
 
-                    if (oldViewModel == ViewModeType.Add 
+                    if (oldViewModel == ViewModeType.Add
                         || oldViewModel == ViewModeType.Edit)
                     {
                         window.UpdateActiveElementBindings();
@@ -202,17 +202,17 @@ namespace Chronos.Presentation.Windows.Controls
 
         #region · Fields ·
 
-        private ContentPresenter    contentPresenter;
-        private DispatcherFrame     dispatcherFrame;
-        private WindowState         oldWindowState;
-        private bool                isShowed;
-        private bool                isModal;
-        
+        private ContentPresenter _contentPresenter;
+        private DispatcherFrame _dispatcherFrame;
+        private WindowState _oldWindowState;
+        private bool _isShowed;
+        private bool _isModal;
+
         #region · Commands ·
 
-        private ICommand minimizeCommand;
-        private ICommand maximizeCommand;
-        private ICommand closeCommand;
+        private ICommand _minimizeCommand;
+        private ICommand _maximizeCommand;
+        private ICommand _closeCommand;
 
         #endregion
 
@@ -228,12 +228,12 @@ namespace Chronos.Presentation.Windows.Controls
         {
             get
             {
-                if (this.maximizeCommand == null)
+                if (_maximizeCommand == null)
                 {
-                    this.maximizeCommand = new ActionCommand(() => OnMaximizeWindow());
+                    _maximizeCommand = new ActionCommand(() => OnMaximizeWindow());
                 }
 
-                return this.maximizeCommand;
+                return _maximizeCommand;
             }
         }
 
@@ -245,12 +245,12 @@ namespace Chronos.Presentation.Windows.Controls
         {
             get
             {
-                if (this.minimizeCommand == null)
+                if (_minimizeCommand == null)
                 {
-                    this.minimizeCommand = new ActionCommand(() => OnMinimizeWindow());
+                    _minimizeCommand = new ActionCommand(() => OnMinimizeWindow());
                 }
 
-                return this.minimizeCommand;
+                return _minimizeCommand;
             }
         }
 
@@ -262,12 +262,12 @@ namespace Chronos.Presentation.Windows.Controls
         {
             get
             {
-                if (this.closeCommand == null)
+                if (_closeCommand == null)
                 {
-                    this.closeCommand = new ActionCommand(() => OnCloseWindow());
+                    _closeCommand = new ActionCommand(() => OnCloseWindow());
                 }
 
-                return this.closeCommand;
+                return _closeCommand;
             }
         }
 
@@ -305,13 +305,13 @@ namespace Chronos.Presentation.Windows.Controls
             {
                 if ((WindowState)this.GetValue(WindowStateProperty) != value)
                 {
-                    if (this.oldWindowState == System.Windows.WindowState.Maximized
+                    if (_oldWindowState == System.Windows.WindowState.Maximized
                         && this.WindowState == System.Windows.WindowState.Minimized
                         && value == System.Windows.WindowState.Normal)
                     {
-                        this.UpdateWindowState(this.WindowState, this.oldWindowState);
+                        this.UpdateWindowState(this.WindowState, _oldWindowState);
 
-                        base.SetValue(WindowStateProperty, this.oldWindowState);
+                        base.SetValue(WindowStateProperty, _oldWindowState);
                     }
                     else
                     {
@@ -406,7 +406,7 @@ namespace Chronos.Presentation.Windows.Controls
         {
             base.OnApplyTemplate();
 
-            this.contentPresenter = this.GetTemplateChild(WindowElement.PART_ContentPresenter) as ContentPresenter;
+            _contentPresenter = this.GetTemplateChild(WindowElement.PART_ContentPresenter) as ContentPresenter;
         }
 
         /// <summary>
@@ -414,9 +414,9 @@ namespace Chronos.Presentation.Windows.Controls
         /// </summary>
         public void Show()
         {
-            if (!this.isShowed)
+            if (!_isShowed)
             {
-                this.isShowed = true;
+                _isShowed = true;
             }
 
             this.OnActivated();
@@ -427,8 +427,8 @@ namespace Chronos.Presentation.Windows.Controls
         /// </summary>
         public DialogResult ShowDialog()
         {
-            this.Parent     = WindowElement.ModalContainerPanel;
-            this.isModal    = true;
+            this.Parent = WindowElement.ModalContainerPanel;
+            _isModal = true;
 
             this.LockKeyboardNavigation();
             this.LockMouseOutside();
@@ -444,8 +444,8 @@ namespace Chronos.Presentation.Windows.Controls
                 ComponentDispatcher.PushModal();
 
                 // Create a DispatcherFrame instance and use it to start a message loop
-                this.dispatcherFrame = new DispatcherFrame();
-                Dispatcher.PushFrame(this.dispatcherFrame);
+                _dispatcherFrame = new DispatcherFrame();
+                Dispatcher.PushFrame(_dispatcherFrame);
             }
             finally
             {
@@ -473,12 +473,12 @@ namespace Chronos.Presentation.Windows.Controls
                 this.LockMouseOutside(false);
 
                 // Clean up
-                this.maximizeCommand    = null;
-                this.minimizeCommand    = null;
-                this.closeCommand       = null;
-                this.dispatcherFrame    = null;
-                this.isModal            = false;
-                this.isShowed           = false;
+                _maximizeCommand = null;
+                _minimizeCommand = null;
+                _closeCommand = null;
+                _dispatcherFrame = null;
+                _isModal = false;
+                _isShowed = false;
 
                 this.CommandBindings.Clear();
 
@@ -498,10 +498,10 @@ namespace Chronos.Presentation.Windows.Controls
         {
             this.Visibility = System.Windows.Visibility.Collapsed;
 
-            if (this.isModal && this.dispatcherFrame != null)
+            if (_isModal && _dispatcherFrame != null)
             {
-                this.dispatcherFrame.Continue = false;
-                this.dispatcherFrame = null;
+                _dispatcherFrame.Continue = false;
+                _dispatcherFrame = null;
             }
         }
 
@@ -529,7 +529,7 @@ namespace Chronos.Presentation.Windows.Controls
 
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
-            if ((e.Key == Key.Enter || e.Key == Key.Return) && 
+            if ((e.Key == Key.Enter || e.Key == Key.Return) &&
                 Keyboard.Modifiers == ModifierKeys.None)
             {
                 if (e.OriginalSource != this)
@@ -540,8 +540,8 @@ namespace Chronos.Presentation.Windows.Controls
                     }
                     else
                     {
-                        FocusNavigationDirection    direction   = FocusNavigationDirection.Next;
-                        UIElement                   element     = e.OriginalSource as UIElement;
+                        FocusNavigationDirection direction = FocusNavigationDirection.Next;
+                        UIElement element = e.OriginalSource as UIElement;
 
                         if (element != null)
                         {
@@ -561,7 +561,7 @@ namespace Chronos.Presentation.Windows.Controls
 
         protected virtual void OnCloseWindow()
         {
-            if (this.isModal)
+            if (_isModal)
             {
                 this.Hide();
             }
@@ -607,8 +607,8 @@ namespace Chronos.Presentation.Windows.Controls
             if (Keyboard.FocusedElement != null &&
                 Keyboard.FocusedElement is DependencyObject)
             {
-                DependencyObject        element                 = (DependencyObject)Keyboard.FocusedElement;
-                LocalValueEnumerator    localValueEnumerator    = element.GetLocalValueEnumerator();
+                DependencyObject element = (DependencyObject)Keyboard.FocusedElement;
+                LocalValueEnumerator localValueEnumerator = element.GetLocalValueEnumerator();
 
                 while (localValueEnumerator.MoveNext())
                 {
@@ -619,7 +619,7 @@ namespace Chronos.Presentation.Windows.Controls
                         bindingExpression.UpdateSource();
                         bindingExpression.UpdateTarget();
                     }
-                }                
+                }
             }
         }
 
@@ -641,9 +641,9 @@ namespace Chronos.Presentation.Windows.Controls
             {
                 Debug.Assert(WindowElement.ModalContainerPanel != null);
 
-                Binding wBinding    = new Binding("ActualWidth");
-                Binding hBinding    = new Binding("ActualHeight");
-                Canvas  fence       = new Canvas();
+                Binding wBinding = new Binding("ActualWidth");
+                Binding hBinding = new Binding("ActualHeight");
+                Canvas fence = new Canvas();
 
                 wBinding.Source = WindowElement.ModalContainerPanel;
                 hBinding.Source = WindowElement.ModalContainerPanel;
@@ -690,12 +690,12 @@ namespace Chronos.Presentation.Windows.Controls
 
                 VisualStateManager.GoToState(this, MaximizedVisualState, true);
 
-                ScaleTransform st = this.contentPresenter.LayoutTransform as ScaleTransform;
+                ScaleTransform st = _contentPresenter.LayoutTransform as ScaleTransform;
 
                 if (st != null)
                 {
                     this.OldPosition = this.GetPosition();
-                    
+
                     if (this.ConstraintToParent)
                     {
                         if (this.ActualWidth > this.ActualHeight)
@@ -728,12 +728,12 @@ namespace Chronos.Presentation.Windows.Controls
                         {
                             st.ScaleY = (scaleY > 2.5) ? 2.5 : scaleY;
                         }
- 
+
                         Application.Current.DoEvents();
 
                         this.MoveElement
                         (
-                            (this.GetParent<Window>().ActualWidth- this.ActualWidth) / 2, 
+                            (this.GetParent<Window>().ActualWidth - this.ActualWidth) / 2,
                             (this.GetParent<Window>().ActualHeight - this.ActualHeight) / 2 - (this.GetParent<Window>().ActualHeight - this.Parent.ActualHeight)
                         );
                     }
@@ -753,7 +753,7 @@ namespace Chronos.Presentation.Windows.Controls
                 }
                 else if (oldWindowState == WindowState.Maximized)
                 {
-                    ScaleTransform st = this.contentPresenter.LayoutTransform as ScaleTransform;
+                    ScaleTransform st = _contentPresenter.LayoutTransform as ScaleTransform;
 
                     if (st != null)
                     {
@@ -767,9 +767,9 @@ namespace Chronos.Presentation.Windows.Controls
             {
                 VisualStateManager.GoToState(this, MinimizedVisualState, true);
 
-                this.Visibility     = Visibility.Collapsed;
-                this.oldWindowState = oldWindowState;
-                this.OldPosition    = this.GetPosition();
+                this.Visibility = Visibility.Collapsed;
+                _oldWindowState = oldWindowState;
+                this.OldPosition = this.GetPosition();
 
                 this.OnDeactivated();
             }

@@ -11,8 +11,6 @@ namespace Chronos.Presentation.Core.Windows
     /// </summary>
     public interface IDesktopElement
     {
-        #region · Properties ·
-
         /// <summary>
         /// Gets the element identifier
         /// </summary>
@@ -57,15 +55,9 @@ namespace Chronos.Presentation.Core.Windows
             set;
         }
 
-        #endregion
-
-        #region · Methods ·
-
         /// <summary>
         /// Activates the element
         /// </summary>
         void Activate();
-
-        #endregion
     }
 }

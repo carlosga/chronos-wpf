@@ -10,13 +10,7 @@ namespace Chronos.Presentation.Windows
     /// </summary>
     public sealed class ActiveDesktopChangedInfo
     {
-        #region · Fields ·
-
-        private IVirtualDesktop newActiveDesktop;
-
-        #endregion
-
-        #region · Properties ·
+        private readonly IVirtualDesktop _newActiveDesktop;
 
         /// <summary>
         /// Gets the new active desktop.
@@ -24,12 +18,8 @@ namespace Chronos.Presentation.Windows
         /// <value>The new active desktop.</value>
         public IVirtualDesktop NewActiveDesktop
         {
-            get { return this.newActiveDesktop; }
+            get { return _newActiveDesktop; }
         }
-
-        #endregion
-
-        #region · Constructors ·
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ActiveDesktopChangedInfo"/> class.
@@ -37,9 +27,7 @@ namespace Chronos.Presentation.Windows
         /// <param name="newActiveDesktop">The new active desktop.</param>
         public ActiveDesktopChangedInfo(IVirtualDesktop newActiveDesktop)
         {
-            this.newActiveDesktop = newActiveDesktop;
+            _newActiveDesktop = newActiveDesktop;
         }
-
-        #endregion
     }
 }

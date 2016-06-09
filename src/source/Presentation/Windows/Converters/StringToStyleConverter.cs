@@ -10,10 +10,9 @@ namespace Chronos.Presentation.Windows.Converters
     /// <summary>
     /// Value converter for style identifiers
     /// </summary>
-    public sealed class StringToStyleConverter : IValueConverter
+    public sealed class StringToStyleConverter
+        : IValueConverter
     {
-        #region · IValueConverter Members ·
-
         /// <summary>
         /// Converts a value.
         /// </summary>
@@ -43,7 +42,5 @@ namespace Chronos.Presentation.Windows.Converters
         {
             throw new NotImplementedException();
         }
-
-        #endregion
     }
 }

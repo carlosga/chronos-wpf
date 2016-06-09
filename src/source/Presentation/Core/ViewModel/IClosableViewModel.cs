@@ -12,8 +12,6 @@ namespace Chronos.Presentation.Core.ViewModel
     public interface IClosableViewModel
         : IObservableObject
     {
-        #region · Commands ·
-
         /// <summary>
         /// Gets the close command
         /// </summary>
@@ -21,10 +19,6 @@ namespace Chronos.Presentation.Core.ViewModel
         {
             get;
         }
-
-        #endregion
-
-        #region · Properties ·
 
         /// <summary>
         /// Gets the viewmodel identifier
@@ -43,15 +37,9 @@ namespace Chronos.Presentation.Core.ViewModel
             set;
         }
 
-        #endregion
-
-        #region · Methods ·
-
         /// <summary>
         /// Closes the viewmodel
         /// </summary>
         void Close();
-
-        #endregion
     }
 }

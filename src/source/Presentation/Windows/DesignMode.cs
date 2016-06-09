@@ -11,13 +11,7 @@ namespace Chronos.Presentation.Windows
     /// </summary>
     public static class DesignMode
     {
-        #region · Members ·
-
-        private static bool? _isInDesignMode;
-
-        #endregion
-
-        #region · Properties ·
+        private static bool? s_isInDesignMode;
 
         /// <summary>
         /// Gets a value indicating whether the control is in design mode (running in Blend
@@ -27,19 +21,17 @@ namespace Chronos.Presentation.Windows
         {
             get
             {
-                if (!_isInDesignMode.HasValue)
+                if (!s_isInDesignMode.HasValue)
                 {
                     var prop = DesignerProperties.IsInDesignModeProperty;
-                    _isInDesignMode
+                    s_isInDesignMode
                         = (bool)DependencyPropertyDescriptor
                         .FromProperty(prop, typeof(FrameworkElement))
                         .Metadata.DefaultValue;
                 }
 
-                return _isInDesignMode.Value;
+                return s_isInDesignMode.Value;
             }
         }
-
-        #endregion
     }
 }

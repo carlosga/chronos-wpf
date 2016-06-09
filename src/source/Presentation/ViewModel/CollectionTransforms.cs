@@ -25,7 +25,7 @@ namespace Chronos.Presentation.ViewModel
             this ObservableCollection<TSource> sourceCollection,
             Func<TSource, TTarget> setup,
             Func<TTarget, TSource> coerce,
-            Action<TTarget> teardown = null) where TSource: INotifyPropertyChanged where TTarget: INotifyPropertyChanged
+            Action<TTarget> teardown = null) where TSource : INotifyPropertyChanged where TTarget : INotifyPropertyChanged
         {
             return new CollectionViewModel<TSource, TTarget>(sourceCollection, setup, coerce, teardown);
         }

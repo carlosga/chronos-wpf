@@ -8,8 +8,6 @@ namespace Chronos.Extensions
     /// </summary>
     public static class CollectionExtensions
     {
-        #region · Extensions ·
-
         /// <summary>
         /// Adds a value uniquely to to a collection and returns a value whether the value was added or not.
         /// </summary>
@@ -61,7 +59,5 @@ namespace Chronos.Extensions
                 collection.Add(value);
             }
         }
-
-        #endregion
     }
 }

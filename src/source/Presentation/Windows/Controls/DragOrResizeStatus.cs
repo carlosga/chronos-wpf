@@ -10,21 +10,21 @@ namespace Chronos.Presentation.Windows.Controls
     {
         #region · Consts ·
 
-        const byte _TopLeft         = 9;
-        const byte _TopCenter       = 10;
-        const byte _TopRight        = 12;
-        const byte _MiddleLeft      = 17;
-        const byte _Drag            = 18;
-        const byte _MiddleRight     = 20;
-        const byte _BottomLeft      = 33;
-        const byte _BottomCenter    = 34;
-        const byte _BottomRight     = 36;
-        const byte _Left            = 1;
-        const byte _HMiddle         = 2;
-        const byte _Right           = 4;
-        const byte _Top             = 8;
-        const byte _VCenter         = 16;
-        const byte _Bottom          = 32;
+        private const byte _TopLeft = 9;
+        private const byte _TopCenter = 10;
+        private const byte _TopRight = 12;
+        private const byte _MiddleLeft = 17;
+        private const byte _Drag = 18;
+        private const byte _MiddleRight = 20;
+        private const byte _BottomLeft = 33;
+        private const byte _BottomCenter = 34;
+        private const byte _BottomRight = 36;
+        private const byte _Left = 1;
+        private const byte _HMiddle = 2;
+        private const byte _Right = 4;
+        private const byte _Top = 8;
+        private const byte _VCenter = 16;
+        private const byte _Bottom = 32;
 
         #endregion
 
@@ -33,43 +33,43 @@ namespace Chronos.Presentation.Windows.Controls
         /// <summary>
         /// No resize or drag status
         /// </summary>
-        public static readonly DragOrResizeStatus None          = new DragOrResizeStatus { value = 0 };
+        public static readonly DragOrResizeStatus None = new DragOrResizeStatus { _value = 0 };
         /// <summary>
         /// Identifies the top/left resize status
         /// </summary>
-        public static readonly DragOrResizeStatus TopLeft       = new DragOrResizeStatus { value = _TopLeft };
+        public static readonly DragOrResizeStatus TopLeft = new DragOrResizeStatus { _value = _TopLeft };
         /// <summary>
         /// Identifies the top/center resize status
         /// </summary>
-        public static readonly DragOrResizeStatus TopCenter     = new DragOrResizeStatus { value = _TopCenter };
+        public static readonly DragOrResizeStatus TopCenter = new DragOrResizeStatus { _value = _TopCenter };
         /// <summary>
         /// /// Identifies the top/right resize status
         /// </summary>
-        public static readonly DragOrResizeStatus TopRight      = new DragOrResizeStatus { value = _TopRight };
+        public static readonly DragOrResizeStatus TopRight = new DragOrResizeStatus { _value = _TopRight };
         /// <summary>
         /// /// Identifies the middle/left resize status
         /// </summary>
-        public static readonly DragOrResizeStatus MiddleLeft    = new DragOrResizeStatus { value = _MiddleLeft };
+        public static readonly DragOrResizeStatus MiddleLeft = new DragOrResizeStatus { _value = _MiddleLeft };
         /// <summary>
         /// Identifies the dragging status
         /// </summary>
-        public static readonly DragOrResizeStatus Drag          = new DragOrResizeStatus { value = _Drag };
+        public static readonly DragOrResizeStatus Drag = new DragOrResizeStatus { _value = _Drag };
         /// <summary>
         /// Identifies the middle/right resize status
         /// </summary>
-        public static readonly DragOrResizeStatus MiddleRight   = new DragOrResizeStatus { value = _MiddleRight };
+        public static readonly DragOrResizeStatus MiddleRight = new DragOrResizeStatus { _value = _MiddleRight };
         /// <summary>
         /// /// Identifies the bottom/left resize status
         /// </summary>
-        public static readonly DragOrResizeStatus BottomLeft    = new DragOrResizeStatus { value = _BottomLeft };
+        public static readonly DragOrResizeStatus BottomLeft = new DragOrResizeStatus { _value = _BottomLeft };
         /// <summary>
         /// Identifies the bottom/center resize status
         /// </summary>
-        public static readonly DragOrResizeStatus BottomCenter  = new DragOrResizeStatus { value = _BottomCenter };
+        public static readonly DragOrResizeStatus BottomCenter = new DragOrResizeStatus { _value = _BottomCenter };
         /// <summary>
         /// Identifies the bottom/right resize status
         /// </summary>
-        public static readonly DragOrResizeStatus BottomRight   = new DragOrResizeStatus { value = _BottomRight };
+        public static readonly DragOrResizeStatus BottomRight = new DragOrResizeStatus { _value = _BottomRight };
 
         #endregion
 
@@ -101,7 +101,7 @@ namespace Chronos.Presentation.Windows.Controls
 
         #region · Fields ·
 
-        private byte value;
+        private byte _value;
 
         #endregion
 
@@ -112,7 +112,7 @@ namespace Chronos.Presentation.Windows.Controls
         /// </summary>
         public bool IsOnLeft
         {
-            get { return (this.value & _Left) == _Left; }
+            get { return (_value & _Left) == _Left; }
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Chronos.Presentation.Windows.Controls
         /// </summary>
         public bool IsOnHMiddle
         {
-            get { return (this.value & _HMiddle) == _HMiddle; }
+            get { return (_value & _HMiddle) == _HMiddle; }
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace Chronos.Presentation.Windows.Controls
         /// </summary>
         public bool IsOnRight
         {
-            get { return (this.value & _Right) == _Right; }
+            get { return (_value & _Right) == _Right; }
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace Chronos.Presentation.Windows.Controls
         /// </summary>
         public bool IsOnTop
         {
-            get { return (this.value & _Top) == _Top; }
+            get { return (_value & _Top) == _Top; }
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace Chronos.Presentation.Windows.Controls
         /// </summary>
         public bool IsOnVCenter
         {
-            get { return (this.value & _VCenter) == _VCenter; }
+            get { return (_value & _VCenter) == _VCenter; }
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace Chronos.Presentation.Windows.Controls
         /// </summary>
         public bool IsOnBottom
         {
-            get { return (this.value & _Bottom) == _Bottom; }
+            get { return (_value & _Bottom) == _Bottom; }
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace Chronos.Presentation.Windows.Controls
         /// </summary>
         public bool IsOnTopLeftOrBottomRight
         {
-            get { return this.value == _TopLeft || this.value == _BottomRight; }
+            get { return _value == _TopLeft || _value == _BottomRight; }
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace Chronos.Presentation.Windows.Controls
         /// </summary>
         public bool IsOnTopRightOrBottomLeft
         {
-            get { return this.value == _TopRight || this.value == _BottomLeft; }
+            get { return _value == _TopRight || _value == _BottomLeft; }
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace Chronos.Presentation.Windows.Controls
         /// </summary>
         public bool IsOnTopCenterOrBottomCenter
         {
-            get { return this.value == _TopCenter || this.value == _BottomCenter; }
+            get { return _value == _TopCenter || _value == _BottomCenter; }
         }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace Chronos.Presentation.Windows.Controls
         /// </summary>
         public bool IsOnMiddleLeftOrMiddleRight
         {
-            get { return this.value == _MiddleLeft || this.value == _MiddleRight; }
+            get { return _value == _MiddleLeft || _value == _MiddleRight; }
         }
 
         /// <summary>
@@ -192,7 +192,7 @@ namespace Chronos.Presentation.Windows.Controls
         /// </summary>
         public bool IsDragging
         {
-            get { return this.value == _Drag; }
+            get { return _value == _Drag; }
         }
 
         #endregion
@@ -213,7 +213,7 @@ namespace Chronos.Presentation.Windows.Controls
                 return false;
             }
 
-            return ((DragOrResizeStatus)obj).value == this.value;
+            return ((DragOrResizeStatus)obj)._value == _value;
         }
 
         /// <summary>
@@ -224,7 +224,7 @@ namespace Chronos.Presentation.Windows.Controls
         /// </returns>
         public override int GetHashCode()
         {
-            return this.value.GetHashCode();
+            return _value.GetHashCode();
         }
 
         #endregion

@@ -14,16 +14,10 @@ namespace Chronos.Presentation.Core.ViewModel
     public interface IWorkspaceViewModel<TEntity>
         : IWindowViewModel, IEntityViewModel<TEntity>, INavigationViewModel, IBookmarkViewModel where TEntity : class, new()
     {
-        #region · Events ·
-
         /// <summary>
         /// Occurs when the view mode has changed
         /// </summary>
         event EventHandler ViewModeChanged;
-
-        #endregion
-
-        #region · Commands ·
 
         /// <summary>
         /// Gets the add new command
@@ -97,10 +91,6 @@ namespace Chronos.Presentation.Core.ViewModel
             get;
         }
 
-        #endregion
-
-        #region · Properties ·
-
         /// <summary>
         /// Gets or sets a value indicating whether the zoom window is shown
         /// </summary>
@@ -118,7 +108,5 @@ namespace Chronos.Presentation.Core.ViewModel
             get;
             set;
         }
-
-        #endregion
-   }
+    }
 }

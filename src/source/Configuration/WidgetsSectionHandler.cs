@@ -11,8 +11,6 @@ namespace Chronos.Configuration
     public sealed class WidgetsSectionHandler
         : ConfigurationSection
     {
-        #region · Properties ·
-
         /// <summary>
         /// Gets the list of configured widgets.
         /// </summary>
@@ -26,17 +24,11 @@ namespace Chronos.Configuration
             }
         }
 
-        #endregion
-
-        #region · Constructors ·
-
         /// <summary>
         /// Initializes a new instance of the <see cref="WidgetsSectionHandler"/> class.
         /// </summary>
         public WidgetsSectionHandler()
         {
         }
-
-        #endregion
     }
 }

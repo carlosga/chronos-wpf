@@ -11,47 +11,34 @@ using System.Xml;
 
 namespace Chronos.Presentation.DragAndDrop
 {
-    public sealed class ListBoxDragDropDataProvider : IDataDropObjectProvider
+    public sealed class ListBoxDragDropDataProvider
+        : IDataDropObjectProvider
     {
-        #region � Fields �
-
-        private ListBox list;
-
-        #endregion
-
-        #region � Properties �
+        private ListBox _list;
 
         public DragDropProviderActions SupportedActions
         {
             get
             {
-                return DragDropProviderActions.Data | 
-                       DragDropProviderActions.Visual | 
-                       DragDropProviderActions.Unparent | 
+                return DragDropProviderActions.Data |
+                       DragDropProviderActions.Visual |
+                       DragDropProviderActions.Unparent |
                        DragDropProviderActions.MultiFormatData;
             }
         }
 
-        #endregion
-
-        #region � Constructors �
-
         public ListBoxDragDropDataProvider(ListBox list)
         {
-            this.list = list;
+            _list = list;
         }
 
-        #endregion
-
-        #region � IDataDropObjectProvider Members �
-
-        public void AppendData (ref IDataObject data, MouseEventArgs e)
+        public void AppendData(ref IDataObject data, MouseEventArgs e)
         {
-            if (!(this.list.InputHitTest(e.GetPosition(e.OriginalSource as UIElement)) is ListBox) 
-                && !(this.list.InputHitTest(e.GetPosition(e.OriginalSource as UIElement)) is ScrollViewer)
+            if (!(_list.InputHitTest(e.GetPosition(e.OriginalSource as UIElement)) is ListBox)
+                && !(_list.InputHitTest(e.GetPosition(e.OriginalSource as UIElement)) is ScrollViewer)
                 && !(e.OriginalSource is Thumb))
             {
-                object o = this.list.SelectedItem;
+                object o = _list.SelectedItem;
 
                 // This is cheating .. just for an example's sake.. 
                 Debug.Assert(!data.GetDataPresent(DataFormats.Text));
@@ -77,30 +64,28 @@ namespace Chronos.Presentation.DragAndDrop
 
         public object GetData()
         {
-            return this.list.SelectedItem;
-        } 
+            return _list.SelectedItem;
+        }
 
         public UIElement GetVisual(MouseEventArgs e)
         {
-            return this.list.ItemContainerGenerator.ContainerFromItem(this.list.SelectedItem) as UIElement;
+            return _list.ItemContainerGenerator.ContainerFromItem(_list.SelectedItem) as UIElement;
         }
 
         public void GiveFeedback(System.Windows.GiveFeedbackEventArgs args)
         {
-            throw new NotImplementedException("Forgot to check the Supported actions??"); 
+            throw new NotImplementedException("Forgot to check the Supported actions??");
         }
 
         public void ContinueDrag(System.Windows.QueryContinueDragEventArgs args)
         {
-            throw new NotImplementedException("Forgot to check the Supported actions??"); 
+            throw new NotImplementedException("Forgot to check the Supported actions??");
         }
 
         public bool UnParent()
         {
             // We are passing data, nothing to unparent 
-            throw new NotImplementedException("We are passing data, nothing to unparent... what up "); 
+            throw new NotImplementedException("We are passing data, nothing to unparent... what up ");
         }
-
-        #endregion
     }
 }

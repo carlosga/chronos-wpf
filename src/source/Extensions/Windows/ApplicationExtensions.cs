@@ -13,8 +13,6 @@ namespace Chronos.Extensions.Windows
     /// </summary>
     public static class ApplicationExtensions
     {
-        #region · Extension Methods ·
-
         public static RenderTier GetRenderTier(this Application application)
         {
             return (RenderTier)(RenderCapability.Tier / 0x10000);
@@ -63,7 +61,5 @@ namespace Chronos.Extensions.Windows
 
             return null;
         }
-
-        #endregion
     }
 }

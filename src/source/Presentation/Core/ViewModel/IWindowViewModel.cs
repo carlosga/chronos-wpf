@@ -9,8 +9,6 @@ namespace Chronos.Presentation.Core.ViewModel
     public interface IWindowViewModel
         : INavigationViewModel
     {
-        #region · Commands ·
-
         /// <summary>
         /// Gets the inquiry data command
         /// </summary>
@@ -18,10 +16,6 @@ namespace Chronos.Presentation.Core.ViewModel
         {
             get;
         }
-
-        #endregion
-
-        #region · Properties ·
 
         /// <summary>
         /// Gets or sets the <see cref="Chronos.Presentation.Core.Windows.ViewModeType"/>
@@ -49,7 +43,5 @@ namespace Chronos.Presentation.Core.ViewModel
             get;
             set;
         }
-
-        #endregion
     }
 }

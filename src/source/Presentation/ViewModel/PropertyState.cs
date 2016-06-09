@@ -11,31 +11,21 @@ namespace Chronos.Presentation.ViewModel
     /// Represents a property state
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public sealed class PropertyState<T> 
-        : ObservableObject where T: class
+    public sealed class PropertyState<T>
+        : ObservableObject where T : class
     {
-        #region � PropertyChangedEventArgs Cached Instances �
+        private static readonly PropertyChangedEventArgs s_isEditableChangedArgs = CreateArgs<PropertyState<T>>(x => x.IsEditable);
+        private static readonly PropertyChangedEventArgs s_isReadOnlyChangedArgs = CreateArgs<PropertyState<T>>(x => x.IsReadOnly);
 
-        private static readonly PropertyChangedEventArgs IsEditableChangedArgs = CreateArgs<PropertyState<T>>(x => x.IsEditable);
-        private static readonly PropertyChangedEventArgs IsReadOnlyChangedArgs = CreateArgs<PropertyState<T>>(x => x.IsReadOnly);
-
-        #endregion
-
-        #region � Fields �
-
-        private string	name;
-        private bool    isEditable;
-        
-        #endregion
-
-        #region � Properties �
+        private string _name;
+        private bool _isEditable;
 
         /// <summary>
         /// Gets the property name
         /// </summary>
         public string PropertyName
         {
-            get { return this.name; }
+            get { return _name; }
         }
 
         /// <summary>
@@ -43,12 +33,12 @@ namespace Chronos.Presentation.ViewModel
         /// </summary>
         public bool IsEditable
         {
-            get { return this.isEditable; }
+            get { return _isEditable; }
             set
             {
-                this.isEditable = value;
-                this.NotifyPropertyChanged(IsEditableChangedArgs);
-                this.NotifyPropertyChanged(IsReadOnlyChangedArgs);
+                _isEditable = value;
+                this.NotifyPropertyChanged(s_isEditableChangedArgs);
+                this.NotifyPropertyChanged(s_isReadOnlyChangedArgs);
             }
         }
 
@@ -57,12 +47,8 @@ namespace Chronos.Presentation.ViewModel
         /// </summary>
         public bool IsReadOnly
         {
-            get { return !this.isEditable; }
+            get { return !_isEditable; }
         }
-
-        #endregion
-
-        #region � Constructors �
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyState&lt;T&gt;"/> class.
@@ -70,7 +56,7 @@ namespace Chronos.Presentation.ViewModel
         /// <param name="propertyName">Name of the property.</param>
         public PropertyState(string propertyName)
         {
-            this.name = propertyName;
+            _name = propertyName;
         }
 
         /// <summary>
@@ -79,9 +65,7 @@ namespace Chronos.Presentation.ViewModel
         /// <param name="propertyExpression">The property expression.</param>
         public PropertyState(Expression<Func<T, object>> propertyExpression)
         {
-            this.name = propertyExpression.GetPropertyName();
+            _name = propertyExpression.GetPropertyName();
         }
-
-        #endregion
     }
 }

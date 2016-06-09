@@ -15,34 +15,28 @@ namespace Chronos.Presentation.Widgets
     public sealed class ClockWidgetViewModel
         : WidgetViewModel
     {
-        #region · Fields ·
-
-        private Point   degreeStartPoint;
-        private Point   degreeCurrentPoint;
-        private bool    isLargeArc;
-        private int     dayOfYear;
-        private int     year;
-        private string  seconds;
-        private string  minutes;
-        private string  hours;
-        private string  pmAm;
-        private bool    hours24;
-        private string  date;
-        private string  dayOfWeek;
-        private int     angle;
-
-        #endregion
-
-        #region · Properties ·
+        private Point _degreeStartPoint;
+        private Point _degreeCurrentPoint;
+        private bool _isLargeArc;
+        private int _dayOfYear;
+        private int _year;
+        private string _seconds;
+        private string _minutes;
+        private string _hours;
+        private string _pmAm;
+        private bool _hours24;
+        private string _date;
+        private string _dayOfWeek;
+        private int _angle;
 
         public Point DegreeStartPoint
         {
-            get { return this.degreeStartPoint; }
+            get { return _degreeStartPoint; }
             set
             {
-                if (this.degreeStartPoint != value)
+                if (_degreeStartPoint != value)
                 {
-                    this.degreeStartPoint = value;
+                    _degreeStartPoint = value;
 
                     this.NotifyPropertyChanged(() => DegreeStartPoint);
                 }
@@ -51,12 +45,12 @@ namespace Chronos.Presentation.Widgets
 
         public Point DegreeCurrentPoint
         {
-            get { return this.degreeCurrentPoint; }
+            get { return _degreeCurrentPoint; }
             set
             {
-                if (this.degreeCurrentPoint != value)
+                if (_degreeCurrentPoint != value)
                 {
-                    this.degreeCurrentPoint = value;
+                    _degreeCurrentPoint = value;
 
                     this.NotifyPropertyChanged(() => DegreeCurrentPoint);
                 }
@@ -65,12 +59,12 @@ namespace Chronos.Presentation.Widgets
 
         public bool IsLargeArc
         {
-            get { return this.isLargeArc; }
+            get { return _isLargeArc; }
             set
             {
-                if (this.isLargeArc != value)
+                if (_isLargeArc != value)
                 {
-                    this.isLargeArc = value;
+                    _isLargeArc = value;
 
                     this.NotifyPropertyChanged(() => IsLargeArc);
                 }
@@ -79,12 +73,12 @@ namespace Chronos.Presentation.Widgets
 
         public string Seconds
         {
-            get { return this.seconds; }
+            get { return _seconds; }
             set
             {
-                if (this.seconds != value)
+                if (_seconds != value)
                 {
-                    this.seconds = value;
+                    _seconds = value;
 
                     this.NotifyPropertyChanged(() => Seconds);
                 }
@@ -93,12 +87,12 @@ namespace Chronos.Presentation.Widgets
 
         public string Minutes
         {
-            get { return this.minutes; }
+            get { return _minutes; }
             set
             {
-                if (this.minutes != value)
+                if (_minutes != value)
                 {
-                    this.minutes = value;
+                    _minutes = value;
 
                     this.NotifyPropertyChanged(() => Minutes);
                 }
@@ -107,12 +101,12 @@ namespace Chronos.Presentation.Widgets
 
         public string Hours
         {
-            get { return this.hours; }
+            get { return _hours; }
             set
             {
-                if (this.hours != value)
+                if (_hours != value)
                 {
-                    this.hours = value;
+                    _hours = value;
 
                     this.NotifyPropertyChanged(() => Hours);
                 }
@@ -121,12 +115,12 @@ namespace Chronos.Presentation.Widgets
 
         public string PmAm
         {
-            get { return this.pmAm; }
+            get { return _pmAm; }
             set
             {
-                if (this.pmAm != value)
+                if (_pmAm != value)
                 {
-                    this.pmAm = value;
+                    _pmAm = value;
 
                     this.NotifyPropertyChanged(() => PmAm);
                 }
@@ -135,12 +129,12 @@ namespace Chronos.Presentation.Widgets
 
         public bool Hours24
         {
-            get { return this.hours24; }
+            get { return _hours24; }
             set
             {
-                if (this.hours24 != value)
+                if (_hours24 != value)
                 {
-                    this.hours24 = value;
+                    _hours24 = value;
 
                     this.NotifyPropertyChanged(() => Hours24);
                 }
@@ -149,12 +143,12 @@ namespace Chronos.Presentation.Widgets
 
         public string Date
         {
-            get { return this.date; }
+            get { return _date; }
             set
             {
-                if (this.date != value)
+                if (_date != value)
                 {
-                    this.date = value;
+                    _date = value;
 
                     this.NotifyPropertyChanged(() => Date);
                 }
@@ -163,12 +157,12 @@ namespace Chronos.Presentation.Widgets
 
         public string DayOfWeek
         {
-            get { return this.dayOfWeek; }
+            get { return _dayOfWeek; }
             set
             {
-                if (this.dayOfWeek != value)
+                if (_dayOfWeek != value)
                 {
-                    this.dayOfWeek = value;
+                    _dayOfWeek = value;
 
                     this.NotifyPropertyChanged(() => DayOfWeek);
                 }
@@ -177,12 +171,12 @@ namespace Chronos.Presentation.Widgets
 
         public int Angle
         {
-            get { return this.angle; }
+            get { return _angle; }
             set
             {
-                if (this.angle != value)
+                if (_angle != value)
                 {
-                    this.angle = value;
+                    _angle = value;
 
                     this.NotifyPropertyChanged(() => Angle);
                 }
@@ -191,12 +185,12 @@ namespace Chronos.Presentation.Widgets
 
         public int DayOfYear
         {
-            get { return this.dayOfYear; }
+            get { return _dayOfYear; }
             set
             {
-                if (this.dayOfYear != value)
+                if (_dayOfYear != value)
                 {
-                    this.dayOfYear = value;
+                    _dayOfYear = value;
 
                     this.NotifyPropertyChanged(() => DayOfYear);
                 }
@@ -205,51 +199,39 @@ namespace Chronos.Presentation.Widgets
 
         public int Year
         {
-            get { return this.year; }
+            get { return _year; }
             set
             {
-                if (this.year != value)
+                if (_year != value)
                 {
-                    this.year = value;
+                    _year = value;
 
                     this.NotifyPropertyChanged(() => DayOfYear);
                 }
             }
         }
 
-        #endregion
-
-        #region · Constructors ·
-
         public ClockWidgetViewModel()
             : base()
         {
-            this.DayOfYear          = -1;
-            this.Year               = -1;
-            this.Angle              = -4;
-            this.Hours24            = Properties.Settings.Default.hours24;
-            this.DegreeStartPoint   = new Point(110, 10);
+            this.DayOfYear = -1;
+            this.Year = -1;
+            this.Angle = -4;
+            this.Hours24 = Properties.Settings.Default.hours24;
+            this.DegreeStartPoint = new Point(110, 10);
             this.DegreeCurrentPoint = new Point(110, 210);
         }
-
-        #endregion
-
-        #region · Methods ·
 
         public void Start()
         {
             DispatcherTimer timer = new DispatcherTimer();
 
-            timer.Interval  = TimeSpan.FromSeconds(0.1);
-            timer.Tick      += new EventHandler(OnTimerTick);
+            timer.Interval = TimeSpan.FromSeconds(0.1);
+            timer.Tick += new EventHandler(OnTimerTick);
             timer.Start();
 
             this.SetCurTime();
         }
-
-        #endregion
-
-        #region · Private Methods ·
 
         /// <summary>
         /// Set current time
@@ -257,15 +239,15 @@ namespace Chronos.Presentation.Widgets
         private void SetCurTime()
         {
             DateTime now = DateTime.Now;
-            
+
             this.SetDeg((now.Second + now.Millisecond / 1000.0) * 6);
             this.Seconds = now.Second.ToString("00");
             this.Minutes = now.Minute.ToString("00");
 
             if (this.Hours24)
             {
-                this.Hours  = now.Hour.ToString("00");
-                this.PmAm   = String.Empty;
+                this.Hours = now.Hour.ToString("00");
+                this.PmAm = String.Empty;
             }
             else
             {
@@ -275,10 +257,10 @@ namespace Chronos.Presentation.Widgets
 
             if (now.DayOfYear != this.DayOfYear || now.Year != this.Year)
             {
-                this.Date       = now.ToString("d MMMM yyyy");
-                this.DayOfWeek  = now.ToString("dddd");
-                this.DayOfYear  = now.DayOfYear;
-                this.Year       = now.Year;
+                this.Date = now.ToString("d MMMM yyyy");
+                this.DayOfWeek = now.ToString("dddd");
+                this.DayOfYear = now.DayOfYear;
+                this.Year = now.Year;
             }
         }
 
@@ -288,23 +270,17 @@ namespace Chronos.Presentation.Widgets
         /// <param name="degree"></param>
         private void SetDeg(double degree)
         {
-            double offset   = this.DegreeStartPoint.X;
-            double x        = Math.Cos((degree - 90) * Math.PI / 180) * 100.0 + offset;
-            double y        = Math.Sin((degree - 90) * Math.PI / 180) * 100.0 + offset;
-            
+            double offset = this.DegreeStartPoint.X;
+            double x = Math.Cos((degree - 90) * Math.PI / 180) * 100.0 + offset;
+            double y = Math.Sin((degree - 90) * Math.PI / 180) * 100.0 + offset;
+
             this.DegreeCurrentPoint = new Point(x, y);
-            this.IsLargeArc         = (degree > 180);
+            this.IsLargeArc = (degree > 180);
         }
-
-        #endregion
-
-        #region · Event Handlers ·
 
         private void OnTimerTick(object sender, EventArgs e)
         {
             this.SetCurTime();
         }
-
-        #endregion
     }
 }

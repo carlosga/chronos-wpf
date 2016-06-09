@@ -10,11 +10,9 @@ namespace Chronos.Presentation.ViewModel
     /// <summary>
     /// Provides a base class for Applications to inherit from. 
     /// </summary>
-    public abstract class ViewModelBase 
+    public abstract class ViewModelBase
         : ObservableObject
     {
-        #region · Constructors ·
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ViewModelBase"/> class.
         /// </summary>
@@ -22,10 +20,6 @@ namespace Chronos.Presentation.ViewModel
             : base()
         {
         }
-
-        #endregion
-
-        #region · Protected Methods ·
 
         /// <summary>
         /// Gets the requested service instance.
@@ -46,7 +40,5 @@ namespace Chronos.Presentation.ViewModel
         {
             return ViewServiceLocator.GetViewService<TViewService>();
         }
-
-        #endregion
     }
 }

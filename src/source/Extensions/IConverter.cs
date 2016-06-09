@@ -8,8 +8,6 @@ namespace Chronos.Extensions
     /// <typeparam name="T"></typeparam>
     public interface IConverter<T>
     {
-        #region · Properties ·
-
         /// <summary>
         /// Gets the internal value to be converted.
         /// </summary>
@@ -18,7 +16,5 @@ namespace Chronos.Extensions
         {
             get;
         }
-
-        #endregion
     }
 }

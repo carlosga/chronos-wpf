@@ -5,10 +5,9 @@ namespace Chronos.Extensions
     /// <summary>
     /// Generic exception for combining several other exceptions
     /// </summary>
-    public class CombinedException : Exception
+    public class CombinedException
+        : Exception
     {
-        #region · Properties ·
-
         /// <summary>
         /// Gets the inner exceptions.
         /// </summary>
@@ -18,10 +17,6 @@ namespace Chronos.Extensions
             get;
             protected set;
         }
-
-        #endregion
-
-        #region · Constructors ·
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CombinedException"/> class.
@@ -33,7 +28,5 @@ namespace Chronos.Extensions
         {
             this.InnerExceptions = innerExceptions;
         }
-
-        #endregion
     }
 }

@@ -25,25 +25,25 @@ namespace Chronos.WidgetLibrary
     {
         #region · Constants ·
 
-        private static readonly string AllWidgetsKey = "All";
+        private static readonly string s_allWidgetsKey = "All";
 
         #endregion
 
         #region · PropertyChangedEventArgs Cached Instances ·
 
-        private static readonly PropertyChangedEventArgs FilterChangedArgs          = CreateArgs<WidgetLibraryViewModel>(x => x.Filter);
-        private static readonly PropertyChangedEventArgs WidgetsChangedArgs         = CreateArgs<WidgetLibraryViewModel>(x => x.Widgets);
-        private static readonly PropertyChangedEventArgs SelectedWidgetChangedArgs  = CreateArgs<WidgetLibraryViewModel>(x => x.SelectedWidget);
-        
+        private static readonly PropertyChangedEventArgs s_filterChangedArgs = CreateArgs<WidgetLibraryViewModel>(x => x.Filter);
+        private static readonly PropertyChangedEventArgs s_widgetsChangedArgs = CreateArgs<WidgetLibraryViewModel>(x => x.Widgets);
+        private static readonly PropertyChangedEventArgs s_selectedWidgetChangedArgs = CreateArgs<WidgetLibraryViewModel>(x => x.SelectedWidget);
+
         #endregion
 
         #region · Fields ·
 
-        private string                      filter;
-        private List<string>                groups;
-        private List<WidgetItemViewModel>   widgets;
-        private IWidget                     selectedWidget;
-        private ActionCommand               createWidgetCommand;
+        private string _filter;
+        private List<string> _groups;
+        private List<WidgetItemViewModel> _widgets;
+        private IWidget _selectedWidget;
+        private ActionCommand _createWidgetCommand;
 
         #endregion
 
@@ -57,16 +57,16 @@ namespace Chronos.WidgetLibrary
         {
             get
             {
-                if (this.createWidgetCommand == null)
+                if (_createWidgetCommand == null)
                 {
-                    this.createWidgetCommand = new ActionCommand
+                    _createWidgetCommand = new ActionCommand
                     (
                         () => OnCreateWidget(),
                         () => CanCreateWidget()
                     );
                 }
 
-                return this.createWidgetCommand;
+                return _createWidgetCommand;
             }
         }
 
@@ -79,14 +79,14 @@ namespace Chronos.WidgetLibrary
         /// </summary>
         public string Filter
         {
-            get { return this.filter; }
+            get { return _filter; }
             set
             {
-                if (value != filter)
+                if (value != _filter)
                 {
-                    this.filter = value;
-                    this.NotifyPropertyChanged(FilterChangedArgs);
-                    this.NotifyPropertyChanged(WidgetsChangedArgs);
+                    _filter = value;
+                    this.NotifyPropertyChanged(s_filterChangedArgs);
+                    this.NotifyPropertyChanged(s_widgetsChangedArgs);
 
                     this.SelectedWidget = null;
                 }
@@ -99,7 +99,7 @@ namespace Chronos.WidgetLibrary
         /// <value>The groups.</value>
         public IEnumerable<string> Groups
         {
-            get { return this.groups; }
+            get { return _groups; }
         }
 
         /// <summary>
@@ -107,16 +107,16 @@ namespace Chronos.WidgetLibrary
         /// </summary>
         public IList<WidgetItemViewModel> Widgets
         {
-            get 
+            get
             {
-                if (String.IsNullOrEmpty(this.filter) 
-                    || this.filter == AllWidgetsKey)
+                if (String.IsNullOrEmpty(_filter)
+                    || _filter == s_allWidgetsKey)
                 {
-                    return this.widgets;
+                    return _widgets;
                 }
                 else
                 {
-                    return new ReadOnlyCollection<WidgetItemViewModel>(this.widgets.Where(x => x.Group == this.filter).ToList());
+                    return new ReadOnlyCollection<WidgetItemViewModel>(_widgets.Where(x => x.Group == _filter).ToList());
                 }
             }
         }
@@ -127,13 +127,13 @@ namespace Chronos.WidgetLibrary
         /// <value>The selected widget.</value>
         public IWidget SelectedWidget
         {
-            get { return this.selectedWidget; }
-            set 
-            { 
-                if (this.selectedWidget != value)
+            get { return _selectedWidget; }
+            set
+            {
+                if (_selectedWidget != value)
                 {
-                    this.selectedWidget = value;
-                    this.NotifyPropertyChanged(SelectedWidgetChangedArgs);
+                    _selectedWidget = value;
+                    this.NotifyPropertyChanged(s_selectedWidgetChangedArgs);
                     this.CreateWidgetCommand.RequeryCanExecute();
                 }
             }
@@ -149,8 +149,8 @@ namespace Chronos.WidgetLibrary
         public WidgetLibraryViewModel()
             : base()
         {
-            this.widgets    = this.DiscoverWidgets();
-            this.groups     = this.DiscoverWidgetGroups();
+            _widgets = this.DiscoverWidgets();
+            _groups = this.DiscoverWidgetGroups();
         }
 
         #endregion
@@ -164,19 +164,19 @@ namespace Chronos.WidgetLibrary
         {
             base.Close();
 
-            this.selectedWidget         = null;
-            this.createWidgetCommand    = null;
+            _selectedWidget = null;
+            _createWidgetCommand = null;
 
-            if (this.groups != null)
+            if (_groups != null)
             {
-                this.groups.Clear();
-                this.groups = null;
+                _groups.Clear();
+                _groups = null;
             }
 
-            if (this.widgets != null)
+            if (_widgets != null)
             {
-                this.widgets.Clear();
-                this.widgets = null;
+                _widgets.Clear();
+                _widgets = null;
             }
         }
 
@@ -186,7 +186,7 @@ namespace Chronos.WidgetLibrary
 
         private bool CanCreateWidget()
         {
-            return (this.selectedWidget != null);
+            return (_selectedWidget != null);
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace Chronos.WidgetLibrary
         private void OnCreateWidget()
         {
             this.GetService<IVirtualDesktopManager>()
-                .Show(this.selectedWidget.CreateView() as IDesktopElement);
+                .Show(_selectedWidget.CreateView() as IDesktopElement);
         }
 
         #endregion
@@ -204,11 +204,11 @@ namespace Chronos.WidgetLibrary
 
         private List<string> DiscoverWidgetGroups()
         {
-            List<string>    groups  = new List<string>();
-            var             q       = from widgetdef in this.widgets
-                                      select widgetdef.Group;
+            List<string> groups = new List<string>();
+            var q = from widgetdef in _widgets
+                    select widgetdef.Group;
 
-            groups.Add(AllWidgetsKey);
+            groups.Add(s_allWidgetsKey);
             groups.AddRange(q.Distinct().ToList());
 
             return groups;

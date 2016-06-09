@@ -9,13 +9,7 @@ namespace Chronos.Presentation.DragAndDrop
 {
     public sealed class DragDropManager
     {
-        #region · Singleton Instance ·
-
         public static readonly DragDropManager Instance = new DragDropManager();
-
-        #endregion
-
-        #region · Attached Properties ·
 
         /// <summary>
         /// Identifies the IsDesktopCanvas dependency property.
@@ -32,10 +26,6 @@ namespace Chronos.Presentation.DragAndDrop
             DependencyProperty.RegisterAttached("IsDragSource", typeof(bool), typeof(DragDropManager),
                 new FrameworkPropertyMetadata(false,
                     new PropertyChangedCallback(OnIsDragSource)));
-
-        #endregion
-
-        #region · Dependency Property Get/Set Methods ·
 
         /// <summary>
         /// Gets the value of the IsDropTarget attached property
@@ -77,10 +67,6 @@ namespace Chronos.Presentation.DragAndDrop
             d.SetValue(IsDragSourceProperty, value);
         }
 
-        #endregion
-
-        #region · Dependency Property Callbacks ·
-
         private static void OnIsDropTarget(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             FrameworkElement element = d as FrameworkElement;
@@ -101,71 +87,53 @@ namespace Chronos.Presentation.DragAndDrop
             }
         }
 
-        #endregion
-
-        #region · Fields ·
-
-        private Dictionary<FrameworkElement, DropHelper> dropTargets;
-        private Dictionary<FrameworkElement, DragHelper> dragSources;
-
-        #endregion
-
-        #region · Constructors ·
+        private Dictionary<FrameworkElement, DropHelper> _dropTargets;
+        private Dictionary<FrameworkElement, DragHelper> _dragSources;
 
         private DragDropManager()
         {
-            this.dropTargets = new Dictionary<FrameworkElement, DropHelper>();
-            this.dragSources = new Dictionary<FrameworkElement, DragHelper>();
+            _dropTargets = new Dictionary<FrameworkElement, DropHelper>();
+            _dragSources = new Dictionary<FrameworkElement, DragHelper>();
         }
-
-        #endregion
-
-        #region · Private Methods ·
 
         private void AttachDropTarget(FrameworkElement element)
         {
-            if (!this.dropTargets.ContainsKey(element))
+            if (!_dropTargets.ContainsKey(element))
             {
                 element.Unloaded += new RoutedEventHandler(DragDropManager_Unloaded);
-                this.dropTargets.Add(element, new DropHelper(element));
+                _dropTargets.Add(element, new DropHelper(element));
             }
         }
 
         private void AttachDragSource(FrameworkElement element)
         {
-            if (!this.dragSources.ContainsKey(element))
+            if (!_dragSources.ContainsKey(element))
             {
                 element.Unloaded += new RoutedEventHandler(DragDropManager_Unloaded);
 
                 if (element is ListBox)
                 {
-                    this.dragSources.Add(element, new DragHelper(element, new ListBoxDragDropDataProvider(element as ListBox), null));
+                    _dragSources.Add(element, new DragHelper(element, new ListBoxDragDropDataProvider(element as ListBox), null));
                 }
                 else if (element is TreeView)
                 {
-                    this.dragSources.Add(element, new DragHelper(element, new TreeViewDragDropDataProvider(element as TreeView), null));
+                    _dragSources.Add(element, new DragHelper(element, new TreeViewDragDropDataProvider(element as TreeView), null));
                 }
             }
         }
-
-        #endregion
-
-        #region · Event Handlers ·
 
         private void DragDropManager_Unloaded(object sender, RoutedEventArgs e)
         {
             (sender as FrameworkElement).Unloaded -= new RoutedEventHandler(DragDropManager_Unloaded);
-                            
-            if (this.dragSources.ContainsKey(sender as FrameworkElement))
+
+            if (_dragSources.ContainsKey(sender as FrameworkElement))
             {
-                this.dragSources.Remove(sender as FrameworkElement);
+                _dragSources.Remove(sender as FrameworkElement);
             }
-            else if (this.dropTargets.ContainsKey(sender as FrameworkElement))
+            else if (_dropTargets.ContainsKey(sender as FrameworkElement))
             {
-                this.dropTargets.Remove(sender as FrameworkElement);
+                _dropTargets.Remove(sender as FrameworkElement);
             }
         }
-
-        #endregion
     }
 }

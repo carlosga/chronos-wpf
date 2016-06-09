@@ -8,14 +8,11 @@ namespace Chronos.Presentation.Controls.Events
     /// <summary>
     /// http://agsmith.wordpress.com/2008/04/07/propertydescriptor-addvaluechanged-alternative/
     /// </summary>
-    public sealed class WeakPropertyChangeNotifier 
+    public sealed class WeakPropertyChangeNotifier
         : DependencyObject, IDisposable
     {
-        #region Member Variables
         private readonly WeakReference _propertySource;
-        #endregion // Member Variables
 
-        #region Constructor
         public WeakPropertyChangeNotifier(DependencyObject propertySource, string path)
             : this(propertySource, new PropertyPath(path))
         {
@@ -31,7 +28,7 @@ namespace Chronos.Presentation.Controls.Events
             if (null == property)
                 throw new ArgumentNullException("property");
 
-            this._propertySource = new WeakReference(propertySource);
+            _propertySource = new WeakReference(propertySource);
 
             Binding binding = new Binding();
             binding.Path = property;
@@ -39,9 +36,7 @@ namespace Chronos.Presentation.Controls.Events
             binding.Source = propertySource;
             BindingOperations.SetBinding(this, ValueProperty, binding);
         }
-        #endregion // Constructor
 
-        #region PropertySource
         public DependencyObject PropertySource
         {
             get
@@ -51,8 +46,8 @@ namespace Chronos.Presentation.Controls.Events
                     // note, it is possible that accessing the target property
                     // will result in an exception so i’ve wrapped this check
                     // in a try catch
-                    return this._propertySource.IsAlive
-                    ? this._propertySource.Target as DependencyObject
+                    return _propertySource.IsAlive
+                    ? _propertySource.Target as DependencyObject
                     : null;
                 }
                 catch
@@ -61,9 +56,7 @@ namespace Chronos.Presentation.Controls.Events
                 }
             }
         }
-        #endregion // PropertySource
 
-        #region Value
         /// <summary>
         /// Identifies the <see cref="Value"/> dependency property
         /// </summary>
@@ -95,17 +88,12 @@ namespace Chronos.Presentation.Controls.Events
                 this.SetValue(ValueProperty, value);
             }
         }
-        #endregion //Value
 
-        #region Events
         public event EventHandler ValueChanged;
-        #endregion // Events
 
-        #region IDisposable Members
         public void Dispose()
         {
             BindingOperations.ClearBinding(this, ValueProperty);
         }
-        #endregion
     }
 }

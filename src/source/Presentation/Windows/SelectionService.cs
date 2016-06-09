@@ -12,8 +12,8 @@ namespace Chronos.Presentation.Windows
     {
         #region · Fields ·
 
-        private Desktop             canvas;
-        private List<ISelectable>   currentSelection;
+        private Desktop _canvas;
+        private List<ISelectable> _currentSelection;
 
         #endregion
 
@@ -23,12 +23,12 @@ namespace Chronos.Presentation.Windows
         {
             get
             {
-                if (currentSelection == null)
+                if (_currentSelection == null)
                 {
-                    currentSelection = new List<ISelectable>();
+                    _currentSelection = new List<ISelectable>();
                 }
 
-                return currentSelection;
+                return _currentSelection;
             }
         }
 
@@ -38,7 +38,7 @@ namespace Chronos.Presentation.Windows
 
         public SelectionService(Desktop canvas)
         {
-            this.canvas = canvas;
+            _canvas = canvas;
         }
 
         #endregion
@@ -98,21 +98,21 @@ namespace Chronos.Presentation.Windows
         internal void SelectAll()
         {
             this.ClearSelection();
-            this.CurrentSelection.AddRange(canvas.Children.OfType<ISelectable>());
+            this.CurrentSelection.AddRange(_canvas.Children.OfType<ISelectable>());
             this.CurrentSelection.ForEach(item => item.IsSelected = true);
         }
 
         internal List<IGroupable> GetGroupMembers(IGroupable item)
         {
-            IEnumerable<IGroupable> list        = canvas.Children.OfType<IGroupable>();
-            IGroupable              rootItem    = this.GetRoot(list, item);
+            IEnumerable<IGroupable> list = _canvas.Children.OfType<IGroupable>();
+            IGroupable rootItem = this.GetRoot(list, item);
 
             return GetGroupMembers(list, rootItem);
         }
 
         internal IGroupable GetGroupRoot(IGroupable item)
         {
-            IEnumerable<IGroupable> list = this.canvas.Children.OfType<IGroupable>();
+            IEnumerable<IGroupable> list = _canvas.Children.OfType<IGroupable>();
 
             return this.GetRoot(list, item);
         }

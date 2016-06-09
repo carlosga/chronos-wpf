@@ -11,8 +11,6 @@ namespace Chronos.Configuration
     public sealed class WidgetConfigurationElementCollection
         : GenericElementCollection<string, WidgetConfigurationElement>
     {
-        #region · Properties ·
-
         /// <summary>
         /// Gets the type of the collection.
         /// </summary>
@@ -34,10 +32,6 @@ namespace Chronos.Configuration
             get { return "widget"; }
         }
 
-        #endregion
-
-        #region · Constructors ·
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ApplicationElementCollection"/> class.
         /// </summary>
@@ -45,10 +39,6 @@ namespace Chronos.Configuration
             : base()
         {
         }
-
-        #endregion
-
-        #region · Methods ·
 
         /// <summary>
         /// Gets the element key.
@@ -59,7 +49,5 @@ namespace Chronos.Configuration
         {
             return element.Id;
         }
-
-        #endregion
     }
 }

@@ -12,8 +12,6 @@ namespace Chronos.Extensions.Windows
     /// </summary>
     public static class PanelExtensions
     {
-        #region · Extension Methods ·
-
         /// <summary>
         /// Brings the element to the front of the z-order.
         /// </summary>
@@ -30,7 +28,7 @@ namespace Chronos.Extensions.Windows
 
             panel.Children.CopyTo(sortAux, 0);
 
-            Array.Sort<UIElement>(sortAux, new Comparison<UIElement>(delegate(UIElement a, UIElement b)
+            Array.Sort<UIElement>(sortAux, new Comparison<UIElement>(delegate (UIElement a, UIElement b)
             {
                 int aIndex = Canvas.GetZIndex(a);
                 int bIndex = Canvas.GetZIndex(b);
@@ -73,7 +71,7 @@ namespace Chronos.Extensions.Windows
 
             panel.Children.CopyTo(sortAux, 0);
 
-            Array.Sort<UIElement>(sortAux, new Comparison<UIElement>(delegate(UIElement a, UIElement b)
+            Array.Sort<UIElement>(sortAux, new Comparison<UIElement>(delegate (UIElement a, UIElement b)
             {
                 int aIndex = Canvas.GetZIndex(a);
                 int bIndex = Canvas.GetZIndex(b);
@@ -161,7 +159,5 @@ namespace Chronos.Extensions.Windows
         {
             return new Point(Canvas.GetLeft(element), Canvas.GetTop(element));
         }
-
-        #endregion
     }
 }

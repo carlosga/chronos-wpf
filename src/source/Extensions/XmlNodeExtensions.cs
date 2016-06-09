@@ -8,8 +8,6 @@ namespace Chronos.Extensions
     /// </summary>
     public static class XmlNodeExtensions
     {
-        #region · Extensions ·
-
         /// <summary>
         /// Appends a child to a XML node
         /// </summary>
@@ -171,7 +169,5 @@ namespace Chronos.Extensions
                 attribute.InnerText = value;
             }
         }
-
-        #endregion
     }
 }

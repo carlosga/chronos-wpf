@@ -19,21 +19,21 @@ namespace Chronos.Presentation.Windows
     /// <summary>
     /// Virtual desktop class
     /// </summary>
-    public sealed class VirtualDesktop 
+    public sealed class VirtualDesktop
         : DispatcherObject, IVirtualDesktop
     {
         #region · Logger ·
 
-        private static Logger Logger = LogManager.GetCurrentClassLogger();
+        private static Logger s_logger = LogManager.GetCurrentClassLogger();
 
         #endregion
 
         #region · Fields ·
 
-        private Desktop                                             desktop;
-        private ObservableCollection<INavigationViewModel>          activeWindows;
-        private ReadOnlyObservableCollection<INavigationViewModel>  activeWindowsWrapper;
-        private bool                                                hasBeenActivated;
+        private Desktop _desktop;
+        private ObservableCollection<INavigationViewModel> _activeWindows;
+        private ReadOnlyObservableCollection<INavigationViewModel> _activeWindowsWrapper;
+        private bool _hasBeenActivated;
 
         #endregion
 
@@ -43,9 +43,9 @@ namespace Chronos.Presentation.Windows
         {
             get
             {
-                if (this.desktop != null)
+                if (_desktop != null)
                 {
-                    return this.desktop.Id;
+                    return _desktop.Id;
                 }
 
                 return Guid.Empty;
@@ -59,12 +59,12 @@ namespace Chronos.Presentation.Windows
         {
             get
             {
-                if (this.activeWindowsWrapper == null)
+                if (_activeWindowsWrapper == null)
                 {
-                    this.activeWindowsWrapper = new ReadOnlyObservableCollection<INavigationViewModel>(this.Windows);
+                    _activeWindowsWrapper = new ReadOnlyObservableCollection<INavigationViewModel>(this.Windows);
                 }
 
-                return this.activeWindowsWrapper;
+                return _activeWindowsWrapper;
             }
         }
 
@@ -76,12 +76,12 @@ namespace Chronos.Presentation.Windows
         {
             get
             {
-                if (this.activeWindows == null)
+                if (_activeWindows == null)
                 {
-                    this.activeWindows = new ObservableCollection<INavigationViewModel>();
+                    _activeWindows = new ObservableCollection<INavigationViewModel>();
                 }
 
-                return this.activeWindows;
+                return _activeWindows;
             }
         }
 
@@ -94,7 +94,7 @@ namespace Chronos.Presentation.Windows
         /// </summary>
         internal VirtualDesktop(Desktop desktop)
         {
-            this.desktop = desktop;
+            _desktop = desktop;
         }
 
         #endregion
@@ -109,15 +109,15 @@ namespace Chronos.Presentation.Windows
             this.InvokeAsynchronouslyInBackground(
                 () =>
                 {
-                    if (!this.hasBeenActivated)
+                    if (!_hasBeenActivated)
                     {
                         this.Load();
-                        this.hasBeenActivated = true;
+                        _hasBeenActivated = true;
 
-                        this.desktop.Activate();
+                        _desktop.Activate();
                     }
 
-                    this.desktop.Visibility = Visibility.Visible;
+                    _desktop.Visibility = Visibility.Visible;
 
                     Channel<ActiveDesktopChangedInfo>.Public.OnNext(new ActiveDesktopChangedInfo(this), true);
                 });
@@ -131,7 +131,7 @@ namespace Chronos.Presentation.Windows
             this.Invoke(
                 () =>
                 {
-                    this.desktop.Visibility = Visibility.Hidden;
+                    _desktop.Visibility = Visibility.Hidden;
                 });
         }
 
@@ -144,7 +144,7 @@ namespace Chronos.Presentation.Windows
             (
                 () =>
                 {
-                    this.desktop.Children
+                    _desktop.Children
                         .OfType<WindowElement>()
                         .ToList()
                         .ForEach(window => window.WindowState = WindowState.Minimized);
@@ -160,7 +160,7 @@ namespace Chronos.Presentation.Windows
             this.Invoke(
                 () =>
                 {
-                    DesktopSerializer.Save(this.desktop, this.GetXamlFilename());
+                    DesktopSerializer.Save(_desktop, this.GetXamlFilename());
                 });
         }
 
@@ -178,8 +178,8 @@ namespace Chronos.Presentation.Windows
                 () =>
                 {
                     WindowElement element = window as WindowElement;
-                    
-                    this.desktop.AddElement(element);
+
+                    _desktop.AddElement(element);
 
                     element.Show();
 
@@ -211,7 +211,7 @@ namespace Chronos.Presentation.Windows
             (
                 () =>
                 {
-                    IWindow window = this.desktop.Children.OfType<IWindow>().Where(wc => wc.Id == id).SingleOrDefault();
+                    IWindow window = _desktop.Children.OfType<IWindow>().Where(wc => wc.Id == id).SingleOrDefault();
 
                     if (window != null)
                     {
@@ -245,8 +245,8 @@ namespace Chronos.Presentation.Windows
         {
             T shortcut = new T
             {
-                Title   = title,
-                Target  = target
+                Title = title,
+                Target = target
             };
 
             ShortcutElement element = new ShortcutElement
@@ -278,7 +278,7 @@ namespace Chronos.Presentation.Windows
                 {
                     DesktopElement desktopElement = element as DesktopElement;
 
-                    this.desktop.AddElement(desktopElement);
+                    _desktop.AddElement(desktopElement);
                 });
         }
 
@@ -291,7 +291,7 @@ namespace Chronos.Presentation.Windows
 
                     desktopElement.StartupLocation = StartupPosition.Manual;
 
-                    this.desktop.AddElement(desktopElement, position);
+                    _desktop.AddElement(desktopElement, position);
                 });
         }
 
@@ -307,12 +307,12 @@ namespace Chronos.Presentation.Windows
             this.Invoke(
                 () =>
                 {
-                    this.desktop.Children
+                    _desktop.Children
                         .OfType<DesktopElement>()
                         .ToList()
                         .ForEach(e => this.Close(e.Id));
 
-                    this.hasBeenActivated = false;
+                    _hasBeenActivated = false;
                 });
         }
 
@@ -322,7 +322,7 @@ namespace Chronos.Presentation.Windows
         /// <param name="id">The id.</param>
         public void Close(Guid id)
         {
-            DesktopElement instance = this.desktop.Children.OfType<DesktopElement>().Where(x => x.Id == id).FirstOrDefault();
+            DesktopElement instance = _desktop.Children.OfType<DesktopElement>().Where(x => x.Id == id).FirstOrDefault();
 
             if (instance != null)
             {
@@ -330,7 +330,7 @@ namespace Chronos.Presentation.Windows
                 {
                     this.Windows.Remove((instance as WindowElement).DataContext as INavigationViewModel);
                 }
-                
+
                 instance.Close();
             }
         }
@@ -347,13 +347,13 @@ namespace Chronos.Presentation.Windows
             this.Invoke(
                 () =>
                 {
-                    DesktopSerializer.Load(this.desktop, this.GetXamlFilename());
+                    DesktopSerializer.Load(_desktop, this.GetXamlFilename());
                 });
         }
 
         private string GetXamlFilename()
         {
-            return String.Format("{0}.xaml", this.desktop.Name);
+            return String.Format("{0}.xaml", _desktop.Name);
         }
 
         private void RemoveElement(DesktopElement element)
@@ -361,7 +361,7 @@ namespace Chronos.Presentation.Windows
             this.InvokeAsynchronouslyInBackground(
                 () =>
                 {
-                    this.desktop.RemoveElement(element);
+                    _desktop.RemoveElement(element);
                 });
         }
 

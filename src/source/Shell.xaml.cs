@@ -13,7 +13,7 @@ namespace Chronos
     /// <summary>
     /// Shell Window
     /// </summary>
-    public partial class Shell 
+    public partial class Shell
         : Window
     {
         #region · Constructors ·
@@ -30,7 +30,7 @@ namespace Chronos
 
         #region · Event Handlers ·
 
-        protected override void  OnPreviewKeyDown(KeyEventArgs e)
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
             if (e.SystemKey == Key.Space && e.Key == Key.System)
             {

@@ -13,13 +13,9 @@ namespace Chronos.Presentation.Core.Navigation
     /// </summary>
     public static class NavigationParams
     {
-        #region · Constants ·
-
         /// <summary>
         /// Navigation initalization parameters key
         /// </summary>
         public static readonly string NavigationParamsKey = "NavigationParamsKey";
-
-        #endregion
     }
 }

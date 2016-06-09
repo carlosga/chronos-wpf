@@ -15,12 +15,12 @@ namespace Chronos
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App 
+    public partial class App
         : nRoute.ApplicationServices.Application
     {
         #region · Logger ·
 
-        private static Logger Logger = LogManager.GetCurrentClassLogger();
+        private static Logger s_logger = LogManager.GetCurrentClassLogger();
 
         #endregion
 
@@ -42,10 +42,10 @@ namespace Chronos
 
         #region · Fields ·
 
-        private ChannelObserver<AuthenticationInfo> authenticationObserver;
-        private List<string>                        pendingNavigations;
-        private string[]                            args;
-        private bool                                isLoggedIn;
+        private ChannelObserver<AuthenticationInfo> _authenticationObserver;
+        private List<string> _pendingNavigations;
+        private string[] _args;
+        private bool _isLoggedIn;
 
         #endregion
 
@@ -53,7 +53,7 @@ namespace Chronos
 
         public void Run(string[] arguments)
         {
-            this.args = arguments;
+            _args = arguments;
 
             this.Run();
         }
@@ -66,29 +66,29 @@ namespace Chronos
         {
             //RenderOptions.ProcessRenderMode = System.Windows.Interop.RenderMode.SoftwareOnly;
 
-            this.DispatcherUnhandledException       += new DispatcherUnhandledExceptionEventHandler(OnDispatcherUnhandledException);
-            SingleInstance.SingleInstanceActivated  += new EventHandler<SingleInstanceEventArgs>(OnSingleInstanceActivated);
+            this.DispatcherUnhandledException += new DispatcherUnhandledExceptionEventHandler(OnDispatcherUnhandledException);
+            SingleInstance.SingleInstanceActivated += new EventHandler<SingleInstanceEventArgs>(OnSingleInstanceActivated);
 
             // Pending Navigations
-            this.pendingNavigations = new List<string>();
+            _pendingNavigations = new List<string>();
 
             // Authentication Observer
-            this.authenticationObserver = new ChannelObserver<AuthenticationInfo>((l) => OnAuthenticationAction(l));
+            _authenticationObserver = new ChannelObserver<AuthenticationInfo>((l) => OnAuthenticationAction(l));
 
             // Subscribe on background thread
-            this.authenticationObserver.Subscribe(ThreadOption.BackgroundThread);
-            
+            _authenticationObserver.Subscribe(ThreadOption.BackgroundThread);
+
             base.OnStartup(e);
 
-            if (this.args != null && this.args.Length > 0)
+            if (_args != null && _args.Length > 0)
             {
-                if (this.isLoggedIn)
+                if (_isLoggedIn)
                 {
                     ServiceLocator.GetService<INavigationService>().Navigate(e.Args[0]);
                 }
                 else
                 {
-                    this.pendingNavigations.Add(e.Args[0]);
+                    _pendingNavigations.Add(e.Args[0]);
                 }
             }
 
@@ -104,21 +104,21 @@ namespace Chronos
             switch (info.Action)
             {
                 case AuthenticationAction.LogOn:
-                    this.isLoggedIn = false;
+                    _isLoggedIn = false;
                     break;
 
                 case AuthenticationAction.LoggedIn:
-                    this.isLoggedIn = true;
+                    _isLoggedIn = true;
 
-                    if (this.pendingNavigations != null &&
-                        this.pendingNavigations.Count > 0)
+                    if (_pendingNavigations != null &&
+                        _pendingNavigations.Count > 0)
                     {
                         this.ProcessPendingNavigations();
                     }
                     break;
 
                 case AuthenticationAction.LogOut:
-                    this.isLoggedIn = false;
+                    _isLoggedIn = false;
                     break;
             }
         }
@@ -129,7 +129,7 @@ namespace Chronos
 
         private void ProcessPendingNavigations()
         {
-            foreach (string url in this.pendingNavigations)
+            foreach (string url in _pendingNavigations)
             {
                 ServiceLocator.GetService<INavigationService>().Navigate(url);
             }
@@ -141,7 +141,7 @@ namespace Chronos
 
         private void OnDispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            Logger.ErrorException("Excepción no manejada", e.Exception);
+            s_logger.ErrorException("Excepci\u00F3n no manejada", e.Exception);
 
             e.Handled = true;
         }

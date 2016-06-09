@@ -9,11 +9,9 @@ namespace Chronos.Presentation.Widgets
     /// <summary>
     /// Calendar Widget View Model
     /// </summary>
-    public sealed class CalendarWidgetViewModel 
+    public sealed class CalendarWidgetViewModel
         : WidgetViewModel
     {
-        #region · Properties ·
-
         /// <summary>
         /// Gets the current selected date
         /// </summary>
@@ -23,10 +21,6 @@ namespace Chronos.Presentation.Widgets
             set;
         }
 
-        #endregion
-
-        #region · Constructors ·
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CalendarWidget"/> class
         /// </summary>
@@ -34,8 +28,6 @@ namespace Chronos.Presentation.Widgets
             : base()
         {
         }
-
-        #endregion
     }
 }
 

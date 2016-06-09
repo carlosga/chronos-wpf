@@ -29,40 +29,40 @@ namespace Chronos.ViewModel
     /// <summary>
     /// Shell Window ViewModel
     /// </summary>
-    public sealed class ShellViewModel 
+    public sealed class ShellViewModel
         : ViewModelBase
     {
         #region · Logger ·
 
-        private static Logger Logger = LogManager.GetCurrentClassLogger();
+        private static Logger s_logger = LogManager.GetCurrentClassLogger();
 
         #endregion
 
         #region · Fields ·
 
-        private WindowState windowState;
-        private string      userName;
+        private WindowState _windowState;
+        private string _userName;
 
         #region · Commands ·
 
-        private ICommand maximizeCommand;
-        private ICommand minimizeCommand;
-        private ICommand showWidgetLibraryCommand;
-        private ICommand shutdownCommand;
-        private ICommand closeSessionCommand;
-        private ICommand switchDesktopCommand;
-        private ICommand showDesktopCommand;
-        private ICommand saveCurrentDesktopCommand;
-        private ICommand saveAllDesktopsCommand;
-        private ICommand showAboutBoxCommand;
+        private ICommand _maximizeCommand;
+        private ICommand _minimizeCommand;
+        private ICommand _showWidgetLibraryCommand;
+        private ICommand _shutdownCommand;
+        private ICommand _closeSessionCommand;
+        private ICommand _switchDesktopCommand;
+        private ICommand _showDesktopCommand;
+        private ICommand _saveCurrentDesktopCommand;
+        private ICommand _saveAllDesktopsCommand;
+        private ICommand _showAboutBoxCommand;
 
         #endregion
 
         #region · Observers ·
 
-        private ChannelObserver<AuthenticationInfo>         authenticationObserver;
-        private ChannelObserver<ActiveDesktopChangedInfo>   activeDesktopObserver;
-        private ChannelObserver<NavigatedInfo>              navigatedObserver;
+        private ChannelObserver<AuthenticationInfo> _authenticationObserver;
+        private ChannelObserver<ActiveDesktopChangedInfo> _activeDesktopObserver;
+        private ChannelObserver<NavigatedInfo> _navigatedObserver;
 
         #endregion
 
@@ -78,12 +78,12 @@ namespace Chronos.ViewModel
         {
             get
             {
-                if (this.maximizeCommand == null)
+                if (_maximizeCommand == null)
                 {
-                    this.maximizeCommand = new ActionCommand(() => OnMaximizeWindow());
+                    _maximizeCommand = new ActionCommand(() => OnMaximizeWindow());
                 }
 
-                return this.maximizeCommand;
+                return _maximizeCommand;
             }
         }
 
@@ -95,12 +95,12 @@ namespace Chronos.ViewModel
         {
             get
             {
-                if (this.minimizeCommand == null)
+                if (_minimizeCommand == null)
                 {
-                    this.minimizeCommand = new ActionCommand(() => OnMinimizeWindow());
+                    _minimizeCommand = new ActionCommand(() => OnMinimizeWindow());
                 }
 
-                return this.minimizeCommand;
+                return _minimizeCommand;
             }
         }
 
@@ -111,12 +111,12 @@ namespace Chronos.ViewModel
         {
             get
             {
-                if (this.switchDesktopCommand == null)
+                if (_switchDesktopCommand == null)
                 {
-                    this.switchDesktopCommand = new ActionCommand(() => OnSwitchDesktop());
+                    _switchDesktopCommand = new ActionCommand(() => OnSwitchDesktop());
                 }
 
-                return this.switchDesktopCommand;
+                return _switchDesktopCommand;
             }
         }
 
@@ -127,12 +127,12 @@ namespace Chronos.ViewModel
         {
             get
             {
-                if (this.showDesktopCommand == null)
+                if (_showDesktopCommand == null)
                 {
-                    this.showDesktopCommand = new ActionCommand(() => OnShowDesktop());
+                    _showDesktopCommand = new ActionCommand(() => OnShowDesktop());
                 }
 
-                return this.showDesktopCommand;
+                return _showDesktopCommand;
             }
         }
 
@@ -144,12 +144,12 @@ namespace Chronos.ViewModel
         {
             get
             {
-                if (this.saveCurrentDesktopCommand == null)
+                if (_saveCurrentDesktopCommand == null)
                 {
-                    this.saveCurrentDesktopCommand = new ActionCommand(() => OnSaveCurrentDesktop());
+                    _saveCurrentDesktopCommand = new ActionCommand(() => OnSaveCurrentDesktop());
                 }
 
-                return this.saveCurrentDesktopCommand;
+                return _saveCurrentDesktopCommand;
             }
         }
 
@@ -161,12 +161,12 @@ namespace Chronos.ViewModel
         {
             get
             {
-                if (this.saveAllDesktopsCommand == null)
+                if (_saveAllDesktopsCommand == null)
                 {
-                    this.saveAllDesktopsCommand = new ActionCommand(() => OnSaveAllDesktops());
+                    _saveAllDesktopsCommand = new ActionCommand(() => OnSaveAllDesktops());
                 }
 
-                return this.saveAllDesktopsCommand;
+                return _saveAllDesktopsCommand;
             }
         }
 
@@ -178,12 +178,12 @@ namespace Chronos.ViewModel
         {
             get
             {
-                if (this.showWidgetLibraryCommand == null)
+                if (_showWidgetLibraryCommand == null)
                 {
-                    this.showWidgetLibraryCommand = new ActionCommand(() => OnShowWidgetLibrary());
+                    _showWidgetLibraryCommand = new ActionCommand(() => OnShowWidgetLibrary());
                 }
 
-                return this.showWidgetLibraryCommand;
+                return _showWidgetLibraryCommand;
             }
         }
 
@@ -195,12 +195,12 @@ namespace Chronos.ViewModel
         {
             get
             {
-                if (this.showAboutBoxCommand == null)
+                if (_showAboutBoxCommand == null)
                 {
-                    this.showAboutBoxCommand = new ActionCommand(() => OnShowAboutBoxCommand());
+                    _showAboutBoxCommand = new ActionCommand(() => OnShowAboutBoxCommand());
                 }
 
-                return this.showAboutBoxCommand;
+                return _showAboutBoxCommand;
             }
         }
 
@@ -211,12 +211,12 @@ namespace Chronos.ViewModel
         {
             get
             {
-                if (this.shutdownCommand == null)
+                if (_shutdownCommand == null)
                 {
-                    this.shutdownCommand = new ActionCommand(() => OnShutdown());
+                    _shutdownCommand = new ActionCommand(() => OnShutdown());
                 }
 
-                return this.shutdownCommand;
+                return _shutdownCommand;
             }
         }
 
@@ -227,12 +227,12 @@ namespace Chronos.ViewModel
         {
             get
             {
-                if (this.closeSessionCommand == null)
+                if (_closeSessionCommand == null)
                 {
-                    this.closeSessionCommand = new ActionCommand(() => OnCloseSession());
+                    _closeSessionCommand = new ActionCommand(() => OnCloseSession());
                 }
 
-                return this.closeSessionCommand;
+                return _closeSessionCommand;
             }
         }
 
@@ -246,12 +246,12 @@ namespace Chronos.ViewModel
         /// <value>The state of the window.</value>
         public WindowState WindowState
         {
-            get { return this.windowState; }
+            get { return _windowState; }
             set
             {
-                if (this.windowState != value)
+                if (_windowState != value)
                 {
-                    this.windowState = value;
+                    _windowState = value;
                     this.NotifyPropertyChanged(() => WindowState);
                 }
             }
@@ -279,10 +279,10 @@ namespace Chronos.ViewModel
         /// </summary>
         public string UserName
         {
-            get { return (!String.IsNullOrEmpty(this.userName) ? this.userName : "Sesión no iniciada"); }
+            get { return (!String.IsNullOrEmpty(_userName) ? _userName : "Sesi\u00F3n no iniciada"); }
             private set
             {
-                this.userName = value;
+                _userName = value;
                 this.NotifyPropertyChanged(() => UserName);
             }
         }
@@ -311,7 +311,7 @@ namespace Chronos.ViewModel
         {
             this.GetService<IVirtualDesktopManager>().Show<WidgetLibraryView>();
         }
-        
+
         /// <summary>
         /// Handles the switch desktop command action
         /// </summary>
@@ -349,7 +349,7 @@ namespace Chronos.ViewModel
         /// </summary>
         private void OnShutdown()
         {
-            Logger.Debug("Finalizando la sesión");
+            s_logger.Debug("Finalizando la sesi\u00F3n");
             Application.Current.Shutdown();
         }
 
@@ -376,7 +376,7 @@ namespace Chronos.ViewModel
                 this.WindowState = WindowState.Maximized;
             }
 
-            Logger.Debug("Cambiado el estado de la ventana principal de la aplicación ({0})", this.WindowState);
+            s_logger.Debug("Cambiado el estado de la ventana principal de la aplicaci\u00F3n ({0})", this.WindowState);
         }
 
         /// <summary>
@@ -399,29 +399,29 @@ namespace Chronos.ViewModel
 
         private void InitializeObservers()
         {
-            Logger.Debug("Inicializando observers de nroute");
+            s_logger.Debug("Inicializando observers de nroute");
 
             // Authentication Observer
-            this.authenticationObserver = new ChannelObserver<AuthenticationInfo>(
+            _authenticationObserver = new ChannelObserver<AuthenticationInfo>(
                 (l) => OnAuthenticationAction(l));
 
             // Subscribe on the UI Thread
-            this.authenticationObserver.Subscribe(ThreadOption.BackgroundThread);
+            _authenticationObserver.Subscribe(ThreadOption.BackgroundThread);
 
             // Active desktop changed observer
-            this.activeDesktopObserver = new ChannelObserver<ActiveDesktopChangedInfo>(
+            _activeDesktopObserver = new ChannelObserver<ActiveDesktopChangedInfo>(
                 (l) => OnActiveDesktopChanged(l));
 
             // Subscribe on the UI Thread
-            this.activeDesktopObserver.Subscribe(ThreadOption.UIThread);
+            _activeDesktopObserver.Subscribe(ThreadOption.UIThread);
 
             // Navigation observers
 
             // Navigated observer
-            this.navigatedObserver = new ChannelObserver<NavigatedInfo>(
+            _navigatedObserver = new ChannelObserver<NavigatedInfo>(
                 (l) => OnNavigated(l));
 
-            this.navigatedObserver.Subscribe(ThreadOption.BackgroundThread);
+            _navigatedObserver.Subscribe(ThreadOption.BackgroundThread);
         }
 
         #endregion
@@ -447,14 +447,14 @@ namespace Chronos.ViewModel
 
         private void OnActiveDesktopChanged(ActiveDesktopChangedInfo info)
         {
-            Logger.Debug("Cambiando el escritorio activo");
+            s_logger.Debug("Cambiando el escritorio activo");
 
             this.NotifyPropertyChanged(() => ActiveWindows);
         }
 
         private void OnNavigated(NavigatedInfo info)
         {
-            Logger.Debug("Navegación finalizada correctamente ({0})", info.Request.RequestUrl);
+            s_logger.Debug("Navegaci\u00F3n finalizada correctamente ({0})", info.Request.RequestUrl);
 
             this.CreateRecentNavigationEntry(info);
         }
@@ -489,13 +489,13 @@ namespace Chronos.ViewModel
                                     (
                                         new JumpTask
                                         {
-                                            CustomCategory      = "Recent",
-                                            Title               = value.Title,
-                                            Arguments           = value.Request.RequestUrl,
-                                            IconResourcePath    = null,
-                                            IconResourceIndex   = -1,
-                                            Description         = null,
-                                            WorkingDirectory    =
+                                            CustomCategory = "Recent",
+                                            Title = value.Title,
+                                            Arguments = value.Request.RequestUrl,
+                                            IconResourcePath = null,
+                                            IconResourceIndex = -1,
+                                            Description = null,
+                                            WorkingDirectory =
                                                 Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)
                                         }
                                     );

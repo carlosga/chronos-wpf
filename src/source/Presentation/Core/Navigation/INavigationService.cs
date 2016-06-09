@@ -10,8 +10,6 @@ namespace Chronos.Presentation.Core.Navigation
     /// </summary>
     public interface INavigationService
     {
-        #region · Methods ·
-
         /// <summary>
         /// Performs the navigation to the given target
         /// </summary>
@@ -23,7 +21,7 @@ namespace Chronos.Presentation.Core.Navigation
         /// </summary>
         /// <param name="target"></param>
         void Navigate(NavigateMode mode, string target);
-        
+
         /// <summary>
         /// Performs the navigation to the given target
         /// </summary>
@@ -35,7 +33,5 @@ namespace Chronos.Presentation.Core.Navigation
         /// </summary>
         /// <param name="target"></param>
         void Navigate(NavigateMode mode, string target, params object[] args);
-        
-        #endregion
     }
 }

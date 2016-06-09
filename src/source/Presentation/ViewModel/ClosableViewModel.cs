@@ -15,32 +15,18 @@ namespace Chronos.Presentation.ViewModel
     /// <summary>
     /// Base class for closeable view models
     /// </summary>
-    public abstract class ClosableViewModel 
+    public abstract class ClosableViewModel
         : ViewModelBase, IClosableViewModel
     {
-        #region · NotifyPropertyChanged Cached Instances ·
+        private static readonly PropertyChangedEventArgs s_idChangedArgs = CreateArgs<ClosableViewModel>(x => x.Id);
+        private static readonly PropertyChangedEventArgs s_titleChangedArgs = CreateArgs<ClosableViewModel>(x => x.Title);
 
-        private static readonly PropertyChangedEventArgs IdChangedArgs      = CreateArgs<ClosableViewModel>(x => x.Id);
-        private static readonly PropertyChangedEventArgs TitleChangedArgs   = CreateArgs<ClosableViewModel>(x => x.Title);
+        private static Logger s_logger = LogManager.GetCurrentClassLogger();
 
-        #endregion
-
-        #region · Logger ·
-
-        private static Logger Logger = LogManager.GetCurrentClassLogger();
-
-        #endregion
-
-        #region · Fields ·
-
-        private Guid                    id;
-        private ActionCommand           closeCommand;
-        private string                  title;
-        private List<IChannelObserver>  observers;
-
-        #endregion
-
-        #region · Commands ·
+        private Guid _id;
+        private ActionCommand _closeCommand;
+        private string _title;
+        private List<IChannelObserver> _observers;
 
         /// <summary>
         /// Gets the Close Command
@@ -49,22 +35,18 @@ namespace Chronos.Presentation.ViewModel
         {
             get
             {
-                if (this.closeCommand == null)
+                if (_closeCommand == null)
                 {
-                    this.closeCommand = new ActionCommand
+                    _closeCommand = new ActionCommand
                     (
                         () => Close(),
                         () => CanClose()
                     );
                 }
 
-                return this.closeCommand;
+                return _closeCommand;
             }
         }
-
-        #endregion
-
-        #region · Properties ·
 
         /// <summary>
         /// Gets or sets the unique identifier.
@@ -72,13 +54,13 @@ namespace Chronos.Presentation.ViewModel
         /// <value>The id.</value>
         public Guid Id
         {
-            get { return this.id; }
+            get { return _id; }
             set
             {
-                if (this.id != value)
+                if (_id != value)
                 {
-                    this.id = value;
-                    this.NotifyPropertyChanged(IdChangedArgs);
+                    _id = value;
+                    this.NotifyPropertyChanged(s_idChangedArgs);
                 }
             }
         }
@@ -90,20 +72,16 @@ namespace Chronos.Presentation.ViewModel
         /// </summary>
         public virtual string Title
         {
-            get { return this.title; }
+            get { return _title; }
             set
             {
-                if (this.title != value)
+                if (_title != value)
                 {
-                    this.title = value;
-                    this.NotifyPropertyChanged(TitleChangedArgs);
+                    _title = value;
+                    this.NotifyPropertyChanged(s_titleChangedArgs);
                 }
             }
         }
-
-        #endregion
-
-        #region · Constructors ·
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ClosableViewModel"/> class.
@@ -111,45 +89,37 @@ namespace Chronos.Presentation.ViewModel
         protected ClosableViewModel()
             : base()
         {
-            this.Id         = Guid.NewGuid();
-            this.observers  = new List<IChannelObserver>();
+            this.Id = Guid.NewGuid();
+            _observers = new List<IChannelObserver>();
         }
 
-        #endregion
-
-        #region · Messaging Methods ·
-
         protected void Subscribe<T>(Action<T> payloadHandler)
-            where T: class
+            where T : class
         {
             this.Subscribe<T>(payloadHandler, ThreadOption.BackgroundThread);
         }
 
         protected void Subscribe<T>(Action<T> payloadHandler, ThreadOption threadOption)
-            where T: class
+            where T : class
         {
             ChannelObserver<T> observer = new ChannelObserver<T>((l) => payloadHandler(l));
 
             observer.Subscribe(threadOption);
 
-            this.observers.Add(observer);
+            _observers.Add(observer);
         }
 
         protected void Publish<T>(T message)
-            where T: class
+            where T : class
         {
             Channel<T>.Publish(message, true);
         }
 
         protected void Publish<T>(T message, bool async)
-            where T: class
+            where T : class
         {
             Channel<T>.Publish(message, async);
         }
-
-        #endregion
-
-        #region · Command Actions ·
 
         /// <summary>
         /// Determines whether the view related to this view model can be closed.
@@ -167,20 +137,18 @@ namespace Chronos.Presentation.ViewModel
         /// </summary>
         public virtual void Close()
         {
-            if (this.observers != null)
+            if (_observers != null)
             {
-                this.observers.ForEach(o => o.Unsubscribe());
-                this.observers.Clear();
-                this.observers = null;
+                _observers.ForEach(o => o.Unsubscribe());
+                _observers.Clear();
+                _observers = null;
             }
 
             this.GetService<IVirtualDesktopManager>().Close(this.Id);
 
-            this.id             = Guid.Empty;
-            this.title          = null;
-            this.closeCommand   = null;
+            _id = Guid.Empty;
+            _title = null;
+            _closeCommand = null;
         }
-
-        #endregion
     }
 }

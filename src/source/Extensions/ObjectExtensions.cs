@@ -9,8 +9,6 @@ namespace Chronos.Extensions
     /// </summary>
     public static class ObjectExtensions
     {
-        #region · Extensions ·
-
         /// <summary>
         /// Determines whether the object is equal to any of the provided values.
         /// </summary>
@@ -60,7 +58,7 @@ namespace Chronos.Extensions
                 var targetType = typeof(T);
 
                 var converter = TypeDescriptor.GetConverter(value);
-                
+
                 if (converter != null)
                 {
                     if (converter.CanConvertTo(targetType))
@@ -70,7 +68,7 @@ namespace Chronos.Extensions
                 }
 
                 converter = TypeDescriptor.GetConverter(targetType);
-            
+
                 if (converter != null)
                 {
                     if (converter.CanConvertFrom(value.GetType()))
@@ -204,8 +202,8 @@ namespace Chronos.Extensions
         /// </example>
         public static T InvokeMethod<T>(this object obj, string methodName, params object[] parameters)
         {
-            var type    = obj.GetType();
-            var method  = type.GetMethod(methodName);
+            var type = obj.GetType();
+            var method = type.GetMethod(methodName);
 
             if (method == null)
             {
@@ -283,8 +281,8 @@ namespace Chronos.Extensions
         /// </example>
         public static T GetPropertyValue<T>(this object obj, string propertyName, T defaultValue)
         {
-            var type        = obj.GetType();
-            var property    = type.GetProperty(propertyName);
+            var type = obj.GetType();
+            var property = type.GetProperty(propertyName);
 
             if (property == null)
             {
@@ -304,8 +302,8 @@ namespace Chronos.Extensions
         /// <param name="value">The value to be set.</param>
         public static void SetPropertyValue(this object obj, string propertyName, object value)
         {
-            var type        = obj.GetType();
-            var property    = type.GetProperty(propertyName);
+            var type = obj.GetType();
+            var property = type.GetProperty(propertyName);
 
             if (property == null)
             {
@@ -335,8 +333,8 @@ namespace Chronos.Extensions
         /// <returns>The found attribute</returns>
         public static T GetAttribute<T>(this object obj, bool includeInherited) where T : Attribute
         {
-            var type        = (obj as Type ?? obj.GetType());
-            var attributes  = type.GetCustomAttributes(typeof(T), includeInherited);
+            var type = (obj as Type ?? obj.GetType());
+            var attributes = type.GetCustomAttributes(typeof(T), includeInherited);
 
             if ((attributes != null) && (attributes.Length > 0))
             {
@@ -367,7 +365,7 @@ namespace Chronos.Extensions
         public static IEnumerable<T> GetAttributes<T>(this object obj, bool includeInherited) where T : Attribute
         {
             var type = (obj as Type ?? obj.GetType());
-            
+
             foreach (var attribute in type.GetCustomAttributes(typeof(T), includeInherited))
             {
                 if (attribute is T)
@@ -376,7 +374,5 @@ namespace Chronos.Extensions
                 }
             }
         }
-
-        #endregion
     }
 }

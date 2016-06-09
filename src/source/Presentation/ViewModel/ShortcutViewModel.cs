@@ -14,38 +14,19 @@ namespace Chronos.Presentation.ViewModel
     /// <summary>
     /// Base class for shortcut viewmodel implementations
     /// </summary>
-    public abstract class ShortcutViewModel 
+    public abstract class ShortcutViewModel
         : ClosableViewModel, IShortcutViewModel
     {
-        #region · NotifyPropertyChanged Cached Instances ·
+        private static readonly PropertyChangedEventArgs s_iconStyleChangedArgs = CreateArgs<ShortcutViewModel>(x => x.IconStyle);
+        private static readonly PropertyChangedEventArgs s_targetChangedArgs = CreateArgs<ShortcutViewModel>(x => x.Target);
+        private static readonly PropertyChangedEventArgs s_parametersChangedArgs = CreateArgs<ShortcutViewModel>(x => x.Parameters);
 
-        private static readonly PropertyChangedEventArgs IconStyleChangedArgs   = CreateArgs<ShortcutViewModel>(x => x.IconStyle);
-        private static readonly PropertyChangedEventArgs TargetChangedArgs      = CreateArgs<ShortcutViewModel>(x => x.Target);
-        private static readonly PropertyChangedEventArgs ParametersChangedArgs  = CreateArgs<ShortcutViewModel>(x => x.Parameters);
+        private static Logger s_logger = LogManager.GetCurrentClassLogger();
 
-        #endregion
-
-        #region · Logger ·
-
-        private static Logger Logger = LogManager.GetCurrentClassLogger();
-
-        #endregion
-
-        #region · Fields ·
-
-        private string target;
-        private string parameters;
-        private string iconStyle;
-
-        #region · Commands ·
-
-        private ActionCommand openCommand;
-
-        #endregion
-
-        #endregion
-
-        #region · Commands ·
+        private ActionCommand _openCommand;
+        private string _target;
+        private string _parameters;
+        private string _iconStyle;
 
         /// <summary>
         /// Gets the open command.
@@ -55,18 +36,14 @@ namespace Chronos.Presentation.ViewModel
         {
             get
             {
-                if (this.openCommand == null)
+                if (_openCommand == null)
                 {
-                    this.openCommand = new ActionCommand(() => OnOpen());
+                    _openCommand = new ActionCommand(() => OnOpen());
                 }
 
-                return this.openCommand;
+                return _openCommand;
             }
         }
-
-        #endregion
-
-        #region · Properties ·
 
         /// <summary>
         /// Gets or sets the icon style.
@@ -74,13 +51,13 @@ namespace Chronos.Presentation.ViewModel
         /// <value>The icon style.</value>
         public virtual string IconStyle
         {
-            get { return this.iconStyle; }
+            get { return _iconStyle; }
             set
             {
-                if (this.iconStyle != value)
+                if (_iconStyle != value)
                 {
-                    this.iconStyle = value;
-                    this.NotifyPropertyChanged(IconStyleChangedArgs);
+                    _iconStyle = value;
+                    this.NotifyPropertyChanged(s_iconStyleChangedArgs);
                 }
             }
         }
@@ -91,13 +68,13 @@ namespace Chronos.Presentation.ViewModel
         /// <value>The shortcut target.</value>
         public virtual string Target
         {
-            get { return this.target; }
+            get { return _target; }
             set
             {
-                if (this.target != value)
+                if (_target != value)
                 {
-                    this.target = value;
-                    this.NotifyPropertyChanged(TargetChangedArgs);
+                    _target = value;
+                    this.NotifyPropertyChanged(s_targetChangedArgs);
                 }
             }
         }
@@ -107,20 +84,16 @@ namespace Chronos.Presentation.ViewModel
         /// </summary>
         public virtual string Parameters
         {
-            get { return this.parameters; }
+            get { return _parameters; }
             set
             {
-                if (this.parameters != value)
+                if (_parameters != value)
                 {
-                    this.parameters = value;
-                    this.NotifyPropertyChanged(ParametersChangedArgs);
+                    _parameters = value;
+                    this.NotifyPropertyChanged(s_parametersChangedArgs);
                 }
             }
         }
-
-        #endregion
-
-        #region · Constructors ·
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShortcutViewModel"/> class.
@@ -130,18 +103,10 @@ namespace Chronos.Presentation.ViewModel
         {
         }
 
-        #endregion
-
-        #region · Command Actions ·
-
         /// <summary>
         /// Called when the <see cref="OpenCommand"/>  is executed.
         /// </summary>
         protected abstract void OnOpen();
-
-        #endregion
-
-        #region · Overriden Methods ·
 
         /// <summary>
         /// Determines whether the view related to this view model can be closed.
@@ -158,30 +123,28 @@ namespace Chronos.Presentation.ViewModel
         /// Called when the related view is being closed.
         /// </summary>
         public override void Close()
-        {            
+        {
             IShowMessageViewService showMessageService = this.GetViewService<IShowMessageViewService>();
 
-            showMessageService.ButtonSetup  = DialogButton.YesNo;
-            showMessageService.Caption      = "Eliminar acceso directo";
-            showMessageService.Text         =
+            showMessageService.ButtonSetup = DialogButton.YesNo;
+            showMessageService.Caption = "Eliminar acceso directo";
+            showMessageService.Text =
                 String.Format(
-                    "¿Está seguro de que desea eliminar permanentemente este acceso directo? {0}{1}",
+                    "\u00BFEst\u00E1 seguro de que desea eliminar permanentemente este acceso directo? {0}{1}",
                         Environment.NewLine,
                             this.Title);
 
             if (showMessageService.ShowMessage() == DialogResult.Yes)
             {
-                Logger.Debug("Eliminando acceso directo '{0}'", this.Target);
+                s_logger.Debug("Eliminando acceso directo '{0}'", this.Target);
 
                 base.Close();
 
-                this.target         = null;
-                this.parameters     = null;
-                this.iconStyle      = null;
-                this.openCommand    = null;
+                _target = null;
+                _parameters = null;
+                _iconStyle = null;
+                _openCommand = null;
             }
         }
-
-        #endregion
     }
 }

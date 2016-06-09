@@ -12,7 +12,7 @@ namespace Chronos.Presentation.Windows.Controls
         : DesktopElement, ISelectable
     {
         #region · Dependency Properties ·
-        
+
         /// <summary>
         /// Identifies the IsSelected dependency property
         /// </summary>
@@ -51,7 +51,7 @@ namespace Chronos.Presentation.Windows.Controls
         #endregion
 
         #region · ISelectable Members ·
-        
+
         public Guid ParentId
         {
             get;

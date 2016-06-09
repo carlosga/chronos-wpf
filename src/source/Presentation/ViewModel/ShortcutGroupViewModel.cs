@@ -15,32 +15,14 @@ namespace Chronos.Presentation.ViewModel
     public sealed class ShortcutGroupViewModel
         : ClosableViewModel
     {
-        #region · Constants ·
-
         private const string DefaultIconStyle = "FolderIconStyle";
 
-        #endregion
+        private static readonly PropertyChangedEventArgs s_iconStyleChangedArgs = CreateArgs<ShortcutGroupViewModel>(x => x.IconStyle);
 
-        #region · NotifyPropertyChanged Cached Instances ·
+        private static Logger s_logger = LogManager.GetCurrentClassLogger();
 
-        private static readonly PropertyChangedEventArgs IconStyleChangedArgs = CreateArgs<ShortcutGroupViewModel>(x => x.IconStyle);
-
-        #endregion
-
-        #region · Logger ·
-
-        private static Logger Logger = LogManager.GetCurrentClassLogger();
-
-        #endregion
-
-        #region · Fields ·
-
-        private string                      iconStyle;
-        private List<IShortcutViewModel>    shortcuts;
-
-        #endregion
-
-        #region · Properties ·
+        private string _iconStyle;
+        private List<IShortcutViewModel> _shortcuts;
 
         /// <summary>
         /// Gets or sets the shortcut icon style.
@@ -50,32 +32,28 @@ namespace Chronos.Presentation.ViewModel
         {
             get
             {
-                if (String.IsNullOrWhiteSpace(this.iconStyle))
+                if (String.IsNullOrWhiteSpace(_iconStyle))
                 {
                     return DefaultIconStyle;
                 }
 
-                return this.iconStyle;
+                return _iconStyle;
             }
-            set { this.iconStyle = value; }
+            set { _iconStyle = value; }
         }
 
         public List<IShortcutViewModel> Shortcuts
         {
             get
             {
-                if (this.shortcuts == null)
+                if (_shortcuts == null)
                 {
-                    this.shortcuts = new List<IShortcutViewModel>();
+                    _shortcuts = new List<IShortcutViewModel>();
                 }
 
-                return this.shortcuts;
+                return _shortcuts;
             }
         }
-
-        #endregion
-
-        #region · Constructors ·
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShortcutGroupViewModel"/> class.
@@ -84,10 +62,6 @@ namespace Chronos.Presentation.ViewModel
             : base()
         {
         }
-
-        #endregion
-
-        #region · Overriden Methods ·
 
         /// <summary>
         /// Determines whether the view related to this view model can be closed.
@@ -104,33 +78,31 @@ namespace Chronos.Presentation.ViewModel
         /// Called when the related view is being closed.
         /// </summary>
         public override void Close()
-        {            
+        {
             IShowMessageViewService showMessageService = this.GetViewService<IShowMessageViewService>();
 
-            showMessageService.ButtonSetup  = DialogButton.YesNo;
-            showMessageService.Caption      = "Eliminar grupo de accesos directos";
-            showMessageService.Text         =
+            showMessageService.ButtonSetup = DialogButton.YesNo;
+            showMessageService.Caption = "Eliminar grupo de accesos directos";
+            showMessageService.Text =
                 String.Format(
-                    "¿Está seguro de que desea eliminar permanentemente este grupo de accesos directos? {0}{1}",
+                    "\u00BFEst\u00E1 seguro de que desea eliminar permanentemente este grupo de accesos directos? {0}{1}",
                         Environment.NewLine,
                             this.Title);
 
             if (showMessageService.ShowMessage() == DialogResult.Yes)
             {
-                Logger.Debug("Eliminando grupo de accesos directos '{0}'", this.Title);
+                s_logger.Debug("Eliminando grupo de accesos directos '{0}'", this.Title);
 
                 base.Close();
 
-                this.iconStyle = null;
+                _iconStyle = null;
 
-                if (this.shortcuts != null)
+                if (_shortcuts != null)
                 {
-                    this.shortcuts.Clear();
-                    this.shortcuts  = null;
+                    _shortcuts.Clear();
+                    _shortcuts = null;
                 }
             }
         }
-
-        #endregion
     }
 }

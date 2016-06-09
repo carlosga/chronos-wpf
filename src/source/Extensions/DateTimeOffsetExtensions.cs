@@ -7,8 +7,6 @@ namespace Chronos.Extensions
     /// </summary>
     public static class DateTimeOffsetExtensions
     {
-        #region · Extensions ·
-
         /// <summary>
         /// Indicates whether the date is today.
         /// </summary>
@@ -85,7 +83,5 @@ namespace Chronos.Extensions
 
             return TimeZoneInfo.ConvertTime(dateTimeUtc, localTimeZone).DateTime;
         }
-
-        #endregion
-    }
+   }
 }

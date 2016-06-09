@@ -17,17 +17,17 @@ namespace Chronos.Presentation.Windows.Controls
     [TemplatePart(Name = WidgetElement.PART_MinimizeButton, Type = typeof(ButtonBase))]
     [TemplatePart(Name = WidgetElement.PART_CloseButton, Type = typeof(ButtonBase))]
     [TemplatePart(Name = WidgetElement.PART_ContentPresenter, Type = typeof(ContentPresenter))]
-    public class WidgetElement 
+    public class WidgetElement
         : DesktopElement
     {
         #region · Constants ·
 
-        private const string PART_ContentPresenter  = "PART_ContentPresenter";
-        private const string PART_MinimizeButton    = "PART_MinimizeButton";
-        private const string PART_CloseButton       = "PART_CloseButton";
+        private const string PART_ContentPresenter = "PART_ContentPresenter";
+        private const string PART_MinimizeButton = "PART_MinimizeButton";
+        private const string PART_CloseButton = "PART_CloseButton";
 
         #endregion
-            
+
         #region · Dependency Properties ·
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace Chronos.Presentation.Windows.Controls
 
         #region · Fields ·
 
-        private Size previousSize;
+        private Size _previousSize;
 
         #endregion
 
@@ -156,7 +156,7 @@ namespace Chronos.Presentation.Windows.Controls
             {
                 if (this.WidgetState == WindowState.Minimized)
                 {
-                    return this.previousSize.Height;
+                    return _previousSize.Height;
                 }
 
                 return this.Height;
@@ -194,7 +194,7 @@ namespace Chronos.Presentation.Windows.Controls
         #endregion
 
         #region · Protected Methods
-        
+
         /// <summary>
         /// Focuses the window
         /// </summary>
@@ -227,20 +227,20 @@ namespace Chronos.Presentation.Windows.Controls
         #endregion
 
         #region · Private Methods ·
-        
+
         private void AdjustLayout()
         {
             if (this.WidgetState == WindowState.Minimized)
             {
-                this.previousSize   = new Size(this.Width, this.Height);
-                this.Height         = 35;
-                this.CanResize      = false;
+                _previousSize = new Size(this.Width, this.Height);
+                this.Height = 35;
+                this.CanResize = false;
             }
             else
             {
-                this.Height         = this.previousSize.Height;
-                this.previousSize   = new Size(this.Width, this.Height);
-                this.CanResize      = true;
+                this.Height = _previousSize.Height;
+                _previousSize = new Size(this.Width, this.Height);
+                this.CanResize = true;
             }
         }
 

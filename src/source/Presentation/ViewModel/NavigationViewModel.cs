@@ -14,27 +14,13 @@ namespace Chronos.Presentation.ViewModel
     /// <summary>
     /// base class for navigation based viewmodel iumplementations
     /// </summary>
-    public abstract class NavigationViewModel 
+    public abstract class NavigationViewModel
         : ClosableViewModel, INavigationViewModel
     {
-        #region · Logger ·
+        private static Logger s_logger = LogManager.GetCurrentClassLogger();
 
-        private static Logger Logger = LogManager.GetCurrentClassLogger();
-
-        #endregion
-
-        #region · Fields ·
-
-        #region · Commands ·
-
-        private ActionCommand newWindowCommand;
-        private ActionCommand restoreCommand;
-
-        #endregion
-
-        #endregion
-
-        #region · INavigationViewModel Commands ·
+        private ActionCommand _newWindowCommand;
+        private ActionCommand _restoreCommand;
 
         /// <summary>
         /// Gets the open new window command
@@ -43,16 +29,16 @@ namespace Chronos.Presentation.ViewModel
         {
             get
             {
-                if (this.newWindowCommand == null)
+                if (_newWindowCommand == null)
                 {
-                    this.newWindowCommand = new ActionCommand
+                    _newWindowCommand = new ActionCommand
                     (
                         () => OnOpenNewWindow(),
                         () => CanOpenNewWindow()
                     );
                 }
 
-                return this.newWindowCommand;
+                return _newWindowCommand;
             }
         }
 
@@ -63,22 +49,18 @@ namespace Chronos.Presentation.ViewModel
         {
             get
             {
-                if (this.restoreCommand == null)
+                if (_restoreCommand == null)
                 {
-                    this.restoreCommand = new ActionCommand
+                    _restoreCommand = new ActionCommand
                     (
                         () => OnRestore(),
                         () => CanRestore()
                     );
                 }
 
-                return this.restoreCommand;
+                return _restoreCommand;
             }
         }
-
-        #endregion
-
-        #region · INavigationViewModel Properties ·
 
         /// <summary>
         /// Gets the navigation route
@@ -96,10 +78,6 @@ namespace Chronos.Presentation.ViewModel
             get { return false; }
         }
 
-        #endregion
-
-        #region · Constructors ·
-
         /// <summary>
         /// Initializes a new instance of the <see cref="NavigationViewModel"/> class.
         /// </summary>
@@ -108,21 +86,13 @@ namespace Chronos.Presentation.ViewModel
         {
         }
 
-        #endregion
-
-        #region · Methods ·
-
         public override void Close()
         {
-            this.newWindowCommand   = null;
-            this.restoreCommand     = null;
+            _newWindowCommand = null;
+            _restoreCommand = null;
 
             base.Close();
         }
-
-        #endregion
-
-        #region · Navigation Methods ·
 
         /// <summary>
         /// Performs the navigation to the given target
@@ -160,10 +130,6 @@ namespace Chronos.Presentation.ViewModel
             this.GetService<INavigationService>().Navigate(mode, target, args);
         }
 
-        #endregion
-
-        #region · ISupportNavigationLifecycle Members ·
-
         /// <summary>
         /// Closings the specified confirm callback.
         /// </summary>
@@ -181,10 +147,6 @@ namespace Chronos.Presentation.ViewModel
         {
             this.OnInitialize(requestParameters);
         }
-
-        #endregion
-
-        #region · ISupportNavigationState Members ·
 
         /// <summary>
         /// Restores the state.
@@ -204,10 +166,6 @@ namespace Chronos.Presentation.ViewModel
             return this.OnSaveState();
         }
 
-        #endregion
-
-        #region · Command Actions ·
-
         protected virtual bool CanOpenNewWindow()
         {
             return !String.IsNullOrEmpty(this.NavigationRoute);
@@ -215,7 +173,7 @@ namespace Chronos.Presentation.ViewModel
 
         protected virtual void OnOpenNewWindow()
         {
-            Logger.Debug("Abrir una nueva ventana '{0}'", this.GetType());
+            s_logger.Debug("Abrir una nueva ventana '{0}'", this.GetType());
 
             this.GetService<INavigationService>().Navigate(this.NavigationRoute);
         }
@@ -227,15 +185,11 @@ namespace Chronos.Presentation.ViewModel
 
         protected virtual void OnRestore()
         {
-            Logger.Debug("Restaurar ventana '{0}'", this.GetType());
+            s_logger.Debug("Restaurar ventana '{0}'", this.GetType());
 
             this.GetService<IVirtualDesktopManager>().Restore(this.Id);
         }
 
-        #endregion
-
-        #region · Protected Methods ·
-        
         /// <summary>
         /// Called when closing.
         /// </summary>
@@ -269,7 +223,5 @@ namespace Chronos.Presentation.ViewModel
         {
             return null;
         }
-
-        #endregion
     }
 }

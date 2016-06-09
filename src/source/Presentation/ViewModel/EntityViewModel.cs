@@ -14,20 +14,14 @@ namespace Chronos.Presentation.ViewModel
     public abstract class EntityViewModel<TEntity>
         : ViewModelBase, IEntityViewModel<TEntity> where TEntity : class, IDataErrorInfo, new()
     {
-        #region · Fields ·
-
-        private TEntity entity;
-
-        #endregion
-
-        #region · IEntityViewModel<TEntity> Properties ·
+        private TEntity _entity;
 
         /// <summary>
         /// Gets the entity model instance
         /// </summary>
         public TEntity Entity
         {
-            get { return this.entity; }
+            get { return _entity; }
         }
 
         /// <summary>
@@ -84,17 +78,13 @@ namespace Chronos.Presentation.ViewModel
             }
         }
 
-        #endregion
-
-        #region · Constructors ·
-
         /// <summary>
         /// Initializes a new instance of the <see cref="EntityViewModel"/> class
         /// </summary>
         protected EntityViewModel()
             : base()
         {
-            this.entity = new TEntity();
+            _entity = new TEntity();
         }
 
         /// <summary>
@@ -105,10 +95,8 @@ namespace Chronos.Presentation.ViewModel
         protected EntityViewModel(TEntity entity)
             : this()
         {
-            this.entity = entity;
+            _entity = entity;
         }
-
-        #endregion
     }
 }
 

@@ -11,15 +11,10 @@ using Chronos.Extensions.Windows;
 
 namespace Chronos.Presentation.DragAndDrop
 {
-    public sealed class TreeViewDragDropDataProvider : IDataDropObjectProvider
+    public sealed class TreeViewDragDropDataProvider
+        : IDataDropObjectProvider
     {
-        #region · Fields ·
-
-        private TreeView treeview;
-
-        #endregion
-
-        #region · Properties ·
+        private TreeView _treeview;
 
         public DragDropProviderActions SupportedActions
         {
@@ -30,30 +25,22 @@ namespace Chronos.Presentation.DragAndDrop
             }
         }
 
-        #endregion
-
-        #region · Constructors ·
-
         public TreeViewDragDropDataProvider(TreeView treeview)
         {
-            this.treeview = treeview;
+            _treeview = treeview;
         }
-
-        #endregion
-
-        #region · IDataDropObjectProvider Members ·
 
         public void AppendData(ref IDataObject data, MouseEventArgs e)
         {
-            if (!(this.treeview.InputHitTest(e.GetPosition(e.OriginalSource as UIElement)) is TreeView) 
-                && !(this.treeview.InputHitTest(e.GetPosition(e.OriginalSource as UIElement)) is ScrollViewer)
+            if (!(_treeview.InputHitTest(e.GetPosition(e.OriginalSource as UIElement)) is TreeView)
+                && !(_treeview.InputHitTest(e.GetPosition(e.OriginalSource as UIElement)) is ScrollViewer)
                 && !(e.OriginalSource is Thumb))
             {
                 TreeViewItem selectedUIelement = this.GetVisual(e).GetParent<TreeViewItem>();
 
                 if (selectedUIelement != null && selectedUIelement.Items.Count == 0)
                 {
-                    object selectedItem = this.treeview.SelectedItem;
+                    object selectedItem = _treeview.SelectedItem;
 
                     if (selectedItem != null)
                     {
@@ -86,7 +73,7 @@ namespace Chronos.Presentation.DragAndDrop
 
         public object GetData()
         {
-            return this.treeview.SelectedItem;
+            return _treeview.SelectedItem;
         }
 
         public UIElement GetVisual(MouseEventArgs e)
@@ -110,7 +97,5 @@ namespace Chronos.Presentation.DragAndDrop
             // We are passing data, nothing to unparent 
             throw new NotImplementedException("We are passing data, nothing to unparent... what up ");
         }
-
-        #endregion
     }
 }

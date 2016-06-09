@@ -16,8 +16,6 @@ namespace Chronos.Presentation.ViewModel
     /// </remarks>
     public static class PropertyExtensions
     {
-        #region · Extension Methods ·
-
         /// <summary>
         /// Creates a <see cref="PropertyChangedEventArgs" /> instance for a given property.
         /// </summary>
@@ -26,8 +24,8 @@ namespace Chronos.Presentation.ViewModel
         /// <returns></returns>
         public static PropertyChangedEventArgs CreateChangeEventArgs<T>(this Expression<Func<T>> property)
         {
-            var expression  = property.Body as MemberExpression;
-            var member      = expression.Member;
+            var expression = property.Body as MemberExpression;
+            var member = expression.Member;
 
             return new PropertyChangedEventArgs(member.Name);
         }
@@ -41,7 +39,7 @@ namespace Chronos.Presentation.ViewModel
         public static string GetPropertyName<T>(this Expression<Func<T>> property)
         {
             var expression = property.Body as MemberExpression;
-            
+
             return expression.Member.Name;
         }
 
@@ -81,7 +79,5 @@ namespace Chronos.Presentation.ViewModel
 
             return null;
         }
-
-        #endregion
     }
 }

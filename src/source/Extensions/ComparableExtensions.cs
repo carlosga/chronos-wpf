@@ -8,7 +8,6 @@ namespace Chronos.Extensions
     /// </summary>
     public static class ComparableExtensions
     {
-
         /// <summary>
         /// Determines whether the specified value is between the the defined minimum and maximum range (including those values).
         /// </summary>

@@ -28,9 +28,9 @@ namespace Chronos.Presentation.Windows.Navigation
     /// Contains methods to support navigation.
     /// </summary>
     [MapService(typeof(INavigationService),
-        InitializationMode=InitializationMode.OnDemand,
-        Lifetime=InstanceLifetime.Singleton)]
-    public sealed class NavigationService 
+        InitializationMode = InitializationMode.OnDemand,
+        Lifetime = InstanceLifetime.Singleton)]
+    public sealed class NavigationService
         : INavigationService, INavigationHandler
     {
         #region · Constructors ·
@@ -74,7 +74,7 @@ namespace Chronos.Presentation.Windows.Navigation
         {
             this.Navigate(NavigateMode.New, target, args);
         }
- 
+
         /// <summary>
         /// Performs the navigation to the given target
         /// </summary>
@@ -85,9 +85,9 @@ namespace Chronos.Presentation.Windows.Navigation
             {
                 IShowMessageViewService showMessageService = ViewServiceLocator.GetViewService<IShowMessageViewService>();
 
-                showMessageService.ButtonSetup  = DialogButton.Ok;
-                showMessageService.Caption      = "Warning";
-                showMessageService.Text         = "Option not mapped to a view.";
+                showMessageService.ButtonSetup = DialogButton.Ok;
+                showMessageService.Caption = "Warning";
+                showMessageService.Text = "Option not mapped to a view.";
 
                 showMessageService.ShowMessage();
 
@@ -101,8 +101,8 @@ namespace Chronos.Presentation.Windows.Navigation
                 (
                     delegate
                     {
-                        ParametersCollection    navParams   = null;
-                        string                  area        = null;
+                        ParametersCollection navParams = null;
+                        string area = null;
 
                         if (args != null && args.Length > 0)
                         {
@@ -120,8 +120,8 @@ namespace Chronos.Presentation.Windows.Navigation
                             area = smnode.SiteArea;
                         }
 
-                        NavigationRequest   request         = new NavigationRequest(target, navParams, area, mode);
-                        IDisposable         navigationToken = nRoute.Navigation.NavigationService.Navigate(request);
+                        NavigationRequest request = new NavigationRequest(target, navParams, area, mode);
+                        IDisposable navigationToken = nRoute.Navigation.NavigationService.Navigate(request);
 
                         if (navigationToken != null)
                         {
@@ -184,10 +184,10 @@ namespace Chronos.Presentation.Windows.Navigation
 
                 IShowMessageViewService showMessageService = ViewServiceLocator.GetViewService<IShowMessageViewService>();
 
-                showMessageService.ButtonSetup  = DialogButton.Ok;
-                showMessageService.Caption      = "Chronos - Error en la navegación";
-                showMessageService.Text         =
-                    ((response.Error != null) ? response.Error.Message : String.Format("No ha sido posible resolver la navegación solicitada ({0})", response.Request.RequestUrl));
+                showMessageService.ButtonSetup = DialogButton.Ok;
+                showMessageService.Caption = "Chronos - Error en la navegaci\u00F3n";
+                showMessageService.Text =
+                    ((response.Error != null) ? response.Error.Message : String.Format("No ha sido posible resolver la navegaci\u00F3n solicitada ({0})", response.Request.RequestUrl));
 
                 showMessageService.ShowMessage();
             }
@@ -198,7 +198,7 @@ namespace Chronos.Presentation.Windows.Navigation
                     DispatcherPriority.Background,
                     new ThreadStart
                     (
-                        () => 
+                        () =>
                         {
                             WindowElement window = response.Content as WindowElement;
 
@@ -230,7 +230,7 @@ namespace Chronos.Presentation.Windows.Navigation
         }
 
         #endregion
-        
+
         #region · Request Validation ·
 
         /// <summary>
@@ -273,7 +273,7 @@ namespace Chronos.Presentation.Windows.Navigation
                     response.Request,
                     title,
                     (response.Content as WindowElement).Id
-                ), 
+                ),
                 true
             );
         }

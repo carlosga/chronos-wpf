@@ -5,7 +5,7 @@ namespace Chronos.Presentation.Widgets
     /// <summary>
     /// Calendar Widget View
     /// </summary>
-    public partial class CalendarWidgetView 
+    public partial class CalendarWidgetView
         : WidgetElement
     {
         /// <summary>

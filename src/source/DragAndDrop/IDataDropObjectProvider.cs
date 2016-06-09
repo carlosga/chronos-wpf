@@ -9,17 +9,11 @@ namespace Chronos.Presentation.DragAndDrop
     // This is an interface that can be implemented to help the DragHelper ( aka the source )
     public interface IDataDropObjectProvider
     {
-        #region · Properties ·
-
         //Flag of actions sypported by implementation of  IDataDropObjectProvider
         DragDropProviderActions SupportedActions
         {
             get;
         }
-
-        #endregion
-
-        #region · Methods ·
 
         // Called before StartDrag () to get the Data () to be used in the DataObject 
         object GetData();
@@ -38,7 +32,5 @@ namespace Chronos.Presentation.DragAndDrop
 
         // called by the TARGET object .. this will attempt to "unparent" the current child so we can add it a child some where else.. 
         bool UnParent();
-
-        #endregion
     }
 }

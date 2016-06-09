@@ -8,8 +8,6 @@ namespace Chronos.Extensions
     /// </summary>
     public static class ListExtensions
     {
-        #region · Extensions ·
-
         /// <summary>
         /// Inserts an item uniquely to to a list and returns a value whether the item was inserted or not.
         /// </summary>
@@ -71,7 +69,5 @@ namespace Chronos.Extensions
 
             return -1;
         }
-
-        #endregion
     }
 }

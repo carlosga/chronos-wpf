@@ -8,8 +8,6 @@ namespace Chronos.Extensions
     /// </summary>
     public static class EnumerableExtensions
     {
-        #region · Extensions ·
-
         /// <summary>
         /// Converts all items of a list and returns them as enumerable.
         /// </summary>
@@ -51,7 +49,5 @@ namespace Chronos.Extensions
                 action(value);
             }
         }
-
-        #endregion
     }
 }
